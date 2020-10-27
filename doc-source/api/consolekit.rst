@@ -1,5 +1,5 @@
-===========
-consolekit
-===========
+========================
+:mod:`consolekit`
+========================
 
 .. automodule:: consolekit

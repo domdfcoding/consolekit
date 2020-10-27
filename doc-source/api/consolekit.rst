@@ -1,0 +1,5 @@
+===========
+consolekit
+===========
+
+.. automodule:: consolekit

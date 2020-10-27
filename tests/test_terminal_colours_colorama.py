@@ -33,8 +33,6 @@ import sys
 # 3rd party
 import pytest
 from colorama.ansitowin32 import AnsiToWin32  # type: ignore
-
-# this package
 from domdf_python_tools.terminal_colours import Back, Fore, Style
 
 stdout_orig = sys.stdout

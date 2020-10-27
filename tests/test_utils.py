@@ -1,5 +1,7 @@
+# stdlib
 import sys
 
+# this package
 from consolekit.utils import overtype
 
 
@@ -35,4 +37,3 @@ def test_overtype(capsys):
 	captured = capsys.readouterr()
 	stderr = captured.err.split("\n")
 	assert stderr == ["Waiting...\rfoo bar"]
-

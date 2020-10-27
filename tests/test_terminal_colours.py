@@ -1,3 +1,4 @@
+# this package
 from consolekit import terminal_colours
 
 

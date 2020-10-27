@@ -8,6 +8,7 @@ consolekit
 
 .. end short_desc
 
+Spun out from `repo_helper <https://github.com/domdfcoding/repo_helper>`_. Needs more tests.
 
 .. start shields
 

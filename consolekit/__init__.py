@@ -96,5 +96,3 @@ class _Option(click.Option):
 
 
 option = partial(click.option, cls=_Option)
-
-click.clear()

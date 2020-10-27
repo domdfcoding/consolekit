@@ -60,7 +60,6 @@ See: http://en.wikipedia.org/wiki/ANSI_escape_code
 #  Includes modifications to colorama made by Bram Geelen in
 #  https://github.com/tartley/colorama/pull/141/files
 #
-
 #  resolve_color_default, _ansi_re and strip_ansi based on
 #  https://github.com/pallets/click
 #  Copyright 2014 Pallets
@@ -82,6 +81,7 @@ __all__ = [
 		"CSI",
 		"OSC",
 		"BEL",
+		"resolve_color_default",
 		"code_to_chars",
 		"set_title",
 		"clear_screen",

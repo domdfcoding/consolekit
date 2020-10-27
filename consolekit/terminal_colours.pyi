@@ -56,10 +56,16 @@ See: http://en.wikipedia.org/wiki/ANSI_escape_code
 #
 #  Includes modifications to colorama made by Bram Geelen in
 #  https://github.com/tartley/colorama/pull/141/files
+#
+#  resolve_color_default, _ansi_re and strip_ansi based on
+#  https://github.com/pallets/click
+#  Copyright 2014 Pallets
+#  Distributed under the BSD 3-Clause license.
+#
 
 # stdlib
 from abc import ABC
-from typing import List
+from typing import List, Optional
 
 # 3rd party
 from typing_extensions import Final
@@ -72,6 +78,7 @@ fore_stack: List[str]
 back_stack: List[str]
 style_stack: List[str]
 
+def resolve_color_default(color: Optional[bool] = None) -> Optional[bool]: ...
 
 def code_to_chars(code) -> str: ...
 def set_title(title: str) -> str: ...

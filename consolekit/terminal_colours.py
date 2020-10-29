@@ -84,7 +84,6 @@ __all__ = [
 		"resolve_color_default",
 		"code_to_chars",
 		"set_title",
-		"clear_screen",
 		"clear_line",
 		"Colour",
 		"AnsiCodes",
@@ -145,8 +144,9 @@ def set_title(title: str) -> str:
 	return OSC + "2;" + title + BEL
 
 
-def clear_screen(mode: int = 2) -> str:
-	return CSI + str(mode) + 'J'
+#
+# def clear_screen(mode: int = 2) -> str:
+# 	return CSI + str(mode) + 'J'
 
 
 def clear_line(mode: int = 2) -> str:

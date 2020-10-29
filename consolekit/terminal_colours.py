@@ -239,6 +239,7 @@ class AnsiCursor:
 
 	def UP(self, n: int = 1) -> str:
 		"""
+		Move the cursor up ``n`` lines.
 
 		:param n:
 		"""
@@ -247,6 +248,7 @@ class AnsiCursor:
 
 	def DOWN(self, n: int = 1) -> str:
 		"""
+		Move the cursor down ``n`` lines.
 
 		:param n:
 		"""
@@ -255,6 +257,7 @@ class AnsiCursor:
 
 	def FORWARD(self, n: int = 1) -> str:
 		"""
+		Move the cursor forward ``n`` lines.
 
 		:param n:
 		"""
@@ -263,6 +266,7 @@ class AnsiCursor:
 
 	def BACK(self, n: int = 1) -> str:
 		"""
+		Move the cursor backward ``n`` lines.
 
 		:param n:
 		"""
@@ -271,6 +275,7 @@ class AnsiCursor:
 
 	def POS(self, x: int = 1, y: int = 1) -> str:
 		"""
+		Move the cursor to the given position.
 
 		:param x:
 		:param y:

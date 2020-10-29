@@ -17,8 +17,8 @@ def test_terminal_colours_stacks():
 def test_terminal_colours_functions():
 	assert terminal_colours.set_title("Foo") == "\033]2;Foo\a"
 
-	assert terminal_colours.clear_screen() == "\033[2J"
-	assert terminal_colours.clear_screen(1) == "\033[1J"
+	# assert terminal_colours.clear_screen() == "\033[2J"
+	# assert terminal_colours.clear_screen(1) == "\033[1J"
 
 	assert terminal_colours.clear_line() == "\033[2K"
 	assert terminal_colours.clear_line(1) == "\033[1K"

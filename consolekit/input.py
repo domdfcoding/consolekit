@@ -2,7 +2,7 @@
 #
 #  input.py
 """
-Input functions (prompt, choice etc.)
+Input functions (prompt, choice etc.).
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -104,11 +104,13 @@ if not bool(getattr(sys, "ps1", sys.flags.interactive)):
 		# Attribute error on PyPy, ImportError on Windows etc.
 		pass
 
-_ConvertibleType = Union[type,
-							ParamType,
-							Tuple[Union[type, ParamType], ...],
-							Callable[[str], Any],
-							Callable[[Optional[str]], Any]]
+_ConvertibleType = Union[
+		type,
+		ParamType,
+		Tuple[Union[type, ParamType], ...],
+		Callable[[str], Any],
+		Callable[[Optional[str]], Any],
+		]
 
 
 def prompt(

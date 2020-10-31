@@ -105,12 +105,12 @@ if not bool(getattr(sys, "ps1", sys.flags.interactive)):
 		pass
 
 _ConvertibleType = Union[
-		type,
-		ParamType,
-		Tuple[Union[type, ParamType], ...],
-		Callable[[str], Any],
-		Callable[[Optional[str]], Any],
-		]
+	type,
+	ParamType,
+	Tuple[Union[type, ParamType], ...],
+	Callable[[str], Any],
+	Callable[[Optional[str]], Any]
+	]
 
 
 def prompt(

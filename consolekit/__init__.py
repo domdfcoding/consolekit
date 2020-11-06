@@ -27,11 +27,14 @@ Additional utilities for `click <https://click.palletsprojects.com/en/7.x/>`_.
 #
 
 # stdlib
+import difflib
 import sys
 from functools import partial
 
 # 3rd party
 import click
+from click.parser import split_opt
+from click.utils import make_str
 
 # this package
 from consolekit.input import confirm, prompt
@@ -61,9 +64,49 @@ __all__ = [
 		"option",
 		]
 
+
+class SuggestionGroup(click.Group):
+	"""
+	Subclass of :class:`click.Group` which suggests the most similar command if the command is not found.
+
+	.. versionadded 0.1.2
+	"""
+
+	def resolve_command(self, ctx, args):
+		cmd_name = make_str(args[0])
+		original_cmd_name = cmd_name
+
+		# Get the command
+		cmd = self.get_command(ctx, cmd_name)
+
+		# If we can't find the command but there is a normalization
+		# function available, we try with that one.
+		if cmd is None and ctx.token_normalize_func is not None:
+			cmd_name = ctx.token_normalize_func(cmd_name)
+			cmd = self.get_command(ctx, cmd_name)
+
+		# If we don't find the command we want to show an error message
+		# to the user that it was not provided.  However, there is
+		# something else we should do: if the first argument looks like
+		# an option we want to kick off parsing again for arguments to
+		# resolve things like --help which now should go to the main
+		# place.
+		if cmd is None and not ctx.resilient_parsing:
+			if split_opt(cmd_name)[0]:
+				self.parse_args(ctx, ctx.args)
+
+			closest = difflib.get_close_matches(original_cmd_name, self.commands, n=1)[0]
+			message = [f"No such command '{original_cmd_name}'."]
+			if closest:
+				message.append(f"The most similar command is {closest!r}.")
+			ctx.fail("\n".join(message))
+
+		return cmd_name, cmd, args[1:]
+
+
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"], max_content_width=120)
 click_command = partial(click.command, context_settings=CONTEXT_SETTINGS)
-click_group = partial(click.group, context_settings=CONTEXT_SETTINGS)
+click_group = partial(click.group, context_settings=CONTEXT_SETTINGS, cls=SuggestionGroup)
 
 
 class _Option(click.Option):

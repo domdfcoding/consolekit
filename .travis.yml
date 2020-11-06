@@ -9,6 +9,7 @@ python:
   - '3.7'
   - '3.8'
   - '3.9'
+  - '3.10-dev'
   - 'pypy3'
 
 arch:
@@ -41,6 +42,8 @@ jobs:
     - python: '3.8'
       arch: arm64
     - python: '3.9'
+      arch: arm64
+    - python: '3.10-dev'
       arch: arm64
     - python: 'pypy3'
       arch: arm64

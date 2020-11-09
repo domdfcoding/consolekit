@@ -62,6 +62,7 @@ __all__ = [
 		"click_command",
 		"click_group",
 		"option",
+		"SuggestionGroup",
 		]
 
 
@@ -69,7 +70,7 @@ class SuggestionGroup(click.Group):
 	"""
 	Subclass of :class:`click.Group` which suggests the most similar command if the command is not found.
 
-	.. versionadded 0.1.2
+	.. versionadded 0.2.0
 	"""
 
 	def resolve_command(self, ctx, args):

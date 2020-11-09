@@ -1,2 +1,2 @@
 click>=7.1.2
-domdf_python_tools>=1.3.0
+domdf-python-tools>=1.3.0

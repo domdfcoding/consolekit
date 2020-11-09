@@ -73,7 +73,7 @@ class SuggestionGroup(click.Group):
 	.. versionadded 0.2.0
 	"""
 
-	def resolve_command(self, ctx, args):
+	def resolve_command(self, ctx, args):  # noqa: D102
 		cmd_name = make_str(args[0])
 		original_cmd_name = cmd_name
 

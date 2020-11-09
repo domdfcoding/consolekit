@@ -1,0 +1,16 @@
+[31m--- original_file.txt	(original)[39m
+[32m+++ modified_file.txt	(modified)[39m
+@@ -1,9 +1,8 @@
+[31m-Lorem ipsum dolor sit amet, consectetur adipiscing elit.[39m
+[31m-Quisque feugiat, lectus et interdum feugiat, magna enim[39m
+[31m-vestibulum diam, a ultrices urna odio at magna. Quisque[39m
+[31m-ut ullamcorper justo. Suspendisse ac tincidunt velit.[39m
+[32m+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque feugiat,[39m
+[32m+lectus et interdum feugiat, magna enim vestibulum diam, a ultrices urna[39m
+[32m+odio at magna. Quisque[39m
+[32m+ut ullamcorper justo.[39m
+ Integer lobortis eros eget diam varius eleifend. Donec
+ ornare nisi vel purus aliquet consequat. Ut quis ipsum
+[31m-et nunc sodales tristique. Maecenas justo libero, semper[39m
+[31m-eget feugiat et, aliquam et mauris.[39m
+[32m+et nunc sodales tristique.[39m

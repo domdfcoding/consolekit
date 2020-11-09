@@ -1,8 +1,12 @@
 # stdlib
 import sys
 
+# 3rd party
+from domdf_python_tools.paths import PathPlus
+from pytest_regressions.file_regression import FileRegressionFixture
+
 # this package
-from consolekit.utils import overtype
+from consolekit.utils import coloured_diff, overtype
 
 
 def test_overtype(capsys):
@@ -37,3 +41,21 @@ def test_overtype(capsys):
 	captured = capsys.readouterr()
 	stderr = captured.err.split("\n")
 	assert stderr == ["Waiting...\rfoo bar"]
+
+
+def test_coloured_diff(file_regression: FileRegressionFixture):
+	data_dir = PathPlus(__file__).parent / "test_diff_"
+	original = data_dir / "original"
+	modified = data_dir / "modified"
+
+	diff = coloured_diff(
+			original.read_lines(),
+			modified.read_lines(),
+			fromfile="original_file.txt",
+			tofile="modified_file.txt",
+			fromfiledate="(original)",
+			tofiledate="(modified)",
+			lineterm='',
+			)
+
+	file_regression.check(diff, encoding="UTF-8", extension=".txt")

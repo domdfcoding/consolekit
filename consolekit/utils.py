@@ -35,6 +35,7 @@ from typing import IO, List, Sequence
 # 3rd party
 import click
 from domdf_python_tools.import_tools import discover, discover_entry_points
+from domdf_python_tools.stringlist import StringList
 
 # this package
 from consolekit.terminal_colours import Colour, Fore
@@ -184,9 +185,6 @@ def coloured_diff(
 
 	.. versionadded:: 0.3.0
 	"""
-
-	# 3rd party
-	from domdf_python_tools.stringlist import StringList
 
 	buf = StringList()
 	diff = difflib.unified_diff(a, b, fromfile, tofile, fromfiledate, tofiledate, n, lineterm)

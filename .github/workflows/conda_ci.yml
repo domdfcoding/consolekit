@@ -45,9 +45,3 @@ jobs:
             echo "$f"
              $CONDA/bin/conda install "$f" || exit 1
           done
-      - name: "Run Tests for Python ${{ matrix.python-version }}"
-        run: |
-          rm -rf consolekit
-          $CONDA/bin/conda install pytest
-          $CONDA/bin/conda install --file tests/requirements.txt -y
-          $CONDA/bin/pytest tests/

@@ -49,4 +49,5 @@ jobs:
         run: |
           rm -rf consolekit
           $CONDA/bin/conda install pytest
-          $CONDA/bin/pytest
+          $CONDA/bin/conda install --file tests/requirements.txt -y
+          $CONDA/bin/pytest tests/

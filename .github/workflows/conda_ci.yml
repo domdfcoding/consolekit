@@ -43,5 +43,5 @@ jobs:
           python -m repo_helper build --conda
           for f in dist/consolekit-*.tar.bz2; do
             echo "$f"
-             $CONDA/bin/conda -c file://$(realpath ./dist) install "$f" || exit 1
+             $CONDA/bin/conda -c file://$(realpath ./dist) install "$f" -y || exit 1
           done

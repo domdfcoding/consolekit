@@ -30,10 +30,18 @@ jobs:
           python -m site
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install --upgrade repo_helper
+          # $CONDA is an environment variable pointing to the root of the miniconda directory
+          $CONDA/bin/conda activate base
+          $CONDA/bin/conda update -q conda
+
+          $CONDA/bin/conda config --add channels domdfcoding
+
+          $CONDA/bin/conda config --add channels conda-forge
+
+
       - name: "Build and install package"
         run: |
           python -m repo_helper build --conda
-          # $CONDA is an environment variable pointing to the root of the miniconda directory
           for f in dist/consolekit-*.tar.bz2; do
             echo "$f"
              $CONDA/bin/conda install "$f" || exit 1

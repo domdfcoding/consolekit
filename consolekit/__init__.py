@@ -96,10 +96,10 @@ class SuggestionGroup(click.Group):
 			if split_opt(cmd_name)[0]:
 				self.parse_args(ctx, ctx.args)
 
-			closest = difflib.get_close_matches(original_cmd_name, self.commands, n=1)[0]
+			closest = difflib.get_close_matches(original_cmd_name, self.commands, n=1)
 			message = [f"No such command '{original_cmd_name}'."]
 			if closest:
-				message.append(f"The most similar command is {closest!r}.")
+				message.append(f"The most similar command is {closest[0]!r}.")
 			ctx.fail("\n".join(message))
 
 		return cmd_name, cmd, args[1:]

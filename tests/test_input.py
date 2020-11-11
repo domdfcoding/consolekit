@@ -12,8 +12,9 @@ def test_choice_letters(capsys, monkeypatch, file_regression: FileRegressionFixt
 	inputs = iter(["F", "G", "D"])
 
 	def fake_input(prompt):
-		print(prompt)
-		return next(inputs)
+		value = next(inputs)
+		print(f"{prompt}{value}".rstrip())
+		return value
 
 	monkeypatch.setattr(click.termui, "visible_prompt_func", fake_input)
 
@@ -37,8 +38,9 @@ def test_choice_numbers(capsys, monkeypatch, file_regression: FileRegressionFixt
 	inputs = iter(["20", "0", "5"])
 
 	def fake_input(prompt):
-		print(prompt)
-		return next(inputs)
+		value = next(inputs)
+		print(f"{prompt}{value}".rstrip())
+		return value
 
 	monkeypatch.setattr(click.termui, "visible_prompt_func", fake_input)
 

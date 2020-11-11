@@ -6,8 +6,8 @@ What would you like to do about it ?  Your options are:
  N : keep your currently-installed version
  D : show the differences between the versions
  Z : start a shell to examine the situation
-*** sudoers (Y/N/D/Z) [default=N]:
+*** sudoers (Y/N/D/Z) [default=N]: F
 Please enter a valid option.
-*** sudoers (Y/N/D/Z) [default=N]:
+*** sudoers (Y/N/D/Z) [default=N]: G
 Please enter a valid option.
-*** sudoers (Y/N/D/Z) [default=N]:
+*** sudoers (Y/N/D/Z) [default=N]: D

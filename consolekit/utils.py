@@ -105,7 +105,7 @@ def overtype(*objects, sep: str = ' ', end: str = '', file: IO = None, flush: bo
 	All non-keyword arguments are converted to strings like :class:`str` does and written to the stream,
 	separated by `sep` and followed by `end`.
 
-	If no objects are given, :func:`~domdf_python_tools.terminal.overtype` will just write ``"\\r"``.
+	If no objects are given, :func:`~consolekit.terminal.overtype` will just write ``"\\r"``.
 
 	.. TODO:: This does not currently work in the PyCharm console, at least on Windows
 

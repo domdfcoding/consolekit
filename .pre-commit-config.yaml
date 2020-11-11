@@ -64,3 +64,10 @@ repos:
       exclude: ^(doc-source/conf|__pkginfo__|make_conda_recipe|setup)\.py$
 
 # Custom hooks can be added below this comment
+
+ - repo: file:///home/domdf/Python/01 GitHub Repos/06 Tools/dep_checker
+   rev: 2201467e3921a35cdae49a3f2474ac19d29382b2
+   hooks:
+    - id: dep_checker
+      args:
+       - consolekit

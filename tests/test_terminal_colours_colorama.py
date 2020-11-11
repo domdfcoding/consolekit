@@ -33,7 +33,9 @@ import sys
 # 3rd party
 import pytest
 from colorama.ansitowin32 import AnsiToWin32  # type: ignore
-from domdf_python_tools.terminal_colours import Back, Fore, Style
+
+# this package
+from consolekit.terminal_colours import Back, Fore, Style
 
 stdout_orig = sys.stdout
 stderr_orig = sys.stderr

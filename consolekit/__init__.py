@@ -37,7 +37,7 @@ from click.parser import split_opt
 from click.utils import make_str
 
 # this package
-from consolekit.input import confirm, prompt
+from consolekit import input, terminal_colours, utils
 
 __author__: str = "Dominic Davis-Foster"
 __copyright__: str = "2020 Dominic Davis-Foster"
@@ -126,9 +126,9 @@ class _Option(click.Option):
 		# If this is a prompt for a flag we need to handle this
 		# differently.
 		if self.is_bool_flag:
-			return confirm(self.prompt, default)
+			return input.confirm(self.prompt, default)
 
-		return prompt(
+		return input.prompt(
 				self.prompt,
 				default=default,
 				type=self.type,

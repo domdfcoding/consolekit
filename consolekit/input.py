@@ -92,7 +92,7 @@ __all__ = [
 		"choice",
 		]
 
-if not bool(getattr(sys, "ps1", sys.flags.interactive)):
+if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
 
 	try:
 		# stdlib
@@ -243,9 +243,9 @@ def confirm(
 	return rv
 
 
-def stderr_input(prompt: str = '', file: IO = sys.stdout) -> str:
+def stderr_input(prompt: str = '', file: IO = sys.stdout) -> str:  # pragma: no cover
 	"""
-	Read a string from standard input.
+	Read a string from standard input, but prompt to standard error.
 
 	The trailing newline is stripped.
 	If the user hits EOF (Unix: Ctl-D, Windows: Ctl-Z+Return), raise EOFError.

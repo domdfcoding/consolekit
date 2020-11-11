@@ -45,7 +45,7 @@ __license__: str = "MIT License"
 __version__: str = "0.3.0"
 __email__: str = "dominic@davis-foster.co.uk"
 
-if not bool(getattr(sys, "ps1", sys.flags.interactive)):
+if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
 
 	try:
 		# stdlib

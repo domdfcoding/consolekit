@@ -100,7 +100,7 @@ class SuggestionGroup(click.Group):
 			message = [f"No such command '{original_cmd_name}'."]
 			if closest:
 				message.append(f"The most similar command is {closest[0]!r}.")
-			ctx.fail("\n".join(message))
+			ctx.fail('\n'.join(message))
 
 		return cmd_name, cmd, args[1:]
 

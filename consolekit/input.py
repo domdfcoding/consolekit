@@ -226,9 +226,9 @@ def confirm(
 		except (KeyboardInterrupt, EOFError):
 			raise click.Abort()
 
-		if value in ("y", "yes"):
+		if value in ('y', "yes"):
 			rv = True
-		elif value in ("n", "no"):
+		elif value in ('n', "no"):
 			rv = False
 		elif value == '':
 			rv = default
@@ -279,7 +279,7 @@ def stderr_input(prompt: str = '', file: IO = sys.stdout) -> str:  # pragma: no 
 
 	if not line:  # inputting an empty line gives line == '\n'
 		raise EOFError
-	elif line[-1] == "\n":
+	elif line[-1] == '\n':
 		return line[:-1]
 
 	return line

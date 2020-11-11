@@ -100,9 +100,9 @@ __all__ = [
 
 init()
 
-CSI: Final[str] = "\033["
-OSC: Final[str] = "\033]"
-BEL: Final[str] = "\a"
+CSI: Final[str] = "\u001b["
+OSC: Final[str] = "\u001b]"
+BEL: Final[str] = '\x07'
 
 fore_stack: List[str] = []
 back_stack: List[str] = []
@@ -312,7 +312,7 @@ class AnsiFore(AnsiCodes):
 	"""
 
 	_stack = fore_stack
-	_reset = "\033[39m"
+	_reset = "\u001b[39m"
 
 	BLACK = 30
 	RED = 31
@@ -363,7 +363,7 @@ class AnsiBack(AnsiCodes):
 	"""
 
 	_stack = back_stack
-	_reset = "\033[49m"
+	_reset = "\u001b[49m"
 
 	BLACK = 40
 	RED = 41
@@ -401,7 +401,7 @@ class AnsiStyle(AnsiCodes):
 	"""
 
 	_stack = style_stack
-	_reset = "\033[22m"
+	_reset = "\u001b[22m"
 
 	BRIGHT = 1
 	DIM = 2

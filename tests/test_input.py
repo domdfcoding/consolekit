@@ -10,7 +10,7 @@ from consolekit.input import choice, confirm, prompt
 
 def test_choice_letters(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
-	inputs = iter(["F", "G", "D"])
+	inputs = iter(['F', 'G', 'D'])
 
 	def fake_input(prompt):
 		value = next(inputs)
@@ -24,19 +24,19 @@ def test_choice_letters(capsys, monkeypatch, data_regression: DataRegressionFixt
 	echo("==> Package distributor has shipped an updated version.")
 	echo("What would you like to do about it ?  Your options are:")
 	options = {
-			"Y": "install the package maintainer's version",
-			"N": "keep your currently-installed version",
-			"D": "show the differences between the versions",
-			"Z": "start a shell to examine the situation"
+			'Y': "install the package maintainer's version",
+			'N': "keep your currently-installed version",
+			'D': "show the differences between the versions",
+			'Z': "start a shell to examine the situation"
 			}
-	assert choice(text="*** sudoers", options=options, default="N") == "D"
+	assert choice(text="*** sudoers", options=options, default='N') == 'D'
 
 	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 
 
 def test_choice_numbers(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
-	inputs = iter(["20", "0", "5"])
+	inputs = iter(["20", '0', '5'])
 
 	def fake_input(prompt):
 		value = next(inputs)
@@ -55,14 +55,14 @@ def test_choice_numbers(capsys, monkeypatch, data_regression: DataRegressionFixt
 			"Mature",
 			"Inactive",
 			]
-	assert choice(text="", options=options, start_index=1) == 4
+	assert choice(text='', options=options, start_index=1) == 4
 
 	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 
 
 def test_confirm(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
-	inputs = iter(["Y", "N", "", ""])
+	inputs = iter(['Y', 'N', '', ''])
 
 	def fake_input(prompt):
 		value = next(inputs)
@@ -81,7 +81,7 @@ def test_confirm(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
 def test_prompt(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
-	inputs = iter(["", "", "", "", "24", "Bond007", "badpassword", "baspassword", "badpassword", "badpassword"])
+	inputs = iter(['', '', '', '', "24", "Bond007", "badpassword", "baspassword", "badpassword", "badpassword"])
 
 	def fake_input(prompt):
 		value = next(inputs)

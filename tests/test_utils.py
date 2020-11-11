@@ -15,7 +15,7 @@ def test_overtype(capsys):
 	sys.stdout.flush()
 
 	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
+	stdout = captured.out.split('\n')
 	assert stdout == ["Waiting...\rfoo bar"]
 
 	print("Waiting...", end='')
@@ -23,15 +23,15 @@ def test_overtype(capsys):
 	sys.stdout.flush()
 
 	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
+	stdout = captured.out.split('\n')
 	assert stdout == ["Waiting...\rfoobar"]
 
 	print("Waiting...", end='')
-	overtype("foo", "bar", sep='-', end="\n")
+	overtype("foo", "bar", sep='-', end='\n')
 	sys.stdout.flush()
 
 	captured = capsys.readouterr()
-	stdout = captured.out.split("\n")
+	stdout = captured.out.split('\n')
 	assert stdout == ["Waiting...\rfoo-bar", '']
 
 	sys.stderr.write("Waiting...")
@@ -39,7 +39,7 @@ def test_overtype(capsys):
 	sys.stdout.flush()
 
 	captured = capsys.readouterr()
-	stderr = captured.err.split("\n")
+	stderr = captured.err.split('\n')
 	assert stderr == ["Waiting...\rfoo bar"]
 
 

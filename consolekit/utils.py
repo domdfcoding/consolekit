@@ -130,7 +130,7 @@ def coloured_diff(
 		fromfiledate: str = '',
 		tofiledate: str = '',
 		n: int = 3,
-		lineterm: str = "\n",
+		lineterm: str = '\n',
 		removed_colour: Colour = Fore.RED,
 		added_colour: Colour = Fore.GREEN,
 		) -> str:

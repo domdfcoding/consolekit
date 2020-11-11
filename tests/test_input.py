@@ -1,6 +1,7 @@
 # 3rd party
 import click
 from click import echo
+from domdf_python_tools.stringlist import StringList
 from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
@@ -30,7 +31,7 @@ def test_choice_letters(capsys, monkeypatch, data_regression: DataRegressionFixt
 			}
 	assert choice(text="*** sudoers", options=options, default="N") == "D"
 
-	data_regression.check(capsys.readouterr().out.splitlines())
+	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 
 
 def test_choice_numbers(capsys, monkeypatch, data_regression: DataRegressionFixture):
@@ -56,7 +57,7 @@ def test_choice_numbers(capsys, monkeypatch, data_regression: DataRegressionFixt
 			]
 	assert choice(text="", options=options, start_index=1) == 4
 
-	data_regression.check(capsys.readouterr().out.splitlines())
+	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 
 
 def test_confirm(capsys, monkeypatch, data_regression: DataRegressionFixture):
@@ -75,7 +76,7 @@ def test_confirm(capsys, monkeypatch, data_regression: DataRegressionFixture):
 	assert confirm(text="Do you wish to delete all files in '/' ?", default=False) is False
 	assert confirm(text="Do you wish to delete all files in '/' ?", default=True) is True
 
-	data_regression.check(capsys.readouterr().out.splitlines())
+	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 
 
 def test_prompt(capsys, monkeypatch, data_regression: DataRegressionFixture):
@@ -94,4 +95,4 @@ def test_prompt(capsys, monkeypatch, data_regression: DataRegressionFixture):
 	assert prompt(text="Username", type=click.STRING) == "Bond007"
 	assert prompt(text="Password", type=click.STRING, confirmation_prompt=True) == "badpassword"
 
-	data_regression.check(capsys.readouterr().out.splitlines())
+	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))

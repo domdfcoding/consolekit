@@ -1,4 +1,0 @@
-Do you wish to delete all files in '/' ? [y/N]: Y
-Do you wish to delete all files in '/' ? [y/N]: N
-Do you wish to delete all files in '/' ? [y/N]:
-Do you wish to delete all files in '/' ? [Y/n]:

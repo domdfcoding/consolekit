@@ -1,13 +1,13 @@
 # 3rd party
 import click
 from click import echo
-from pytest_regressions.file_regression import FileRegressionFixture
+from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
 from consolekit.input import choice, confirm, prompt
 
 
-def test_choice_letters(capsys, monkeypatch, file_regression: FileRegressionFixture):
+def test_choice_letters(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
 	inputs = iter(["F", "G", "D"])
 
@@ -30,10 +30,10 @@ def test_choice_letters(capsys, monkeypatch, file_regression: FileRegressionFixt
 			}
 	assert choice(text="*** sudoers", options=options, default="N") == "D"
 
-	file_regression.check(capsys.readouterr().out, encoding="UTF-8")
+	data_regression.check(capsys.readouterr().out.splitlines())
 
 
-def test_choice_numbers(capsys, monkeypatch, file_regression: FileRegressionFixture):
+def test_choice_numbers(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
 	inputs = iter(["20", "0", "5"])
 
@@ -56,10 +56,10 @@ def test_choice_numbers(capsys, monkeypatch, file_regression: FileRegressionFixt
 			]
 	assert choice(text="", options=options, start_index=1) == 4
 
-	file_regression.check(capsys.readouterr().out, encoding="UTF-8")
+	data_regression.check(capsys.readouterr().out.splitlines())
 
 
-def test_confirm(capsys, monkeypatch, file_regression: FileRegressionFixture):
+def test_confirm(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
 	inputs = iter(["Y", "N", "", ""])
 
@@ -75,10 +75,10 @@ def test_confirm(capsys, monkeypatch, file_regression: FileRegressionFixture):
 	assert confirm(text="Do you wish to delete all files in '/' ?", default=False) is False
 	assert confirm(text="Do you wish to delete all files in '/' ?", default=True) is True
 
-	file_regression.check(capsys.readouterr().out, encoding="UTF-8")
+	data_regression.check(capsys.readouterr().out.splitlines())
 
 
-def test_prompt(capsys, monkeypatch, file_regression: FileRegressionFixture):
+def test_prompt(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
 	inputs = iter(["", "", "", "", "24", "Bond007", "badpassword", "baspassword", "badpassword", "badpassword"])
 
@@ -94,4 +94,4 @@ def test_prompt(capsys, monkeypatch, file_regression: FileRegressionFixture):
 	assert prompt(text="Username", type=click.STRING) == "Bond007"
 	assert prompt(text="Password", type=click.STRING, confirmation_prompt=True) == "badpassword"
 
-	file_regression.check(capsys.readouterr().out, encoding="UTF-8")
+	data_regression.check(capsys.readouterr().out.splitlines())

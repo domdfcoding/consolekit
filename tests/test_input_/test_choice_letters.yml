@@ -1,0 +1,13 @@
+- Configuration file '/etc/sudoers'
+- ==> Modified (by you or by a script) since installation.
+- ==> Package distributor has shipped an updated version.
+- 'What would you like to do about it ?  Your options are:'
+- ' Y : install the package maintainer''s version'
+- ' N : keep your currently-installed version'
+- ' D : show the differences between the versions'
+- ' Z : start a shell to examine the situation'
+- '*** sudoers (Y/N/D/Z) [default=N]: F'
+- Please enter a valid option.
+- '*** sudoers (Y/N/D/Z) [default=N]: G'
+- Please enter a valid option.
+- '*** sudoers (Y/N/D/Z) [default=N]: D'

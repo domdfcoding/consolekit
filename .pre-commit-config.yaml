@@ -65,8 +65,8 @@ repos:
 
 # Custom hooks can be added below this comment
 
- - repo: file:///home/domdf/Python/01 GitHub Repos/06 Tools/dep_checker
-   rev: 2201467e3921a35cdae49a3f2474ac19d29382b2
+ - repo: https://github.com/domdfcoding/dep_checker
+   rev: v0.2.0
    hooks:
     - id: dep_checker
       args:

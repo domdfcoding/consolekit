@@ -83,14 +83,7 @@ from click import UsageError
 from click.termui import _build_prompt, hidden_prompt_func
 from click.types import ParamType, Path, convert_type
 
-__all__ = [
-		"prompt",
-		"confirm",
-		"stderr_input",
-		"choice",
-		"choice",
-		"choice",
-		]
+__all__ = ["prompt", "confirm", "stderr_input", "choice"]
 
 if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
 

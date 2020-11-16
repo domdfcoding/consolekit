@@ -78,7 +78,7 @@ def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable:
 			expose_value=False,
 			is_eager=True,
 			help="Show the version and exit.",
-			callback=callback,
+			callback=callback,  # type: ignore
 			)
 
 

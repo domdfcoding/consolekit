@@ -35,7 +35,7 @@ from typing import Any, Callable
 import click
 from click import Context, Option
 
-__all__ = ["verbose_option", "version_option", "colour_option"]
+__all__ = ["verbose_option", "version_option", "colour_option", "force_option", "no_pager_option"]
 
 
 def verbose_option(help_text: str = "Show verbose output.") -> Callable:

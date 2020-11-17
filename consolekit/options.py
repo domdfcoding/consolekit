@@ -38,13 +38,13 @@ from click import Context, Option
 __all__ = ["verbose_option", "version_option", "colour_option"]
 
 
-def verbose_option(help: str = "Show verbose output.") -> Callable:
+def verbose_option(help_text: str = "Show verbose output.") -> Callable:
 	"""
 	Adds an option (via the parameter ``verbose``: :class:`int`) to enable verbose output.
 
 	The option can be provided multiple times by the user.
 
-	:param help: The help text for the option.
+	:param help_text: The help text for the option.
 
 	:rtype:
 
@@ -55,7 +55,7 @@ def verbose_option(help: str = "Show verbose output.") -> Callable:
 			"-v",
 			"--verbose",
 			count=True,
-			help=help,
+			help=help_text,
 			)
 
 
@@ -82,11 +82,11 @@ def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable:
 			)
 
 
-def colour_option(help="Whether to use coloured output.") -> Callable:
+def colour_option(help_text="Whether to use coloured output.") -> Callable:
 	"""
 	Adds an option (via the parameter ``colour``: :class:`bool`) to enable verbose output.
 
-	:param help: The help text for the option.
+	:param help_text: The help text for the option.
 
 	:rtype:
 
@@ -97,5 +97,44 @@ def colour_option(help="Whether to use coloured output.") -> Callable:
 			"--colour/--no-colour",
 			is_flag=True,
 			default=None,
-			help=help,
+			help=help_text,
+			)
+
+
+def force_option(help_text: str) -> Callable:
+	"""
+	Decorator to add the ``-f / --force`` option to a click command.
+
+	:param help_text: The help text for the option.
+
+	:rtype:
+
+	.. versionadded:: 0.5.0
+	"""
+
+	return click.option(
+			"-f",
+			"--force",
+			is_flag=True,
+			default=False,
+			help=help_text,
+			)
+
+
+def no_pager_option(help_text="Disable the output pager.") -> Callable:
+	"""
+	Decorator to add the ``--no-pager`` option to a click command.
+
+	:param help_text: The help text for the option.
+
+	:rtype:
+
+	.. versionadded:: 0.5.0
+	"""
+
+	return click.option(
+			"--no-pager",
+			is_flag=True,
+			default=False,
+			help=help_text,
 			)

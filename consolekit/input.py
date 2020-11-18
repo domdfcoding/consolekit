@@ -83,6 +83,9 @@ from click import UsageError
 from click.termui import _build_prompt, hidden_prompt_func
 from click.types import ParamType, Path, convert_type
 
+# this package
+from consolekit._types import _ConvertibleType
+
 __all__ = ["prompt", "confirm", "stderr_input", "choice"]
 
 if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
@@ -96,14 +99,6 @@ if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
 	except (ImportError, AttributeError):
 		# Attribute error on PyPy, ImportError on Windows etc.
 		pass
-
-_ConvertibleType = Union[
-	type,
-	ParamType,
-	Tuple[Union[type, ParamType], ...],
-	Callable[[str], Any],
-	Callable[[Optional[str]], Any]
-	]
 
 
 def prompt(

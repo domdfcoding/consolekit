@@ -38,7 +38,7 @@ Spun out from `repo_helper <https://github.com/domdfcoding/repo_helper>`_. Needs
 	:alt: Docs Check Status
 
 .. |travis| image:: https://github.com/domdfcoding/consolekit/workflows/Linux%20Tests/badge.svg
-	:target: https://github.com/domdfcoding/consolekit/actions?query=workflow%3A%Linux+Tests%22
+	:target: https://github.com/domdfcoding/consolekit/actions?query=workflow%3A%22Linux+Tests%22
 	:alt: Linux Test Status
 
 .. |actions_windows| image:: https://github.com/domdfcoding/consolekit/workflows/Windows%20Tests/badge.svg

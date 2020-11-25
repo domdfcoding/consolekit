@@ -75,18 +75,27 @@ Input functions (prompt, choice etc.).
 
 # stdlib
 import sys
+from contextlib import contextmanager
 from typing import IO, Any, Callable, List, Mapping, Optional, Tuple, Union, overload
 
 # 3rd party
 import click
 from click import UsageError
 from click.termui import _build_prompt, hidden_prompt_func
-from click.types import ParamType, Path, convert_type
+from click.types import Path, convert_type
 
 # this package
 from consolekit._types import _ConvertibleType
 
-__all__ = ["prompt", "confirm", "stderr_input", "choice"]
+__all__ = [
+		"prompt",
+		"confirm",
+		"stderr_input",
+		"choice",
+		"hide_cursor",
+		"show_cursor",
+		"hidden_cursor",
+		]
 
 if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
 
@@ -380,3 +389,43 @@ def choice(
 				return selection
 		else:
 			return selection - start_index
+
+
+def hide_cursor() -> None:
+	"""
+	Hide the cursor.
+
+	To show it again use :func:`~.show_cursor`,
+	or use the :func:`@.hidden_cursor` context manager.
+
+	.. versionadded:: 0.7.0
+	"""
+
+	click.echo("\u001b[?25l", nl=False)
+
+
+def show_cursor() -> None:
+	"""
+	Show the cursor.
+
+	.. seealso:: The  :func:`~.hidden_cursor` context manager.
+
+	.. versionadded:: 0.7.0
+	"""
+
+	click.echo("\u001b[?25h", nl=False)
+
+
+@contextmanager
+def hidden_cursor() -> None:
+	"""
+	Context manager to hide the cursor for the scope of the ``with`` block.
+
+	.. versionadded:: 0.7.0
+	"""
+
+	try:
+		hide_cursor()
+		yield
+	finally:
+		show_cursor()

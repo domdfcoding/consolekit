@@ -29,6 +29,7 @@ Utility functions.
 # stdlib
 import difflib
 import os
+from itertools import cycle
 from types import ModuleType
 from typing import IO, List, Sequence
 
@@ -47,6 +48,8 @@ __all__ = [
 		"abort",
 		"overtype",
 		"coloured_diff",
+		"solidus_spinner",
+		"braille_spinner",
 		]
 
 
@@ -200,3 +203,18 @@ def coloured_diff(
 	buf.blankline(ensure_single=True)
 
 	return str(buf)
+
+
+solidus_spinner = cycle("|/-\\")
+"""
+:class:`itertools.cycle` of characters to use as a loading spinner.
+
+.. versionadded:: 0.7.0
+"""
+
+braille_spinner = cycle("⢿ ⣻ ⣽ ⣾ ⣷ ⣯ ⣟ ⡿ ".split(' '))
+"""
+:class:`itertools.cycle` of braille characters to use as a loading spinner.
+
+.. versionadded:: 0.7.0
+"""

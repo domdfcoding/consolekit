@@ -39,7 +39,7 @@ from domdf_python_tools.import_tools import discover, discover_entry_points
 from domdf_python_tools.stringlist import StringList
 
 # this package
-from consolekit.terminal_colours import Colour, Fore
+from consolekit.terminal_colours import Colour, Cursor, Fore
 
 __all__ = [
 		"get_env_vars",
@@ -50,6 +50,8 @@ __all__ = [
 		"coloured_diff",
 		"solidus_spinner",
 		"braille_spinner",
+		"hide_cursor",
+		"show_cursor",
 		]
 
 
@@ -218,3 +220,23 @@ braille_spinner = cycle("⢿ ⣻ ⣽ ⣾ ⣷ ⣯ ⣟ ⡿ ".split(' '))
 
 .. versionadded:: 0.7.0
 """
+
+
+def hide_cursor() -> None:
+	"""
+	Hides the cursor.
+
+	.. versionadded:: 0.7.0
+	"""
+
+	click.echo(Cursor.HIDE)
+
+
+def show_cursor() -> None:
+	"""
+	Shows the cursor.
+
+	.. versionadded:: 0.7.0
+	"""
+
+	click.echo(Cursor.SHOW)

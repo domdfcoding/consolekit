@@ -287,6 +287,24 @@ class AnsiCursor:
 
 		return f"{CSI}{str(y)};{str(x)}H"
 
+	def HIDE(self) -> str:
+		"""
+		Hides the cursor.
+
+		.. versionadded:: 0.7.0
+		"""
+
+		return "\u001b[?25l"
+
+	def SHOW(self) -> str:
+		"""
+		Shows the cursor.
+
+		.. versionadded:: 0.7.0
+		"""
+
+		return "\u001b[?25h"
+
 
 class AnsiFore(AnsiCodes):
 	"""

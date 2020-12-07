@@ -76,7 +76,7 @@ Input functions (prompt, choice etc.).
 # stdlib
 import sys
 from contextlib import contextmanager
-from typing import IO, Any, Callable, List, Mapping, Optional, Tuple, Union, overload
+from typing import IO, Any, Callable, Iterator, List, Mapping, Optional, Union, overload
 
 # 3rd party
 import click
@@ -417,7 +417,7 @@ def show_cursor() -> None:
 
 
 @contextmanager
-def hidden_cursor() -> None:
+def hidden_cursor() -> Iterator:
 	"""
 	Context manager to hide the cursor for the scope of the ``with`` block.
 

@@ -30,7 +30,7 @@ Spun out from `repo_helper <https://github.com/domdfcoding/repo_helper>`_. Needs
 	  - |license| |language| |requires| |pre_commit|
 
 .. |docs| image:: https://img.shields.io/readthedocs/consolekit/latest?logo=read-the-docs
-	:target: https://consolekit.readthedocs.io/en/latest/?badge=latest
+	:target: https://consolekit.readthedocs.io/en/latest
 	:alt: Documentation Build Status
 
 .. |docs_check| image:: https://github.com/domdfcoding/consolekit/workflows/Docs%20Check/badge.svg

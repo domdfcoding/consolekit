@@ -211,9 +211,9 @@ class MultiValueOption(click.Option):
 			self,
 			param_decls: Optional[List[str]] = None,
 			show_default: bool = False,
-			help: Optional[str] = None,
+			help: Optional[str] = None,  # noqa: A002
 			hidden: bool = False,
-			type: Optional[_ConvertibleType] = None,
+			type: Optional[_ConvertibleType] = None,  # noqa: A002
 			required: bool = False,
 			default: Optional[Any] = None,
 			callback: Optional[Callback] = None,
@@ -240,6 +240,7 @@ class MultiValueOption(click.Option):
 
 	def add_to_parser(self, parser: OptionParser, ctx: Context):
 		"""
+		Add the :class:`~.MultiValueOption` to the given parser.
 
 		:param parser:
 		:param ctx:

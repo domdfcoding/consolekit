@@ -5,7 +5,9 @@
 Functions for adding colours to terminal print statements.
 
 This module generates ANSI character codes to printing colors to terminals.
-See: http://en.wikipedia.org/wiki/ANSI_escape_code
+
+
+.. seealso:: http://en.wikipedia.org/wiki/ANSI_escape_code
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -74,7 +76,7 @@ from typing import List, Optional, Pattern
 
 # 3rd party
 import click
-from colorama import init  # type: ignore
+import colorama  # type: ignore
 from typing_extensions import Final
 
 __all__ = [
@@ -98,7 +100,7 @@ __all__ = [
 		"strip_ansi",
 		]
 
-init()
+colorama.init()
 
 CSI: Final[str] = "\u001b["
 OSC: Final[str] = "\u001b]"
@@ -136,20 +138,19 @@ def resolve_color_default(color: Optional[bool] = None) -> Optional[bool]:
 	return None
 
 
-def code_to_chars(code) -> str:
+def code_to_chars(code) -> str:  # noqa: D103
 	return CSI + str(code) + 'm'
 
 
-def set_title(title: str) -> str:
+def set_title(title: str) -> str:  # noqa: D103
 	return OSC + "2;" + title + BEL
 
 
-#
-# def clear_screen(mode: int = 2) -> str:
+# def clear_screen(mode: int = 2) -> str:  # noqa: D103
 # 	return CSI + str(mode) + 'J'
 
 
-def clear_line(mode: int = 2) -> str:
+def clear_line(mode: int = 2) -> str:  # noqa: D103
 	return CSI + str(mode) + 'K'
 
 
@@ -236,10 +237,13 @@ class AnsiCodes(ABC):
 
 
 class AnsiCursor:
+	"""
+	Provides methods to control the cursor.
+	"""
 
 	def UP(self, n: int = 1) -> str:
 		"""
-		Move the cursor up ``n`` lines.
+		Moves the cursor up ``n`` lines.
 
 		:param n:
 		"""
@@ -248,7 +252,7 @@ class AnsiCursor:
 
 	def DOWN(self, n: int = 1) -> str:
 		"""
-		Move the cursor down ``n`` lines.
+		Moves the cursor down ``n`` lines.
 
 		:param n:
 		"""
@@ -257,7 +261,7 @@ class AnsiCursor:
 
 	def FORWARD(self, n: int = 1) -> str:
 		"""
-		Move the cursor forward ``n`` lines.
+		Moves the cursor forward (right) ``n`` lines.
 
 		:param n:
 		"""
@@ -266,7 +270,7 @@ class AnsiCursor:
 
 	def BACK(self, n: int = 1) -> str:
 		"""
-		Move the cursor backward ``n`` lines.
+		Moves the cursor backward (left) ``n`` lines.
 
 		:param n:
 		"""
@@ -275,7 +279,7 @@ class AnsiCursor:
 
 	def POS(self, x: int = 1, y: int = 1) -> str:
 		"""
-		Move the cursor to the given position.
+		Moves the cursor to the given position.
 
 		:param x:
 		:param y:

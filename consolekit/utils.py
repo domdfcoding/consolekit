@@ -55,7 +55,7 @@ __all__ = [
 		]
 
 
-def get_env_vars(ctx, args, incomplete):
+def get_env_vars(ctx, args, incomplete):  # noqa: D103
 	return [k for k in os.environ.keys() if incomplete in k]
 
 

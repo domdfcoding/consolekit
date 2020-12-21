@@ -3,6 +3,7 @@ import sys
 
 # 3rd party
 from domdf_python_tools.paths import PathPlus
+from domdf_python_tools.testing import check_file_regression
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
@@ -58,4 +59,4 @@ def test_coloured_diff(file_regression: FileRegressionFixture):
 			lineterm='',
 			)
 
-	file_regression.check(diff, encoding="UTF-8", extension=".txt")
+	check_file_regression(diff, file_regression)

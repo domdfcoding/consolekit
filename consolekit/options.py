@@ -75,6 +75,7 @@ __all__ = [
 		"force_option",
 		"no_pager_option",
 		"MultiValueOption",
+		"flag_option",
 		]
 
 

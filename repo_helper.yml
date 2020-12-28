@@ -23,7 +23,12 @@ classifiers:
  - 'Intended Audience :: Developers'
  - 'Topic :: Software Development :: Libraries :: Python Modules'
 
-
 conda_channels:
- - domdfcoding
  - conda-forge
+
+additional_ignore:
+ - consolekit/command.py
+
+keywords:
+ - click
+ - terminal

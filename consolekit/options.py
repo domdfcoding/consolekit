@@ -84,11 +84,9 @@ def verbose_option(help_text: str = "Show verbose output.") -> Callable:
 
 	The option can be provided multiple times by the user.
 
-	:param help_text: The help text for the option.
-
-	:rtype:
-
 	.. versionadded:: 0.4.0
+
+	:param help_text: The help text for the option.
 	"""
 
 	return click.option(
@@ -105,11 +103,9 @@ def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable:
 
 	The option can be provided multiple times by the user.
 
-	:param callback: The callback to invoke when the option is provided.
-
-	:rtype:
-
 	.. versionadded:: 0.4.0
+
+	:param callback: The callback to invoke when the option is provided.
 	"""
 
 	return click.option(
@@ -126,11 +122,9 @@ def colour_option(help_text="Whether to use coloured output.") -> Callable:
 	"""
 	Adds an option (via the parameter ``colour``: :class:`bool`) to enable verbose output.
 
-	:param help_text: The help text for the option.
-
-	:rtype:
-
 	.. versionadded:: 0.4.0
+
+	:param help_text: The help text for the option.
 	"""
 
 	return click.option(
@@ -145,11 +139,9 @@ def force_option(help_text: str) -> Callable:
 	"""
 	Decorator to add the ``-f / --force`` option to a click command.
 
-	:param help_text: The help text for the option.
-
-	:rtype:
-
 	.. versionadded:: 0.5.0
+
+	:param help_text: The help text for the option.
 	"""
 
 	return click.option(
@@ -165,18 +157,16 @@ def no_pager_option(help_text="Disable the output pager.") -> Callable:
 	"""
 	Decorator to add the ``--no-pager`` option to a click command.
 
-	:param help_text: The help text for the option.
-
-	:rtype:
-
 	.. versionadded:: 0.5.0
+
+	:param help_text: The help text for the option.
 	"""
 
 	return click.option(
 			"--no-pager",
 			is_flag=True,
 			default=False,
-			help=help_text,
+			**kwargs,
 			)
 
 

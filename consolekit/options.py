@@ -31,7 +31,7 @@ Command line options.
 #  Copyright (c) 2018 Stephen Rauch <https://stackoverflow.com/users/7311767/stephen-rauch>
 #  CC BY-SA 3.0
 #
-#  MultiValueOption based on https://github.com/pallets/click
+#  MultiValueOption and auto_default_option based on https://github.com/pallets/click
 #  Copyright 2014 Pallets
 #  |  Redistribution and use in source and binary forms, with or without modification,
 #  |  are permitted provided that the following conditions are met:
@@ -59,11 +59,13 @@ Command line options.
 #
 
 # stdlib
+import inspect
 from typing import Any, Callable, List, Optional, cast
 
 # 3rd party
 import click
 from click import Context, Option, OptionParser
+from click.decorators import _param_memo  # type: ignore
 
 # this package
 from consolekit._types import Callback, _ConvertibleType
@@ -76,6 +78,7 @@ __all__ = [
 		"no_pager_option",
 		"MultiValueOption",
 		"flag_option",
+		"auto_default_option",
 		]
 
 
@@ -128,9 +131,8 @@ def colour_option(help_text="Whether to use coloured output.") -> Callable:
 	:param help_text: The help text for the option.
 	"""
 
-	return click.option(
+	return flag_option(
 			"--colour/--no-colour",
-			is_flag=True,
 			default=None,
 			help=help_text,
 			)
@@ -145,13 +147,7 @@ def force_option(help_text: str) -> Callable:
 	:param help_text: The help text for the option.
 	"""
 
-	return click.option(
-			"-f",
-			"--force",
-			is_flag=True,
-			default=False,
-			help=help_text,
-			)
+	return flag_option("-f", "--force", help=help_text)
 
 
 def no_pager_option(help_text="Disable the output pager.") -> Callable:
@@ -163,30 +159,63 @@ def no_pager_option(help_text="Disable the output pager.") -> Callable:
 	:param help_text: The help text for the option.
 	"""
 
-	return click.option(
-			"--no-pager",
-			is_flag=True,
-			default=False,
-			help=help_text,
-			)
+	return flag_option("--no-pager", help=help_text)
 
 
-def flag_option(*args, **kwargs) -> Callable:
+def flag_option(*args, default: Optional[bool] = False, **kwargs) -> Callable:
 	r"""
 	Decorator to a flag option to a click command.
 
 	.. versionadded:: 0.7.0
 
 	:param \*args: Positional arguments passed to :func:`click.option`.
+	:param default: The default state of the flag.
 	:param \*\*kwargs: Keyword arguments passed to :func:`click.option`.
 	"""
 
 	return click.option(
 			*args,
 			is_flag=True,
-			default=False,
+			default=default,
 			**kwargs,
 			)
+
+
+def auto_default_option(*param_decls, **attrs) -> Callable:
+	"""
+	Attaches an option to the command, with a default value determined from the decorated function's signature.
+
+	All positional arguments are passed as parameter declarations to :class:`click.Option`;
+	all keyword arguments are forwarded unchanged (except ``cls``).
+	This is equivalent to creating an :class:`click.Option` instance manually
+	and attaching it to the :attr:`click.Command.params` list.
+
+	.. versionadded:: 0.7.0
+
+	:param cls: the option class to instantiate. This defaults to :class:`click.Option`.
+	"""
+
+	def decorator(f):
+		option_attrs = attrs.copy()
+
+		if "help" in option_attrs:
+			option_attrs["help"] = inspect.cleandoc(option_attrs["help"])
+
+		OptionClass = option_attrs.pop("cls", Option)
+
+		option = OptionClass(param_decls, **option_attrs)
+		_param_memo(f, option)
+
+		signature: inspect.Signature = inspect.signature(f.callback)
+
+		param_default = signature.parameters[option.name].default
+
+		if param_default is not inspect.Signature.empty:
+			option.default = param_default
+
+		return f
+
+	return decorator
 
 
 class MultiValueOption(click.Option):

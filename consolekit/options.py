@@ -166,6 +166,24 @@ def no_pager_option(help_text="Disable the output pager.") -> Callable:
 			"--no-pager",
 			is_flag=True,
 			default=False,
+			help=help_text,
+			)
+
+
+def flag_option(*args, **kwargs) -> Callable:
+	r"""
+	Decorator to a flag option to a click command.
+
+	.. versionadded:: 0.7.0
+
+	:param \*args: Positional arguments passed to :func:`click.option`.
+	:param \*\*kwargs: Keyword arguments passed to :func:`click.option`.
+	"""
+
+	return click.option(
+			*args,
+			is_flag=True,
+			default=False,
 			**kwargs,
 			)
 

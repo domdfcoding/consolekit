@@ -1,0 +1,5 @@
+Usage: main [OPTIONS]
+
+Options:
+  --colour / --no-colour  Whether to use coloured output.
+  -h, --help              Show this message and exit.

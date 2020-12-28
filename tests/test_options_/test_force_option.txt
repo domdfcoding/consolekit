@@ -1,0 +1,5 @@
+Usage: main [OPTIONS]
+
+Options:
+  -f, --force  Force the operation
+  -h, --help   Show this message and exit.

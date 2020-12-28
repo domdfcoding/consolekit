@@ -1,0 +1,5 @@
+Usage: main [OPTIONS]
+
+Options:
+  --no-pager  Disable the output pager.
+  -h, --help  Show this message and exit.

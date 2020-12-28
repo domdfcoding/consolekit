@@ -114,11 +114,10 @@ class _Option(click.Option):
 
 	def prompt_for_value(self, ctx):
 		"""
-		This is an alternative flow that can be activated in the full
-		value processing if a value does not exist. It will prompt the
-		user until a valid value exists and then returns the processed
-		value as result.
-		"""  # noqa: D400
+		This is an alternative flow that can be activated in the full value processing if a value does not exist.
+
+		It will prompt the user until a valid value exists and then returns the processed value as result.
+		"""
 
 		# Calculate the default before prompting anything to be stable.
 		default = self.get_default(ctx)

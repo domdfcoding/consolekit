@@ -32,13 +32,15 @@ import sys
 
 # 3rd party
 import pytest
-from colorama.ansitowin32 import AnsiToWin32  # type: ignore
 
 # this package
 from consolekit.terminal_colours import Back, Fore, Style
 
 stdout_orig = sys.stdout
 stderr_orig = sys.stderr
+
+colorama = pytest.importorskip("colorama")
+AnsiToWin32 = colorama.ansitowin32.AnsiToWin32
 
 
 def setup_module():

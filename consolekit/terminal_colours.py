@@ -76,7 +76,6 @@ from typing import List, Optional, Pattern
 
 # 3rd party
 import click
-import colorama  # type: ignore
 from typing_extensions import Final
 
 __all__ = [
@@ -100,7 +99,12 @@ __all__ = [
 		"strip_ansi",
 		]
 
-colorama.init()
+
+try:
+	import colorama  # type: ignore
+	colorama.init()
+except ImportError:
+	pass
 
 CSI: Final[str] = "\u001b["
 OSC: Final[str] = "\u001b]"

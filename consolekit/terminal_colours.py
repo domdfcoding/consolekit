@@ -99,8 +99,8 @@ __all__ = [
 		"strip_ansi",
 		]
 
-
 try:
+	# 3rd party
 	import colorama  # type: ignore
 	colorama.init()
 except ImportError:

@@ -42,7 +42,7 @@ from consolekit import input, terminal_colours, utils
 __author__: str = "Dominic Davis-Foster"
 __copyright__: str = "2020 Dominic Davis-Foster"
 __license__: str = "MIT License"
-__version__: str = "0.7.0"
+__version__: str = "0.7.1"
 __email__: str = "dominic@davis-foster.co.uk"
 
 if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
@@ -70,7 +70,7 @@ class SuggestionGroup(click.Group):
 	"""
 	Subclass of :class:`click.Group` which suggests the most similar command if the command is not found.
 
-	.. versionadded 0.7.0
+	.. versionadded 0.7.1
 	"""
 
 	def resolve_command(self, ctx, args):  # noqa: D102

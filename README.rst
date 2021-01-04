@@ -152,3 +152,9 @@ To install with ``conda``:
 		$ conda install consolekit
 
 .. end installation
+
+Additionally, for better support, install `psutil <https://pypi.org/project/psutil/>`_ by specifying the ``terminals`` extra:
+
+.. code-block:: bash
+
+	$ python -m pip install consolekit[terminals]

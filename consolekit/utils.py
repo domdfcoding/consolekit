@@ -27,18 +27,22 @@ Utility functions.
 #
 
 # stdlib
+import contextlib
 import difflib
 import os
 import sys
 from functools import lru_cache
 from itertools import cycle
 from types import ModuleType
-from typing import IO, List, Sequence
+from typing import IO, Callable, ContextManager, List, Sequence
 
 # 3rd party
 import click
 from domdf_python_tools.import_tools import discover, discover_entry_points
 from domdf_python_tools.stringlist import StringList
+from domdf_python_tools.words import SANS_SERIF_ITALIC_LETTERS
+from mistletoe import block_token, span_token  # type: ignore
+from mistletoe.base_renderer import BaseRenderer  # type: ignore
 
 # this package
 from consolekit.terminal_colours import Colour, Cursor, Fore, Style, code_to_chars

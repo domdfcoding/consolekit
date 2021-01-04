@@ -1,5 +1,6 @@
 # stdlib
-from typing import Optional
+import sys
+from typing import Iterable
 
 # 3rd party
 import click
@@ -10,25 +11,32 @@ from pytest_regressions.file_regression import FileRegressionFixture
 # this package
 from consolekit import click_command
 from consolekit.options import (
+		MultiValueOption,
 		auto_default_option,
 		colour_option,
 		flag_option,
 		force_option,
 		no_pager_option,
-		verbose_option
+		verbose_option,
+		version_option
 		)
+from consolekit.terminal_colours import ColourTrilean
 
 
-def test_auto_default_option():
+def test_auto_default_option(file_regression: FileRegressionFixture):
 
-	@auto_default_option("--width", type=click.INT)
+	@auto_default_option("--width", type=click.INT, help="The max width to display.", show_default=True)
 	@click_command()
 	def main(width: int = 80):
 		print(width)
 
 	runner = CliRunner()
 
-	result: Result = runner.invoke(main, catch_exceptions=False)
+	result: Result = runner.invoke(main, catch_exceptions=False, args="--help")
+	check_file_regression(result.stdout.rstrip(), file_regression, extension=".md")
+	assert result.exit_code == 0
+
+	result = runner.invoke(main, catch_exceptions=False)
 	assert result.stdout.rstrip() == "80"
 	assert result.exit_code == 0
 
@@ -147,7 +155,7 @@ def test_colour_option(file_regression: FileRegressionFixture):
 
 	@colour_option()
 	@click_command()
-	def main(colour: Optional[bool]):
+	def main(colour: ColourTrilean):
 		print(colour)
 
 	runner = CliRunner()
@@ -166,4 +174,67 @@ def test_colour_option(file_regression: FileRegressionFixture):
 
 	result = runner.invoke(main, catch_exceptions=False, args="-h")
 	check_file_regression(result.stdout.rstrip(), file_regression)
+	assert result.exit_code == 0
+
+
+def test_version_option(file_regression: FileRegressionFixture):
+
+	def version_callback(ctx: click.Context, param: click.Option, value: int):
+		if not value or ctx.resilient_parsing:
+			return
+
+		if value > 1:
+			click.echo("consolekit version 1.2.3, Python 3.8.5")
+		else:
+			click.echo("consolekit version 1.2.3")
+
+		ctx.exit()
+
+	@version_option(version_callback)
+	@click_command()
+	def main():
+		sys.exit(1)
+
+	runner = CliRunner()
+
+	result = runner.invoke(main, catch_exceptions=False, args="--version")
+	assert result.stdout.rstrip() == "consolekit version 1.2.3"
+	assert result.exit_code == 0
+
+	result = runner.invoke(main, catch_exceptions=False, args=["--version", "--version"])
+	assert result.stdout.rstrip() == "consolekit version 1.2.3, Python 3.8.5"
+	assert result.exit_code == 0
+
+
+def test_multi_value_option(file_regression: FileRegressionFixture):
+
+	@click.option(
+			"--select",
+			type=click.STRING,
+			help="The checks to enable",
+			cls=MultiValueOption,
+			)
+	@colour_option()
+	@click_command()
+	def main(select: Iterable[str], colour: bool):
+		select = list(select)
+		print(*select)
+		print(", ".join(select))
+
+	runner = CliRunner()
+
+	result: Result = runner.invoke(main, catch_exceptions=False)
+	assert result.stdout.rstrip() == ''
+	assert result.exit_code == 0
+
+	result = runner.invoke(main, catch_exceptions=False, args=["--select", "E102", "F223"])
+	assert result.stdout.rstrip() == "E102 F223\nE102, F223"
+	assert result.exit_code == 0
+
+	result = runner.invoke(main, catch_exceptions=False, args=["--select", "E102", "F223", "--colour"])
+	assert result.stdout.rstrip() == "E102 F223\nE102, F223"
+	assert result.exit_code == 0
+
+	result = runner.invoke(main, catch_exceptions=False, args=["--select", "E102"])
+	assert result.stdout.rstrip() == "E102\nE102"
 	assert result.exit_code == 0

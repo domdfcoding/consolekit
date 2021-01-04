@@ -326,7 +326,7 @@ class MultiValueOption(click.Option):
 			hidden: bool = False,
 			type: Optional[_ConvertibleType] = None,  # noqa: A002
 			required: bool = False,
-			default: Optional[Any] = None,
+			default: Optional[Any] = (),
 			callback: Optional[Callback] = None,
 			metavar: Optional[str] = None,
 			expose_value: bool = True,

@@ -16,6 +16,19 @@ from consolekit import click_command, click_group
 from consolekit.options import colour_option
 from consolekit.terminal_colours import ColourTrilean
 
+try:
+	# 3rd party
+	import colorama
+except ImportError:
+
+	class colorama:
+
+		def init(self):
+			pass
+
+		def deinit(self):
+			pass
+
 
 @pytest.fixture()
 def force_not_pycharm(monkeypatch):
@@ -167,15 +180,21 @@ def test_markdown_help_group(
 		markdown_demo_group,
 		):
 
-	runner = CliRunner()
+	colorama.deinit()
 
-	demo_group, demo_command = markdown_demo_group
+	try:
+		runner = CliRunner()
 
-	result: Result = runner.invoke(demo_group, catch_exceptions=False, args=["--help"], color=True)
-	check_file_regression(result.stdout.rstrip(), file_regression, extension="_group.md")
+		demo_group, demo_command = markdown_demo_group
 
-	result = runner.invoke(demo_command, catch_exceptions=False, args=["--help"], color=True)
-	check_file_regression(result.stdout.rstrip(), file_regression, extension="_command.md")
+		result: Result = runner.invoke(demo_group, catch_exceptions=False, args=["--help"], color=True)
+		check_file_regression(result.stdout.rstrip(), file_regression, extension="_group.md")
+
+		result = runner.invoke(demo_command, catch_exceptions=False, args=["--help"], color=True)
+		check_file_regression(result.stdout.rstrip(), file_regression, extension="_command.md")
+
+	finally:
+		colorama.init()
 
 
 def test_markdown_help_command_ordered_list(file_regression: FileRegressionFixture, force_not_pycharm):

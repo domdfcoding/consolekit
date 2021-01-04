@@ -123,13 +123,16 @@ back_stack: List[str] = []
 style_stack: List[str] = []
 
 
-def resolve_color_default(color: Optional[bool] = None) -> Optional[bool]:
+def resolve_color_default(color: ColourTrilean = None) -> ColourTrilean:
 	"""
 	Internal helper to get the default value of the color flag. If a
 	value is passed it's returned unchanged, otherwise it's looked up from
 	the current context.
 
-	If the environment variable ``PYCHARM_HOSTED`` is 1
+	If a value is passed it is returned unchanged,
+	otherwise it's looked up from the current context.
+
+	If the environment variable ``PYCHARM_HOSTED`` is ``1``
 	(which is the case if running in PyCharm)
 	the output will be coloured by default.
 

@@ -60,14 +60,15 @@ Command line options.
 
 # stdlib
 import inspect
-from typing import Any, Callable, List, Optional, cast
+from typing import Any, Callable, List, Optional, TypeVar, cast
 
 # 3rd party
 import click
-from click import Context, Option, OptionParser
+from click import Argument, Context, Option, OptionParser
 from click.decorators import _param_memo  # type: ignore
 
 # this package
+import consolekit.input
 from consolekit._types import Callback, _ConvertibleType
 
 __all__ = [
@@ -81,8 +82,11 @@ __all__ = [
 		"auto_default_option",
 		]
 
+_A = TypeVar("_A", bound=click.Argument)
+_C = TypeVar("_C", bound=click.Command)
 
-def verbose_option(help_text: str = "Show verbose output.") -> Callable:
+
+def verbose_option(help_text: str = "Show verbose output.") -> Callable[..., click.Command]:
 	"""
 	Adds an option (via the parameter ``verbose``: :class:`int`) to enable verbose output.
 
@@ -101,15 +105,32 @@ def verbose_option(help_text: str = "Show verbose output.") -> Callable:
 			)
 
 
-def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable:
+def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable[..., click.Command]:
 	"""
 	Adds an option to show the version and exit.
 
 	The option can be provided multiple times by the user.
+	The count is stored as an integer and passed as the third parameter to the callback function.
 
 	.. versionadded:: 0.4.0
 
 	:param callback: The callback to invoke when the option is provided.
+
+	The callback function might look like:
+
+	.. code-block:: python
+
+		def version_callback(ctx: click.Context, param: click.Option, value: int):
+			if not value or ctx.resilient_parsing:
+				return
+
+			if value > 1:
+				click.echo(f"consolekit version {__version__}, Python {sys.version}")
+			else:
+				click.echo(f"consolekit version {__version__}")
+
+			ctx.exit()
+
 	"""
 
 	return click.option(
@@ -122,7 +143,7 @@ def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable:
 			)
 
 
-def colour_option(help_text="Whether to use coloured output.") -> Callable:
+def colour_option(help_text="Whether to use coloured output.") -> Callable[..., click.Command]:
 	"""
 	Adds an option (via the parameter ``colour``: :class:`bool`) to enable verbose output.
 
@@ -138,7 +159,7 @@ def colour_option(help_text="Whether to use coloured output.") -> Callable:
 			)
 
 
-def force_option(help_text: str) -> Callable:
+def force_option(help_text: str) -> Callable[..., click.Command]:
 	"""
 	Decorator to add the ``-f / --force`` option to a click command.
 
@@ -150,9 +171,11 @@ def force_option(help_text: str) -> Callable:
 	return flag_option("-f", "--force", help=help_text)
 
 
-def no_pager_option(help_text="Disable the output pager.") -> Callable:
+def no_pager_option(help_text="Disable the output pager.") -> Callable[..., click.Command]:
 	"""
 	Decorator to add the ``--no-pager`` option to a click command.
+
+	The value is exposed via the parameter ``no_pager``: :class:`bool`.
 
 	.. versionadded:: 0.5.0
 
@@ -162,7 +185,7 @@ def no_pager_option(help_text="Disable the output pager.") -> Callable:
 	return flag_option("--no-pager", help=help_text)
 
 
-def flag_option(*args, default: Optional[bool] = False, **kwargs) -> Callable:
+def flag_option(*args, default: Optional[bool] = False, **kwargs) -> Callable[..., click.Command]:
 	r"""
 	Decorator to a flag option to a click command.
 
@@ -181,7 +204,7 @@ def flag_option(*args, default: Optional[bool] = False, **kwargs) -> Callable:
 			)
 
 
-def auto_default_option(*param_decls, **attrs) -> Callable:
+def auto_default_option(*param_decls, **attrs) -> Callable[..., click.Command]:
 	"""
 	Attaches an option to the command, with a default value determined from the decorated function's signature.
 
@@ -195,7 +218,7 @@ def auto_default_option(*param_decls, **attrs) -> Callable:
 	:param cls: the option class to instantiate. This defaults to :class:`click.Option`.
 	"""
 
-	def decorator(f):
+	def decorator(f: _C) -> _C:
 		option_attrs = attrs.copy()
 
 		if "help" in option_attrs:
@@ -234,15 +257,30 @@ class MultiValueOption(click.Option):
 		The later is converted into the former automatically if supported.
 	:param required: Controls whether this is optional.
 	:param default: The default value if omitted.
-		This can also be a callable, in which case it's invoked when the default is needed without any arguments.
+		This can also be a callable, in which case it is invoked when the default is needed without any arguments.
 	:param callback: A callback that should be executed after the parameter was matched.
 		This is called as ``fn(ctx, param, value)`` and needs to return the value.
 	:param metavar: How the value is represented in the help page.
 	:param expose_value: If :py:obj:`True` then the value is passed onwards to the command callback
-		and stored on the context, otherwise it's skipped.
+		and stored on the context, otherwise it is skipped.
 	:param is_eager: Eager values are processed before non eager ones.
 
 	.. versionadded:: 0.6.0
+
+	Example usage:
+
+	.. code-block:: python
+
+		@click.option(
+				"--select",
+				type=click.STRING,
+				help="The checks to enable",
+				cls=MultiValueOption,
+				)
+		@click_command()
+		def main(select: Iterable[str]):
+			select = list(select)
+
 	"""
 
 	def __init__(
@@ -312,3 +350,30 @@ class MultiValueOption(click.Option):
 				break
 
 		return retval
+
+
+class _Option(click.Option):
+
+	def prompt_for_value(self, ctx):
+		"""
+		This is an alternative flow that can be activated in the full value processing if a value does not exist.
+
+		It will prompt the user until a valid value exists and then returns the processed value as result.
+		"""
+
+		# Calculate the default before prompting anything to be stable.
+		default = self.get_default(ctx)
+
+		# If this is a prompt for a flag we need to handle this differently.
+		if self.is_bool_flag:
+			return consolekit.input.confirm(self.prompt, default)
+
+		return consolekit.input.prompt(
+				self.prompt,
+				default=default,
+				type=self.type,
+				hide_input=self.hide_input,
+				show_choices=self.show_choices,
+				confirmation_prompt=self.confirmation_prompt,
+				value_proc=lambda x: self.process_value(ctx, x),
+				)

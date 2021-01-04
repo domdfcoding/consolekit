@@ -29,6 +29,8 @@ Utility functions.
 # stdlib
 import difflib
 import os
+import sys
+from functools import lru_cache
 from itertools import cycle
 from types import ModuleType
 from typing import IO, List, Sequence
@@ -39,7 +41,7 @@ from domdf_python_tools.import_tools import discover, discover_entry_points
 from domdf_python_tools.stringlist import StringList
 
 # this package
-from consolekit.terminal_colours import Colour, Cursor, Fore
+from consolekit.terminal_colours import Colour, Cursor, Fore, Style, code_to_chars
 
 __all__ = [
 		"get_env_vars",

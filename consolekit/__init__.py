@@ -33,11 +33,11 @@ from functools import partial
 
 # 3rd party
 import click
-from click.parser import split_opt
-from click.utils import make_str
 
 # this package
 from consolekit import input, terminal_colours, utils
+from consolekit.commands import SuggestionGroup
+from consolekit.options import _Option
 
 __author__: str = "Dominic Davis-Foster"
 __copyright__: str = "2020 Dominic Davis-Foster"
@@ -46,7 +46,6 @@ __version__: str = "0.7.1"
 __email__: str = "dominic@davis-foster.co.uk"
 
 if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
-
 	try:
 		# stdlib
 		import readline
@@ -66,36 +65,18 @@ __all__ = [
 		]
 
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"], max_content_width=120)
+
 click_command = partial(click.command, context_settings=CONTEXT_SETTINGS)
+"""
+Shortcut to :func:`click.command`, with the ``-h``/``--help`` option enabled and a max width of ``120``.
+"""
+
 click_group = partial(click.group, context_settings=CONTEXT_SETTINGS, cls=SuggestionGroup)
-
-
-class _Option(click.Option):
-
-	def prompt_for_value(self, ctx):
-		"""
-		This is an alternative flow that can be activated in the full value processing if a value does not exist.
-
-		It will prompt the user until a valid value exists and then returns the processed value as result.
-		"""
-
-		# Calculate the default before prompting anything to be stable.
-		default = self.get_default(ctx)
-
-		# If this is a prompt for a flag we need to handle this
-		# differently.
-		if self.is_bool_flag:
-			return input.confirm(self.prompt, default)
-
-		return input.prompt(
-				self.prompt,
-				default=default,
-				type=self.type,
-				hide_input=self.hide_input,
-				show_choices=self.show_choices,
-				confirmation_prompt=self.confirmation_prompt,
-				value_proc=lambda x: self.process_value(ctx, x),
-				)
-
+"""
+Shortcut to :func:`click.group`, with the ``-h``/``--help`` option enabled and a max width of ``120``.
+"""
 
 option = partial(click.option, cls=_Option)
+"""
+Shortcut to :func:`click.option`, but using :func:`consolekit.input.confirm` when prompting for a boolean flag.
+"""

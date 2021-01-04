@@ -125,27 +125,25 @@ def prompt(
 	"""
 	Prompts a user for input.
 
-	This is a convenience function that can be used to prompt a user for input later.
-
 	If the user aborts the input by sending an interrupt signal, this
 	function will catch it and raise a :exc:`click.exceptions.Abort` exception.
 
 	:param text: The text to show for the prompt.
 	:param default: The default value to use if no input happens.
-		If this is not given it will prompt until it's aborted.
+		If this is not given it will prompt until it is aborted.
 	:param hide_input: If :py:obj:`True` then the input value will be hidden.
 	:param confirmation_prompt: Asks for confirmation for the value.
-	:param type: The type to use to check the value against.
-	:param value_proc: If this parameter is provided it's a function that
+	:param type: The type to check the value against.
+	:param value_proc: If this parameter is provided it must be a function that
 		is invoked instead of the type conversion to convert a value.
 	:param prompt_suffix: A suffix that should be added to the prompt.
 	:param show_default: Shows or hides the default value in the prompt.
 	:param err: If :py:obj:`True` the file defaults to ``stderr`` instead of
-		``stdout``, the same as with echo.
-	:param show_choices: Show or hide choices if the passed type is a Choice.
-			For example if type is a Choice of either day or week,
-			``show_choices`` is :py:obj:`True` and text is ``'Group by'`` then the
-			prompt will be ``'Group by (day, week): '``.
+		``stdout``, the same as with :func:`click.echo`.
+	:param show_choices: Show or hide choices if the passed type is a :class:`click.Choice`.
+		For example, if the choice is either ``day`` or ``week``,
+		``show_choices`` is :py:obj:`True` and ``text`` is ``'Group by'`` then the
+		prompt will be ``'Group by (day, week): '``.
 	"""
 
 	result = None  # noqa
@@ -169,6 +167,7 @@ def prompt(
 	while True:
 		while True:
 			value = prompt_func(prompt)
+
 			if value:
 				break
 			elif default is not None:
@@ -177,19 +176,24 @@ def prompt(
 					value = default
 					break
 				return default
+
 		try:
 			result = value_proc(value)
 		except UsageError as e:
 			click.echo(f"Error: {e.message}", err=err)  # noqa: B306
 			continue
+
 		if not confirmation_prompt:
 			return result
+
 		while True:
 			value2 = prompt_func("Repeat for confirmation: ")
 			if value2:
 				break
+
 		if value == value2:
 			return result
+
 		click.echo("Error: the two entered values do not match", err=err)
 
 
@@ -245,9 +249,11 @@ def stderr_input(prompt: str = '', file: IO = sys.stdout) -> str:  # pragma: no 
 	Read a string from standard input, but prompt to standard error.
 
 	The trailing newline is stripped.
-	If the user hits EOF (Unix: Ctl-D, Windows: Ctl-Z+Return), raise EOFError.
-	On Unix, GNU readline is used if enabled. The prompt string, if given,
-	is printed to stderr without a trailing newline before reading.
+	If the user hits EOF (Unix: :kbd:`Ctrl-D`, Windows: :kbd:`Ctrl-Z+Return`), raise :exc:`EOFError`.
+
+	On Unix, GNU readline is used if enabled.
+
+	The ``prompt`` string, if given, is printed to stderr without a trailing newline before reading.
 	"""
 
 	if file is sys.stdout:
@@ -341,7 +347,7 @@ def choice(
 	:param options:
 	:param text: The text to show for the prompt.
 	:param default: The index of the default value to use if no input happens.
-		If this is not given it will prompt until it's aborted.
+		If this is not given it will prompt until it is aborted.
 	:param prompt_suffix: A suffix that should be added to the prompt.
 	:param show_default: Shows or hides the default value in the prompt.
 	:param err: If :py:obj:`True` the file defaults to ``stderr`` instead of

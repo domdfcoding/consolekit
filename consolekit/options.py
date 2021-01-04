@@ -422,6 +422,8 @@ class MultiValueOption(click.Option):
 				return self.default
 			else:
 				return self.type_cast_value(ctx, value)
+		else:
+			return None
 
 
 class _Option(click.Option):

@@ -34,7 +34,7 @@ from functools import partial
 import click
 
 # this package
-from consolekit import input, terminal_colours, utils, commands  # pylint: disable=redefined-builtin
+from consolekit import commands, input, terminal_colours, utils  # pylint: disable=redefined-builtin
 from consolekit.commands import SuggestionGroup
 from consolekit.options import _Option
 

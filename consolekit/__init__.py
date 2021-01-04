@@ -27,7 +27,6 @@ Additional utilities for `click <https://click.palletsprojects.com/en/7.x/>`_.
 #
 
 # stdlib
-import difflib
 import sys
 from functools import partial
 
@@ -35,7 +34,7 @@ from functools import partial
 import click
 
 # this package
-from consolekit import input, terminal_colours, utils
+from consolekit import input, terminal_colours, utils, commands  # pylint: disable=redefined-builtin
 from consolekit.commands import SuggestionGroup
 from consolekit.options import _Option
 

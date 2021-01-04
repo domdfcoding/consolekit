@@ -115,7 +115,7 @@ def prompt(
 		default: Optional[str] = None,
 		hide_input: bool = False,
 		confirmation_prompt: bool = False,
-		type: Optional[_ConvertibleType] = None,  # noqa: A002
+		type: Optional[_ConvertibleType] = None,  # noqa: A002  # pylint: disable=redefined-builtin
 		value_proc: Optional[Callable[[Optional[str]], Any]] = None,
 		prompt_suffix: str = ": ",
 		show_default: bool = True,

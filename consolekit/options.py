@@ -322,9 +322,9 @@ class MultiValueOption(click.Option):
 			self,
 			param_decls: Optional[List[str]] = None,
 			show_default: bool = False,
-			help: Optional[str] = None,  # noqa: A002
+			help: Optional[str] = None,  # noqa: A002  # pylint: disable=redefined-builtin
 			hidden: bool = False,
-			type: Optional[_ConvertibleType] = None,  # noqa: A002
+			type: Optional[_ConvertibleType] = None,  # noqa: A002  # pylint: disable=redefined-builtin
 			required: bool = False,
 			default: Optional[Any] = (),
 			callback: Optional[Callback] = None,

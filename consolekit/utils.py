@@ -240,3 +240,132 @@ def show_cursor() -> None:
 	"""
 
 	click.echo(Cursor.SHOW)
+
+
+@lru_cache(1)
+def _pycharm_hosted():
+	return os.environ.get("PYCHARM_HOSTED", 0)
+
+
+@lru_cache(1)
+def _pycharm_terminal():
+	try:
+		# 3rd party
+		import psutil  # type: ignore  # nodep
+
+		parent_process = psutil.Process(os.getppid())
+		grandparent_process = psutil.Process(parent_process.ppid())
+		great_grandparent_process = psutil.Process(grandparent_process.ppid())
+		great_grandparent_name = great_grandparent_process.name()
+
+		#: TODO: pycharm on Windows and macOS
+		return great_grandparent_name == "pycharm.sh"
+
+	except Exception:
+		return False
+
+
+class TerminalRenderer(BaseRenderer):
+	"""
+	Mistletoe markdown renderer for terminals.
+
+	Tested in Gnome Terminal and Terminator (both libVTE-based), and PyCharm.
+	libVTE has the best support. PyCharm's support for italics and strikethrough is poor.
+
+	Not tested on other terminals, but contributions are welcome to improve support.
+
+	.. versionadded:: 0.8.0
+	"""
+
+	def render_strong(self, token: span_token.Strong) -> str:
+		"""
+		Render strong (``**strong**``).
+
+		:param token: The token to render.
+		"""
+
+		return Style.BRIGHT(self.render_inner(token))
+
+	def render_emphasis(self, token: span_token.Emphasis) -> str:
+		"""
+		Render emphasis (``*emphasis*``).
+
+		:param token: The token to render.
+		"""
+
+		if _pycharm_hosted():
+			# Pycharm terminal doesn't support italic escape
+			return SANS_SERIF_ITALIC_LETTERS(self.render_inner(token))
+
+		return f"{code_to_chars(3)}{self.render_inner(token)}{code_to_chars(23)}"
+
+	def render_inline_code(self, token: span_token.InlineCode) -> str:
+		r"""
+		Render inline code (``\`code\```).
+
+		:param token: The token to render.
+		"""
+
+		# TODO: A better implementation
+		return f"'{self.render_inner(token)}'"
+
+	def render_strikethrough(self, token: span_token.Strikethrough) -> str:
+		"""
+		Render strikethrough (``~~strikethrough~~``).
+
+		:param token: The token to render.
+		"""
+
+		if _pycharm_hosted() or _pycharm_terminal():
+			# Pycharm terminal doesn't support strikethrough
+			return self.render_inner(token)
+
+		return ''.join([f'{char}\u0336' for char in self.render_inner(token)])
+
+	def render_paragraph(self, token: block_token.Paragraph) -> str:
+		"""
+		Render a paragraph.
+
+		:param token: The token to render.
+		"""
+
+		return '\n{}\n'.format(self.render_inner(token))
+
+	_in_ordered_list: bool = False
+	_ol_number: int = 0
+
+	def render_list(self, token: block_token.List) -> str:
+		"""
+		Render a markdown list.
+
+		:param token: The token to render.
+		"""
+
+		self._in_ordered_list = token.start is not None
+		if self._in_ordered_list:
+			self._ol_number = 0
+
+		return self.render_inner(token) + '\n'
+
+	def render_list_item(self, token: block_token.ListItem) -> str:
+		"""
+		Render a markdown list item.
+
+		:param token:
+		"""
+
+		if self._in_ordered_list:
+			self._ol_number += 1
+			return f" {self._ol_number}. {self.render_inner(token).lstrip()}"
+
+		else:
+			return f" * {self.render_inner(token).lstrip()}"
+
+	def render(self, token) -> str:
+		"""
+		Render the given token for display in a terminal.
+
+		:param token:
+		"""
+
+		return super().render(token).replace("\n\n\n", "\n\n")

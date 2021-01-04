@@ -97,6 +97,7 @@ __all__ = [
 		"Style",
 		"Cursor",
 		"strip_ansi",
+		"ColourTrilean",
 		]
 
 try:
@@ -105,6 +106,13 @@ try:
 	colorama.init()
 except ImportError:
 	pass
+
+ColourTrilean = Optional[bool]
+"""
+Represents the :py:obj:`True`/:py:obj:`False`/:py:obj:`None` state of colour options.
+
+.. versionadded:: 0.8.0
+"""
 
 CSI: Final[str] = "\u001b["
 OSC: Final[str] = "\u001b]"

@@ -70,6 +70,8 @@ from typing import List, Optional
 # 3rd party
 from typing_extensions import Final
 
+ColourTrilean = Optional[bool]
+
 CSI: Final[str]
 OSC: Final[str]
 BEL: Final[str]

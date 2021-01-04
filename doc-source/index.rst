@@ -146,6 +146,7 @@ Installation
 	:caption: API Reference
 	:glob:
 
+	api/consolekit
 	api/*
 
 .. toctree::

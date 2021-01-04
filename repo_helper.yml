@@ -27,8 +27,14 @@ conda_channels:
  - conda-forge
 
 additional_ignore:
- - consolekit/command.py
+ - consolekit/_command.py
 
 keywords:
  - click
  - terminal
+
+extras_require:
+ terminals:
+  - psutil>=5.8.0
+
+tox_testenv_extras: all

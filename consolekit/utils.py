@@ -382,7 +382,7 @@ class TerminalRenderer(BaseRenderer):
 		"""
 
 		# TODO: A better implementation
-		return f"'{self.render_inner(token)}'"
+		return f"{self.render_inner(token)!r}"
 
 	def render_strikethrough(self, token: span_token.Strikethrough) -> str:
 		"""

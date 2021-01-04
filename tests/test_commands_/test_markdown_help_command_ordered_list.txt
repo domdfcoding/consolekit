@@ -1,14 +1,11 @@
 Usage: demo [OPTIONS]
 
-
   This is the summary line.
 
   This [1mprogram[22m does [3mthe[23m 'following':
    1. This
    2. That
    3. T̶h̶e̶ ̶o̶t̶h̶e̶r̶ (deprecated)
-
-
 
 Options:
   -h, --help  Show this message and exit.

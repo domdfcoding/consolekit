@@ -169,7 +169,7 @@ class MarkdownHelpMixin:
 		doc = block_token.Document(self.help or '')
 
 		with TerminalRenderer() as renderer:
-			rendered_doc = indent(renderer.render(doc), "  ")
+			rendered_doc = indent(renderer.render(doc).strip(), "  ")
 
 		if resolve_color_default(self._colour) is False:
 			# Also remove 'COMBINING LONG STROKE OVERLAY', used for strikethrough.

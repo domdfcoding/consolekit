@@ -213,7 +213,7 @@ def test_markdown_help_command_pycharm(
 	runner = CliRunner()
 
 	result: Result = runner.invoke(markdown_demo_command, catch_exceptions=False, args=["--help"], color=True)
-	check_file_regression(result.stdout.rstrip(), file_regression)
+	check_file_regression(result.stdout.rstrip(), file_regression, extension=".md")
 
 
 def test_private_helpers(monkeypatch):

@@ -115,7 +115,7 @@ def test_force_option(file_regression: FileRegressionFixture):
 
 def test_verbose_option(file_regression: FileRegressionFixture):
 
-	@verbose_option("Force the operation")
+	@verbose_option("Show verbose output.")
 	@click_command()
 	def main(verbose: int):
 		print(verbose)

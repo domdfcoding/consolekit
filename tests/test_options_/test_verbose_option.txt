@@ -1,5 +1,5 @@
 Usage: main [OPTIONS]
 
 Options:
-  -v, --verbose  Force the operation
+  -v, --verbose  Show verbose output.
   -h, --help     Show this message and exit.

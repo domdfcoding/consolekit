@@ -60,11 +60,11 @@ Command line options.
 
 # stdlib
 import inspect
-from typing import Any, Callable, List, Optional, TypeVar, cast
+from typing import Any, Callable, Iterable, List, Optional, Tuple, TypeVar, cast
 
 # 3rd party
 import click
-from click import Argument, Context, Option, OptionParser
+from click import Argument, Context, IntRange, Option, OptionParser
 from click.decorators import _param_memo  # type: ignore
 
 # this package
@@ -87,6 +87,24 @@ _A = TypeVar("_A", bound=click.Argument)
 _C = TypeVar("_C", bound=click.Command)
 
 
+class VerboseVersionCountType(click.IntRange):
+	"""
+	Subclass of :class:`click.IntRange` which doesn't show the range of valid values.
+
+	.. versionadded:: 0.8.1
+	"""
+
+	def __init__(self):
+		super().__init__(min=0)
+
+	def _describe_range(self):
+		"""
+		Describe the range for use in help text.
+		"""
+
+		return ''
+
+
 def verbose_option(help_text: str = "Show verbose output.") -> Callable[..., click.Command]:
 	"""
 	Adds an option (via the parameter ``verbose``: :class:`int`) to enable verbose output.
@@ -98,12 +116,7 @@ def verbose_option(help_text: str = "Show verbose output.") -> Callable[..., cli
 	:param help_text: The help text for the option.
 	"""
 
-	return click.option(
-			"-v",
-			"--verbose",
-			count=True,
-			help=help_text,
-			)
+	return click.option("-v", "--verbose", count=True, help=help_text, type=VerboseVersionCountType())
 
 
 def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable[..., click.Command]:
@@ -140,6 +153,7 @@ def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable[
 			expose_value=False,
 			is_eager=True,
 			help="Show the version and exit.",
+			type=VerboseVersionCountType(),
 			callback=cast(Callback, callback),
 			)
 
@@ -385,6 +399,29 @@ class MultiValueOption(click.Option):
 				break
 
 		return retval
+
+	def process_value(self, ctx: click.Context, value: Any) -> Optional[Tuple]:
+		"""
+		Given a value and context, converts the value as necessary.
+
+		:param ctx:
+		:param value:
+		"""
+
+		# If the value we were given is None we do nothing.
+		# This way code that calls this can easily figure out if something was not provided.
+		# Otherwise, it would be converted into an empty tuple for multiple invocations,
+		# which is inconvenient.
+
+		# assert isinstance(value, tuple), type(value)
+
+		if value is not None:
+			if isinstance(value, Iterable) and not isinstance(value, str):
+				return tuple(self.type_cast_value(ctx, v) for v in value)
+			elif value in ("()", str(self.default)) or not value:
+				return self.default
+			else:
+				return self.type_cast_value(ctx, value)
 
 
 class _Option(click.Option):

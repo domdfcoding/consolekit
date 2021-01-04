@@ -1,5 +1,6 @@
 # 3rd party
 import click
+import pytest
 from click import echo
 from domdf_python_tools.stringlist import StringList
 from pytest_regressions.data_regression import DataRegressionFixture
@@ -34,7 +35,24 @@ def test_choice_letters(capsys, monkeypatch, data_regression: DataRegressionFixt
 	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 
 
-def test_choice_numbers(capsys, monkeypatch, data_regression: DataRegressionFixture):
+@pytest.mark.parametrize(
+		"click_version",
+		[
+				pytest.param(
+						'7',
+						marks=pytest.mark.skipif(
+								not click.__version__.startswith('7'), reason="Output differs on click 8"
+								)
+						),
+				pytest.param(
+						'8',
+						marks=pytest.mark.skipif(
+								not click.__version__.startswith('8'), reason="Output differs on click 8"
+								)
+						),
+				]
+		)
+def test_choice_numbers(capsys, monkeypatch, data_regression: DataRegressionFixture, click_version):
 
 	inputs = iter(["20", '0', '5'])
 

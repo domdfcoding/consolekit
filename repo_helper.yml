@@ -38,3 +38,8 @@ extras_require:
   - psutil>=5.8.0
 
 tox_testenv_extras: all
+
+third_party_version_matrix:
+ click:
+  - 7.1
+  - 8.0.0a1

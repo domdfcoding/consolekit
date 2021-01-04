@@ -80,6 +80,7 @@ __all__ = [
 		"MultiValueOption",
 		"flag_option",
 		"auto_default_option",
+		"auto_default_argument",
 		]
 
 _A = TypeVar("_A", bound=click.Argument)
@@ -163,6 +164,8 @@ def force_option(help_text: str) -> Callable[..., click.Command]:
 	"""
 	Decorator to add the ``-f / --force`` option to a click command.
 
+	The value is exposed via the parameter ``force``: :class:`bool`.
+
 	.. versionadded:: 0.5.0
 
 	:param help_text: The help text for the option.
@@ -229,12 +232,44 @@ def auto_default_option(*param_decls, **attrs) -> Callable[..., click.Command]:
 		option = OptionClass(param_decls, **option_attrs)
 		_param_memo(f, option)
 
-		signature: inspect.Signature = inspect.signature(f.callback)
+		_get_default_from_callback_and_set(f, option)
 
-		param_default = signature.parameters[option.name].default
+		return f
+
+	return decorator
+
+
+def _get_default_from_callback_and_set(command: click.Command, param: click.Parameter):
+	if command.callback is not None:
+		# The callback *can* be None, for a no-op
+		signature: inspect.Signature = inspect.signature(command.callback)
+
+		param_default = signature.parameters[param.name].default
 
 		if param_default is not inspect.Signature.empty:
-			option.default = param_default
+			param.default = param_default
+
+
+def auto_default_argument(*param_decls, **attrs) -> Callable[..., click.Argument]:
+	"""
+	Attaches an argument to the command, with a default value determined from the decorated function's signature.
+
+	All positional arguments are passed as parameter declarations to :class:`click.Argument`;
+	all keyword arguments are forwarded unchanged (except ``cls``).
+	This is equivalent to creating an :class:`click.Argument` instance manually
+	and attaching it to the :attr:`click.Argument.params` list.
+
+	.. versionadded:: 0.8.0
+
+	:param cls: the option class to instantiate. This defaults to :class:`click.Argument`.
+	"""
+
+	def decorator(f: _C) -> _C:
+		ArgumentClass = attrs.pop("cls", Argument)
+		argument = ArgumentClass(param_decls, **attrs)
+		_param_memo(f, argument)
+
+		_get_default_from_callback_and_set(f, argument)
 
 		return f
 

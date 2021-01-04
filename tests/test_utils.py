@@ -1,13 +1,20 @@
 # stdlib
+import math
+import re
 import sys
+from typing import Callable, ContextManager
 
 # 3rd party
+import click
+import pytest
+from click.testing import CliRunner, Result
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.testing import check_file_regression
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
-from consolekit.utils import coloured_diff, overtype
+from consolekit import click_command
+from consolekit.utils import coloured_diff, handle_tracebacks, is_command, overtype, traceback_handler
 
 
 def test_overtype(capsys):
@@ -60,3 +67,122 @@ def test_coloured_diff(file_regression: FileRegressionFixture):
 			)
 
 	check_file_regression(diff, file_regression)
+
+
+exceptions = pytest.mark.parametrize(
+		"exception",
+		[
+				pytest.param(FileNotFoundError("foo.txt"), id="FileNotFoundError"),
+				pytest.param(FileExistsError("foo.txt"), id="FileExistsError"),
+				pytest.param(Exception("Something's awry!"), id="Exception"),
+				pytest.param(ValueError("'age' must be >= 0"), id="ValueError"),
+				pytest.param(TypeError("Expected type int, got type str"), id="TypeError"),
+				pytest.param(NameError("name 'hello' is not defined"), id="NameError"),
+				pytest.param(SyntaxError("invalid syntax"), id="SyntaxError"),
+				]
+		)
+contextmanagers = pytest.mark.parametrize(
+		"contextmanager",
+		[
+				pytest.param(handle_tracebacks, id="handle_tracebacks"),
+				pytest.param(traceback_handler, id="traceback_handler"),
+				]
+		)
+
+
+@exceptions
+@contextmanagers
+def test_handle_tracebacks(exception, contextmanager: Callable[..., ContextManager], file_regression):
+
+	@click.command()
+	def demo():
+
+		with contextmanager():
+			raise exception
+
+	runner = CliRunner()
+
+	result: Result = runner.invoke(demo, catch_exceptions=False)
+
+	check_file_regression(result.stdout.rstrip(), file_regression)
+
+	assert result.exit_code == 1
+
+
+@exceptions
+def test_handle_tracebacks_show_traceback(exception, file_regression):
+
+	@click.command()
+	def demo():
+
+		with handle_tracebacks(show_traceback=True):
+			raise exception
+
+	runner = CliRunner()
+
+	with pytest.raises(type(exception), match=re.escape(str(exception))):
+		runner.invoke(demo, catch_exceptions=False)
+
+
+@pytest.mark.parametrize("exception", [EOFError(), KeyboardInterrupt(), click.Abort()])
+@contextmanagers
+def test_handle_tracebacks_ignored_exceptions(
+		exception, contextmanager: Callable[..., ContextManager], file_regression
+		):
+
+	@click.command()
+	def demo():
+
+		with contextmanager():
+			raise exception
+
+	runner = CliRunner()
+
+	result: Result = runner.invoke(demo, catch_exceptions=False)
+
+	assert result.stdout.strip() == "Aborted!"
+	assert result.exit_code == 1
+
+
+@pytest.mark.parametrize(
+		"exception, code",
+		[
+				pytest.param(click.UsageError("Message"), 2, id="click.UsageError"),
+				pytest.param(click.BadParameter("Message"), 2, id="click.BadParameter"),
+				pytest.param(click.FileError("Message"), 1, id="click.FileError"),
+				pytest.param(click.ClickException("Message"), 1, id="click.ClickException"),
+				]
+		)
+@contextmanagers
+def test_handle_tracebacks_ignored_click(
+		exception,
+		contextmanager: Callable[..., ContextManager],
+		file_regression,
+		code: int,
+		):
+
+	@click.command()
+	def demo():
+
+		with contextmanager():
+			raise exception
+
+	runner = CliRunner()
+
+	result: Result = runner.invoke(demo, catch_exceptions=False)
+
+	check_file_regression(result.stdout.rstrip(), file_regression)
+
+	assert result.exit_code == code
+
+
+def test_is_command():
+
+	@click_command()
+	def main():
+		...
+
+	assert is_command(main)
+	assert not is_command(int)
+	assert not is_command(lambda: True)
+	assert not is_command(math.ceil)

@@ -54,6 +54,9 @@ __all__ = [
 		"braille_spinner",
 		"hide_cursor",
 		"show_cursor",
+		"handle_tracebacks",
+		"traceback_handler",
+		"TerminalRenderer",
 		]
 
 
@@ -242,6 +245,70 @@ def show_cursor() -> None:
 	"""
 
 	click.echo(Cursor.SHOW)
+
+
+nullcontext: Callable[..., ContextManager]
+
+if sys.version_info < (3, 7):  # pragma: no cover (py37+)
+
+	@contextlib.contextmanager
+	def nullcontext():
+		yield
+else:  # pragma: no cover (<py37)
+	nullcontext = contextlib.nullcontext
+
+
+@contextlib.contextmanager
+def traceback_handler():
+	"""
+	Context manager to abort execution with a short error message on the following exception types:
+
+	* :exc:`FileNotFoundError`
+	* :exc:`FileExistsError`
+
+	Other custom exception classes inheriting from :exc:`Exception` are also handled,
+	but with a generic message.
+
+	The following exception classes are ignored:
+
+	* :exc:`EOFError`
+	* :exc:`KeyboardInterrupt`
+	* :exc:`click.exceptions.ClickException`
+
+	.. versionadded:: 0.8.0
+
+	.. seealso:: :func:`~.handle_tracebacks`.
+	"""  # noqa: D400
+
+	try:
+		yield
+	except (EOFError, KeyboardInterrupt, click.ClickException, click.Abort):
+		raise
+	except FileNotFoundError as e:
+		raise abort(f"File Not Found: {e}")
+	except FileExistsError as e:
+		raise abort(f"File Exists: {e}")
+	except Exception as e:
+		raise abort(f"An error occurred: {e}")
+
+
+def handle_tracebacks(show_traceback: bool = False) -> ContextManager:
+	"""
+	Context manager to conditionally handle tracebacks, usually based on the value of a command line flag.
+
+	.. versionadded:: 0.8.0
+
+	:param show_traceback: If :py:obj:`True`, the full Python traceback will be shown on errors.
+		If :py:obj:`False`, only the summary of the traceback will be shown.
+		In either case the program execution will stop on error.
+
+	.. seealso:: :func:`~.traceback_handler`.
+	"""
+
+	if show_traceback:
+		return nullcontext()
+	else:
+		return traceback_handler()
 
 
 @lru_cache(1)

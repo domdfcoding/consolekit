@@ -144,8 +144,15 @@ class MarkdownHelpMixin:
 
 	.. tip:: This can be combined with groups such as :class:`~.SuggestionGroup`.
 
+	Tested in Gnome Terminal and Terminator (both libVTE-based), and PyCharm.
+	libVTE has the best support.
+	PyCharm's support for italics and strikethrough is poor.
+	Support on Windows is, as expected, poor.
+
+	Not tested on other terminals, but contributions are welcome to improve support.
+
 	.. versionadded:: 0.8.0
-	"""
+	"""  # noqa: D400
 
 	help: Optional[str]  # noqa: A003  # pylint: disable=redefined-builtin
 	no_args_is_help: bool
@@ -177,6 +184,13 @@ class MarkdownHelpCommand(MarkdownHelpMixin, click.Command):
 	"""
 	Subclass of :class:`click.Command` which treats the help text as markdown
 	and prints a rendered representation.
+
+	Tested in Gnome Terminal and Terminator (both libVTE-based), and PyCharm.
+	libVTE has the best support.
+	PyCharm's support for italics and strikethrough is poor.
+	Support on Windows is, as expected, poor.
+
+	Not tested on other terminals, but contributions are welcome to improve support.
 
 	.. versionadded:: 0.8.0
 	"""  # noqa: D400
@@ -217,6 +231,13 @@ class MarkdownHelpGroup(MarkdownHelpMixin, click.Group):
 	Subclass of :class:`click.Group` which treats the help text as markdown
 	and prints a rendered representation.
 
+	Tested in Gnome Terminal and Terminator (both libVTE-based), and PyCharm.
+	libVTE has the best support.
+	PyCharm's support for italics and strikethrough is poor.
+	Support on Windows is, as expected, poor.
+
+	Not tested on other terminals, but contributions are welcome to improve support.
+
 	.. versionadded:: 0.8.0
 	"""  # noqa: D400
 
@@ -256,8 +277,11 @@ class SuggestionGroup(click.Group):
 		Moved to :mod:`consolekit.commands`.
 	"""
 
-	def resolve_command(self, ctx: click.Context,
-						args: List[str]) -> Tuple[str, click.Command, List[str]]:  # noqa: D102
+	def resolve_command(
+			self,
+			ctx: click.Context,
+			args: List[str],
+			) -> Tuple[str, click.Command, List[str]]:  # noqa: D102
 		"""
 		Resolve the requested command belonging to this group, and print a suggestion if it can't be found.
 

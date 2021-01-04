@@ -343,7 +343,9 @@ class TerminalRenderer(BaseRenderer):
 	Mistletoe markdown renderer for terminals.
 
 	Tested in Gnome Terminal and Terminator (both libVTE-based), and PyCharm.
-	libVTE has the best support. PyCharm's support for italics and strikethrough is poor.
+	libVTE has the best support.
+	PyCharm's support for italics and strikethrough is poor.
+	Support on Windows is, as expected, poor.
 
 	Not tested on other terminals, but contributions are welcome to improve support.
 

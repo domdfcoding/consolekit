@@ -7,7 +7,7 @@ from typing import Tuple
 import click
 import pytest
 from click.testing import CliRunner, Result
-from domdf_python_tools.testing import check_file_regression
+from domdf_python_tools.testing import check_file_regression, not_windows
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
@@ -15,19 +15,6 @@ import consolekit.commands
 from consolekit import click_command, click_group
 from consolekit.options import colour_option
 from consolekit.terminal_colours import ColourTrilean
-
-try:
-	# 3rd party
-	import colorama
-except ImportError:
-
-	class colorama:
-
-		def init(self):
-			pass
-
-		def deinit(self):
-			pass
 
 
 @pytest.fixture()
@@ -163,6 +150,7 @@ def test_raw_help_group(file_regression: FileRegressionFixture):
 	check_file_regression(result.stdout.rstrip(), file_regression, extension="_command.md")
 
 
+@not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_command(
 		file_regression: FileRegressionFixture,
 		force_not_pycharm,
@@ -174,29 +162,25 @@ def test_markdown_help_command(
 	check_file_regression(result.stdout.rstrip(), file_regression)
 
 
+@not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_group(
 		file_regression: FileRegressionFixture,
 		force_not_pycharm,
 		markdown_demo_group,
 		):
 
-	colorama.deinit()
+	runner = CliRunner()
 
-	try:
-		runner = CliRunner()
+	demo_group, demo_command = markdown_demo_group
 
-		demo_group, demo_command = markdown_demo_group
+	result: Result = runner.invoke(demo_group, catch_exceptions=False, args=["--help"], color=True)
+	check_file_regression(result.stdout.rstrip(), file_regression, extension="_group.md")
 
-		result: Result = runner.invoke(demo_group, catch_exceptions=False, args=["--help"], color=True)
-		check_file_regression(result.stdout.rstrip(), file_regression, extension="_group.md")
-
-		result = runner.invoke(demo_command, catch_exceptions=False, args=["--help"], color=True)
-		check_file_regression(result.stdout.rstrip(), file_regression, extension="_command.md")
-
-	finally:
-		colorama.init()
+	result = runner.invoke(demo_command, catch_exceptions=False, args=["--help"], color=True)
+	check_file_regression(result.stdout.rstrip(), file_regression, extension="_command.md")
 
 
+@not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_command_ordered_list(file_regression: FileRegressionFixture, force_not_pycharm):
 
 	@click_command(cls=consolekit.commands.MarkdownHelpCommand)
@@ -217,6 +201,7 @@ def test_markdown_help_command_ordered_list(file_regression: FileRegressionFixtu
 	check_file_regression(result.stdout.rstrip(), file_regression)
 
 
+@not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_command_pycharm(
 		file_regression: FileRegressionFixture,
 		monkeypatch,

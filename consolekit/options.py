@@ -64,7 +64,7 @@ from typing import Any, Callable, Iterable, List, Optional, Tuple, TypeVar, cast
 
 # 3rd party
 import click
-from click import Argument, Context, IntRange, Option, OptionParser
+from click import Argument, Context, Option, OptionParser
 from click.decorators import _param_memo  # type: ignore
 
 # this package
@@ -81,6 +81,8 @@ __all__ = [
 		"flag_option",
 		"auto_default_option",
 		"auto_default_argument",
+		"_A",
+		"_C",
 		]
 
 _A = TypeVar("_A", bound=click.Argument)
@@ -105,7 +107,7 @@ class VerboseVersionCountType(click.IntRange):
 		return ''
 
 
-def verbose_option(help_text: str = "Show verbose output.") -> Callable[..., click.Command]:
+def verbose_option(help_text: str = "Show verbose output.") -> Callable[[_C], _C]:
 	"""
 	Adds an option (via the parameter ``verbose``: :class:`int`) to enable verbose output.
 
@@ -119,7 +121,7 @@ def verbose_option(help_text: str = "Show verbose output.") -> Callable[..., cli
 	return click.option("-v", "--verbose", count=True, help=help_text, type=VerboseVersionCountType())
 
 
-def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable[..., click.Command]:
+def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable[[_C], _C]:
 	"""
 	Adds an option to show the version and exit.
 
@@ -158,7 +160,7 @@ def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable[
 			)
 
 
-def colour_option(help_text="Whether to use coloured output.") -> Callable[..., click.Command]:
+def colour_option(help_text="Whether to use coloured output.") -> Callable[[_C], _C]:
 	"""
 	Adds an option (via the parameter ``colour``: :class:`bool`) to enable verbose output.
 
@@ -174,7 +176,7 @@ def colour_option(help_text="Whether to use coloured output.") -> Callable[..., 
 			)
 
 
-def force_option(help_text: str) -> Callable[..., click.Command]:
+def force_option(help_text: str) -> Callable[[_C], _C]:
 	"""
 	Decorator to add the ``-f / --force`` option to a click command.
 
@@ -188,7 +190,7 @@ def force_option(help_text: str) -> Callable[..., click.Command]:
 	return flag_option("-f", "--force", help=help_text)
 
 
-def no_pager_option(help_text="Disable the output pager.") -> Callable[..., click.Command]:
+def no_pager_option(help_text="Disable the output pager.") -> Callable[[_C], _C]:
 	"""
 	Decorator to add the ``--no-pager`` option to a click command.
 
@@ -202,7 +204,7 @@ def no_pager_option(help_text="Disable the output pager.") -> Callable[..., clic
 	return flag_option("--no-pager", help=help_text)
 
 
-def flag_option(*args, default: Optional[bool] = False, **kwargs) -> Callable[..., click.Command]:
+def flag_option(*args, default: Optional[bool] = False, **kwargs) -> Callable[[_C], _C]:
 	r"""
 	Decorator to a flag option to a click command.
 
@@ -221,7 +223,7 @@ def flag_option(*args, default: Optional[bool] = False, **kwargs) -> Callable[..
 			)
 
 
-def auto_default_option(*param_decls, **attrs) -> Callable[..., click.Command]:
+def auto_default_option(*param_decls, **attrs) -> Callable[[_C], _C]:
 	"""
 	Attaches an option to the command, with a default value determined from the decorated function's signature.
 
@@ -264,14 +266,14 @@ def _get_default_from_callback_and_set(command: click.Command, param: click.Para
 			param.default = param_default
 
 
-def auto_default_argument(*param_decls, **attrs) -> Callable[..., click.Argument]:
+def auto_default_argument(*param_decls, **attrs) -> Callable[[_C], _C]:
 	"""
 	Attaches an argument to the command, with a default value determined from the decorated function's signature.
 
 	All positional arguments are passed as parameter declarations to :class:`click.Argument`;
 	all keyword arguments are forwarded unchanged (except ``cls``).
 	This is equivalent to creating an :class:`click.Argument` instance manually
-	and attaching it to the :attr:`click.Argument.params` list.
+	and attaching it to the :attr:`click.Command.params` list.
 
 	.. versionadded:: 0.8.0
 

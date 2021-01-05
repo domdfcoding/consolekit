@@ -79,3 +79,15 @@ option = partial(click.option, cls=_Option)
 """
 Shortcut to :func:`click.option`, but using :func:`consolekit.input.confirm` when prompting for a boolean flag.
 """
+
+# Fixes intersphinx links
+click.Command.__module__ = "click"
+click.Argument.__module__ = "click"
+click.Abort.__module__ = "click"
+click.Option.__module__ = "click"
+click.ParamType.__module__ = "click"
+click.Parameter.__module__ = "click"
+click.Context.__module__ = "click"
+click.HelpFormatter.__module__ = "click"
+click.Group.__module__ = "click"
+click.OptionParser.__module__ = "click"

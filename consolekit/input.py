@@ -125,8 +125,8 @@ def prompt(
 	"""
 	Prompts a user for input.
 
-	If the user aborts the input by sending an interrupt signal, this
-	function will catch it and raise a :exc:`click.exceptions.Abort` exception.
+	If the user aborts the input by sending an interrupt signal,
+	this function will catch it and raise a :exc:`click.Abort` exception.
 
 	:param text: The text to show for the prompt.
 	:param default: The default value to use if no input happens.
@@ -209,11 +209,11 @@ def confirm(
 	Prompts for confirmation (yes/no question).
 
 	If the user aborts the input by sending a interrupt signal this
-	function will catch it and raise a :exc:`Abort` exception.
+	function will catch it and raise a :exc:`click.Abort` exception.
 
 	:param text: The question to ask.
 	:param default: The default for the prompt.
-	:param abort: If :py:obj:`True` a negative answer aborts the exception by raising :exc:`Abort`.
+	:param abort: If :py:obj:`True` a negative answer aborts the exception by raising :exc:`click.Abort`.
 	:param prompt_suffix: A suffix that should be added to the prompt.
 	:param show_default: Shows or hides the default value in the prompt.
 	:param err: If :py:obj:`True` the file defaults to ``stderr`` instead of ``stdout``, the same as with echo.
@@ -342,7 +342,7 @@ def choice(
 	Prompts a user for input.
 
 	If the user aborts the input by sending an interrupt signal, this
-	function will catch it and raise a :exc:`click.exceptions.Abort` exception.
+	function will catch it and raise a :exc:`click.Abort` exception.
 
 	:param options:
 	:param text: The text to show for the prompt.
@@ -402,7 +402,7 @@ def hide_cursor() -> None:
 	Hide the cursor.
 
 	To show it again use :func:`~.show_cursor`,
-	or use the :func:`@.hidden_cursor` context manager.
+	or use the :func:`~.hidden_cursor` context manager.
 
 	.. versionadded:: 0.7.0
 	"""

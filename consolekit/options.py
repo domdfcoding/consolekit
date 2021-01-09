@@ -99,7 +99,8 @@ class VerboseVersionCountType(click.IntRange):
 	def __init__(self):
 		super().__init__(min=0)
 
-	def _describe_range(self):
+	@staticmethod
+	def _describe_range():  # pragma: no cover
 		"""
 		Describe the range for use in help text.
 		"""
@@ -298,7 +299,7 @@ class MultiValueOption(click.Option):
 
 	:param param_decls: The parameter declarations for this option or argument.
 		This is a list of flags or argument names.
-	:param show_default: Controls if the default value should be shown on the help page.
+	:param show_default: Controls whether the default value should be shown on the help page.
 		Normally, defaults are not shown.
 		If this value is a string, it shows the string instead of the value.
 		This is particularly useful for dynamic options.

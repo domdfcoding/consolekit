@@ -7,14 +7,26 @@ from typing import Callable, ContextManager
 # 3rd party
 import click
 import pytest
-from click.testing import CliRunner, Result
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.testing import check_file_regression
+from pytest_regressions.data_regression import DataRegressionFixture
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
+import consolekit
 from consolekit import click_command
-from consolekit.utils import coloured_diff, handle_tracebacks, is_command, overtype, traceback_handler
+from consolekit.testing import CliRunner, Result
+from consolekit.utils import (
+		coloured_diff,
+		handle_tracebacks,
+		hidden_cursor,
+		hide_cursor,
+		is_command,
+		overtype,
+		show_cursor,
+		solidus_spinner,
+		traceback_handler
+		)
 
 
 def test_overtype(capsys):
@@ -92,42 +104,11 @@ contextmanagers = pytest.mark.parametrize(
 
 @exceptions
 @contextmanagers
-def test_handle_tracebacks(exception, contextmanager: Callable[..., ContextManager], file_regression):
-
-	@click.command()
-	def demo():
-
-		with contextmanager():
-			raise exception
-
-	runner = CliRunner()
-
-	result: Result = runner.invoke(demo, catch_exceptions=False)
-
-	check_file_regression(result.stdout.rstrip(), file_regression)
-
-	assert result.exit_code == 1
-
-
-@exceptions
-def test_handle_tracebacks_show_traceback(exception, file_regression):
-
-	@click.command()
-	def demo():
-
-		with handle_tracebacks(show_traceback=True):
-			raise exception
-
-	runner = CliRunner()
-
-	with pytest.raises(type(exception), match=re.escape(str(exception))):
-		runner.invoke(demo, catch_exceptions=False)
-
-
-@pytest.mark.parametrize("exception", [EOFError(), KeyboardInterrupt(), click.Abort()])
-@contextmanagers
-def test_handle_tracebacks_ignored_exceptions(
-		exception, contextmanager: Callable[..., ContextManager], file_regression
+def test_handle_tracebacks(
+		exception,
+		contextmanager: Callable[..., ContextManager],
+		file_regression,
+		cli_runner: CliRunner,
 		):
 
 	@click.command()
@@ -136,9 +117,44 @@ def test_handle_tracebacks_ignored_exceptions(
 		with contextmanager():
 			raise exception
 
-	runner = CliRunner()
+	result: Result = cli_runner.invoke(demo, catch_exceptions=False)
+	result.check_stdout(file_regression)
+	assert result.exit_code == 1
 
-	result: Result = runner.invoke(demo, catch_exceptions=False)
+
+@exceptions
+def test_handle_tracebacks_show_traceback(
+		exception,
+		file_regression,
+		cli_runner: CliRunner,
+		):
+
+	@click.command()
+	def demo():
+
+		with handle_tracebacks(show_traceback=True):
+			raise exception
+
+	with pytest.raises(type(exception), match=re.escape(str(exception))):
+		cli_runner.invoke(demo, catch_exceptions=False)
+
+
+@pytest.mark.parametrize("exception", [EOFError(), KeyboardInterrupt(), click.Abort()])
+@contextmanagers
+def test_handle_tracebacks_ignored_exceptions(
+		exception,
+		contextmanager: Callable[..., ContextManager],
+		file_regression,
+		cli_runner: CliRunner,
+		):
+
+	@click.command()
+	def demo():
+
+		with contextmanager():
+			raise exception
+
+	result: Result = cli_runner.invoke(demo, catch_exceptions=False)
 
 	assert result.stdout.strip() == "Aborted!"
 	assert result.exit_code == 1
@@ -159,6 +175,7 @@ def test_handle_tracebacks_ignored_click(
 		contextmanager: Callable[..., ContextManager],
 		file_regression,
 		code: int,
+		cli_runner: CliRunner,
 		):
 
 	@click.command()
@@ -167,12 +184,8 @@ def test_handle_tracebacks_ignored_click(
 		with contextmanager():
 			raise exception
 
-	runner = CliRunner()
-
-	result: Result = runner.invoke(demo, catch_exceptions=False)
-
-	check_file_regression(result.stdout.rstrip(), file_regression)
-
+	result = cli_runner.invoke(demo, catch_exceptions=False)
+	result.check_stdout(file_regression)
 	assert result.exit_code == code
 
 
@@ -186,3 +199,17 @@ def test_is_command():
 	assert not is_command(int)
 	assert not is_command(lambda: True)
 	assert not is_command(math.ceil)
+
+
+def test_hidden_cursor(monkeypatch, capsys, data_regression: DataRegressionFixture):
+	monkeypatch.setattr(consolekit.terminal_colours, "resolve_color_default", lambda *args: True)
+
+	hide_cursor()
+	show_cursor()
+
+	with hidden_cursor():
+		click.echo(f"\r{next(solidus_spinner)}", nl=False)
+		click.echo(f"\r{next(solidus_spinner)}", nl=False)
+		click.echo(f"\r{next(solidus_spinner)}", nl=False)
+
+	data_regression.check(tuple(capsys.readouterr()))

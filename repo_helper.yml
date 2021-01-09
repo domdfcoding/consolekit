@@ -36,6 +36,10 @@ keywords:
 extras_require:
  terminals:
   - psutil>=5.8.0
+ testing:
+  - pytest>=6.0.0
+  - pytest-regressions>=2.0.2
+  - domdf_python_tools[testing]>=1.5.0
 
 tox_testenv_extras: all
 
@@ -43,3 +47,9 @@ third_party_version_matrix:
  click:
   - 7.1
   - 8.0.0a1
+
+extra_sphinx_extensions:
+ - sphinx_autofixture
+
+sphinx_conf_epilogue:
+ - toctree_plus_types.add("fixture")

@@ -86,15 +86,13 @@ from click.types import Path, convert_type
 
 # this package
 from consolekit._types import _ConvertibleType
+from consolekit.utils import hidden_cursor, hide_cursor, show_cursor  # noqa
 
 __all__ = [
 		"prompt",
 		"confirm",
 		"stderr_input",
 		"choice",
-		"hide_cursor",
-		"show_cursor",
-		"hidden_cursor",
 		]
 
 if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
@@ -395,43 +393,3 @@ def choice(
 				return selection
 		else:
 			return selection - start_index
-
-
-def hide_cursor() -> None:
-	"""
-	Hide the cursor.
-
-	To show it again use :func:`~.show_cursor`,
-	or use the :func:`~.hidden_cursor` context manager.
-
-	.. versionadded:: 0.7.0
-	"""
-
-	click.echo("\u001b[?25l", nl=False)
-
-
-def show_cursor() -> None:
-	"""
-	Show the cursor.
-
-	.. seealso:: The  :func:`~.hidden_cursor` context manager.
-
-	.. versionadded:: 0.7.0
-	"""
-
-	click.echo("\u001b[?25h", nl=False)
-
-
-@contextmanager
-def hidden_cursor() -> Iterator:
-	"""
-	Context manager to hide the cursor for the scope of the ``with`` block.
-
-	.. versionadded:: 0.7.0
-	"""
-
-	try:
-		hide_cursor()
-		yield
-	finally:
-		show_cursor()

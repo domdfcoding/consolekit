@@ -114,3 +114,34 @@ def test_prompt(capsys, monkeypatch, data_regression: DataRegressionFixture):
 	assert prompt(text="Password", type=click.STRING, confirmation_prompt=True) == "badpassword"
 
 	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
+
+
+@pytest.mark.parametrize("exception", [KeyboardInterrupt, EOFError])
+def test_prompt_abort(capsys, monkeypatch, data_regression: DataRegressionFixture, exception):
+
+	def fake_input(prompt):
+		print(f"{prompt}", end='')
+		raise exception
+
+	monkeypatch.setattr(click.termui, "visible_prompt_func", fake_input)
+
+	with pytest.raises(click.Abort, match="^$"):
+		prompt(text="Password", type=click.STRING, confirmation_prompt=True)
+
+	assert list(StringList(capsys.readouterr().out.splitlines())) == ["Password:"]
+
+
+@pytest.mark.parametrize("exception", [KeyboardInterrupt, EOFError])
+def test_confirm_abort(capsys, monkeypatch, data_regression: DataRegressionFixture, exception):
+
+	def fake_input(prompt):
+		print(f"{prompt}", end='')
+		raise exception
+
+	monkeypatch.setattr(click.termui, "visible_prompt_func", fake_input)
+
+	with pytest.raises(click.Abort, match="^$"):
+		confirm(text="Do you wish to delete all files in '/' ?", default=False)
+
+	expected = ["Do you wish to delete all files in '/' ? [y/N]:"]
+	assert list(StringList(capsys.readouterr().out.splitlines())) == expected

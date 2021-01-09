@@ -34,7 +34,7 @@ import sys
 from functools import lru_cache
 from itertools import cycle
 from types import ModuleType
-from typing import IO, Callable, ContextManager, List, Sequence
+from typing import IO, Callable, ContextManager, Iterator, List, Sequence
 
 # 3rd party
 import click
@@ -45,7 +45,7 @@ from mistletoe import block_token, span_token  # type: ignore
 from mistletoe.base_renderer import BaseRenderer  # type: ignore
 
 # this package
-from consolekit.terminal_colours import Colour, Cursor, Fore, Style, code_to_chars
+from consolekit import terminal_colours
 
 __all__ = [
 		"get_env_vars",
@@ -61,6 +61,7 @@ __all__ = [
 		"handle_tracebacks",
 		"traceback_handler",
 		"TerminalRenderer",
+		"hidden_cursor",
 		]
 
 
@@ -105,7 +106,7 @@ def abort(message: str) -> Exception:
 	:param message:
 	"""
 
-	click.echo(Fore.RED(message), err=True)
+	click.echo(terminal_colours.Fore.RED(message), err=True)
 	return click.Abort()
 
 
@@ -145,8 +146,8 @@ def coloured_diff(
 		tofiledate: str = '',
 		n: int = 3,
 		lineterm: str = '\n',
-		removed_colour: Colour = Fore.RED,
-		added_colour: Colour = Fore.GREEN,
+		removed_colour: terminal_colours.Colour = terminal_colours.Fore.RED,
+		added_colour: terminal_colours.Colour = terminal_colours.Fore.GREEN,
 		) -> str:
 	r"""
 	Compare two sequences of lines; generate the delta as a unified diff.
@@ -233,22 +234,52 @@ braille_spinner = cycle("⢿ ⣻ ⣽ ⣾ ⣷ ⣯ ⣟ ⡿ ".split(' '))
 
 def hide_cursor() -> None:
 	"""
-	Hides the cursor.
+	Hide the cursor.
+
+	To show it again use :func:`~.show_cursor`,
+	or use the :func:`~.hidden_cursor` context manager.
 
 	.. versionadded:: 0.7.0
 	"""
 
-	click.echo(Cursor.HIDE)
+	click.echo(
+			terminal_colours.Cursor.HIDE(),
+			nl=False,
+			color=terminal_colours.resolve_color_default(),
+			)
 
 
 def show_cursor() -> None:
 	"""
-	Shows the cursor.
+	Show the cursor.
+
+	.. seealso:: The  :func:`~.hidden_cursor` context manager.
 
 	.. versionadded:: 0.7.0
 	"""
 
-	click.echo(Cursor.SHOW)
+	click.echo(
+			terminal_colours.Cursor.SHOW(),
+			nl=False,
+			color=terminal_colours.resolve_color_default(),
+			)
+
+
+@contextlib.contextmanager
+def hidden_cursor() -> Iterator:
+	"""
+	Context manager to hide the cursor for the scope of the ``with`` block.
+
+	.. versionadded:: 0.7.0
+
+	.. versionchanged:: 0.9.0  Moved to :mod:`consolekit.utils`.
+	"""
+
+	try:
+		hide_cursor()
+		yield
+	finally:
+		show_cursor()
 
 
 nullcontext: Callable[..., ContextManager]
@@ -334,7 +365,7 @@ def _pycharm_terminal():
 		#: TODO: pycharm on Windows and macOS
 		return great_grandparent_name == "pycharm.sh"
 
-	except Exception:
+	except Exception:  # pragma: no cover
 		return False
 
 
@@ -359,7 +390,7 @@ class TerminalRenderer(BaseRenderer):
 		:param token: The token to render.
 		"""
 
-		return Style.BRIGHT(self.render_inner(token))
+		return terminal_colours.Style.BRIGHT(self.render_inner(token))
 
 	def render_emphasis(self, token: span_token.Emphasis) -> str:
 		"""
@@ -372,7 +403,11 @@ class TerminalRenderer(BaseRenderer):
 			# Pycharm terminal doesn't support italic escape
 			return SANS_SERIF_ITALIC_LETTERS(self.render_inner(token))
 
-		return f"{code_to_chars(3)}{self.render_inner(token)}{code_to_chars(23)}"
+		return ''.join([
+				terminal_colours.code_to_chars(3),
+				self.render_inner(token),
+				terminal_colours.code_to_chars(23),
+				])
 
 	def render_inline_code(self, token: span_token.InlineCode) -> str:
 		r"""

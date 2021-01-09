@@ -46,6 +46,7 @@ extensions = [
 		"sphinxcontrib.default_values",
 		"sphinxcontrib.toctree_plus",
 		"seed_intersphinx_mapping",
+		"sphinx_autofixture",
 		]
 
 sphinxemoji_style = "twemoji"
@@ -130,3 +131,5 @@ autodoc_default_options = {
 		"show-inheritance": None,
 		"exclude-members": ','.join(autodoc_exclude_members),
 		}
+
+toctree_plus_types.add("fixture")

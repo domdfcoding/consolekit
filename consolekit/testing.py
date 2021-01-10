@@ -69,6 +69,8 @@ from typing_extensions import Literal
 
 __all__ = ["CliRunner", "Result", "cli_runner"]
 
+_click_major = int(click.__version__.split('.')[0])
+
 
 class Result(click.testing.Result):
 	"""
@@ -99,14 +101,26 @@ class Result(click.testing.Result):
 			exception: Any,
 			exc_info: Optional[Any] = None,
 			) -> None:
-		super().__init__(
-				runner=runner,
-				stdout_bytes=stdout_bytes,
-				stderr_bytes=stderr_bytes,
-				exit_code=exit_code,
-				exception=exception,
-				exc_info=exc_info,
-				)
+
+		if _click_major >= 8:
+			super().__init__(
+					runner=runner,
+					stdout_bytes=stdout_bytes,
+					stderr_bytes=stderr_bytes,
+					exit_code=exit_code,
+					exception=exception,
+					exc_info=exc_info,
+					return_value=None,
+					)
+		else:
+			super().__init__(
+					runner=runner,
+					stdout_bytes=stdout_bytes,
+					stderr_bytes=stderr_bytes,
+					exit_code=exit_code,
+					exception=exception,
+					exc_info=exc_info,
+					)
 
 	@property
 	def output(self) -> str:

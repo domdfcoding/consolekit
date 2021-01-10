@@ -103,15 +103,15 @@ class Result(click.testing.Result):
 			) -> None:
 
 		if _click_major >= 8:
-			super().__init__(
-					runner=runner,
-					stdout_bytes=stdout_bytes,
-					stderr_bytes=stderr_bytes,
-					exit_code=exit_code,
-					exception=exception,
-					exc_info=exc_info,
-					return_value=None,
-					)
+			super().__init__(  # type: ignore
+				runner=runner,
+				stdout_bytes=stdout_bytes,
+				stderr_bytes=stderr_bytes,
+				exit_code=exit_code,
+				exception=exception,
+				exc_info=exc_info,
+				return_value=None,
+				)
 		else:
 			super().__init__(
 					runner=runner,

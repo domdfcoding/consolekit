@@ -208,7 +208,7 @@ class CliRunner(click.testing.CliRunner):  # noqa: D101
 		self,
 		cli: click.BaseCommand,
 		args: Optional[Union[str, Iterable[str]]] = None,
-		input: Optional[Union[bytes, str, IO]] = None,  # noqa: A002
+		input: Optional[Union[bytes, str, IO]] = None,  # noqa: A002  # pylint: disable=redefined-builtin
 		env: Optional[Mapping[str, str]] = None,
 		*,
 		catch_exceptions: bool = False,

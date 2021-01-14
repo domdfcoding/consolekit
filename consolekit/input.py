@@ -5,7 +5,7 @@
 Input functions (prompt, choice etc.).
 """
 #
-#  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal
@@ -75,12 +75,10 @@ Input functions (prompt, choice etc.).
 
 # stdlib
 import sys
-from contextlib import contextmanager
-from typing import IO, Any, Callable, Iterator, List, Mapping, Optional, Union, overload
+from typing import IO, Any, Callable, List, Mapping, Optional, Union, overload
 
 # 3rd party
 import click
-from click import UsageError
 from click.termui import _build_prompt, hidden_prompt_func
 from click.types import Path, convert_type
 
@@ -177,7 +175,7 @@ def prompt(
 
 		try:
 			result = value_proc(value)
-		except UsageError as e:
+		except click.UsageError as e:
 			click.echo(f"Error: {e.message}", err=err)  # noqa: B306
 			continue
 

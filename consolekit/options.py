@@ -7,7 +7,7 @@ Command line options.
 .. versionadded:: 0.4.0
 """
 #
-#  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal
@@ -64,7 +64,6 @@ from typing import Any, Callable, Iterable, List, Optional, Tuple, TypeVar, cast
 
 # 3rd party
 import click
-from click import Argument, Context, Option, OptionParser
 from click.decorators import _param_memo  # type: ignore
 
 # this package
@@ -122,7 +121,7 @@ def verbose_option(help_text: str = "Show verbose output.") -> Callable[[_C], _C
 	return click.option("-v", "--verbose", count=True, help=help_text, type=VerboseVersionCountType())
 
 
-def version_option(callback: Callable[[Context, Option, int], Any]) -> Callable[[_C], _C]:
+def version_option(callback: Callable[[click.Context, click.Option, int], Any]) -> Callable[[_C], _C]:
 	"""
 	Adds an option to show the version and exit.
 
@@ -244,7 +243,7 @@ def auto_default_option(*param_decls, **attrs) -> Callable[[_C], _C]:
 		if "help" in option_attrs:
 			option_attrs["help"] = inspect.cleandoc(option_attrs["help"])
 
-		OptionClass = option_attrs.pop("cls", Option)
+		OptionClass = option_attrs.pop("cls", click.Option)
 
 		option = OptionClass(param_decls, **option_attrs)
 		_param_memo(f, option)
@@ -282,7 +281,7 @@ def auto_default_argument(*param_decls, **attrs) -> Callable[[_C], _C]:
 	"""
 
 	def decorator(f: _C) -> _C:
-		ArgumentClass = attrs.pop("cls", Argument)
+		ArgumentClass = attrs.pop("cls", click.Argument)
 		argument = ArgumentClass(param_decls, **attrs)
 		_param_memo(f, argument)
 
@@ -366,7 +365,7 @@ class MultiValueOption(click.Option):
 		self._previous_parser_process: Optional[Callable] = None
 		self._eat_all_parser: Optional[click.parser.Option] = None
 
-	def add_to_parser(self, parser: OptionParser, ctx: Context):
+	def add_to_parser(self, parser: click.OptionParser, ctx: click.Context):
 		"""
 		Add the :class:`~.MultiValueOption` to the given parser.
 

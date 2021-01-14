@@ -7,7 +7,7 @@ Customised click commands and command groups.
 .. versionadded:: 0.8.0
 """
 #
-#  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal
@@ -116,7 +116,7 @@ class RawHelpMixin:
 		formatter.write('\n')
 
 
-class RawHelpCommand(RawHelpMixin, click.Command):
+class RawHelpCommand(RawHelpMixin, click.Command):  # lgtm [py/conflicting-attributes]
 	"""
 	Subclass of :class:`click.Command` which leaves the help text unformatted.
 
@@ -124,7 +124,7 @@ class RawHelpCommand(RawHelpMixin, click.Command):
 	"""
 
 
-class RawHelpGroup(RawHelpMixin, click.Group):
+class RawHelpGroup(RawHelpMixin, click.Group):  # lgtm [py/conflicting-attributes]
 	"""
 	Subclass of :class:`click.Group` which leaves the help text unformatted.
 
@@ -180,7 +180,7 @@ class MarkdownHelpMixin:
 		formatter.write('\n')
 
 
-class MarkdownHelpCommand(MarkdownHelpMixin, click.Command):
+class MarkdownHelpCommand(MarkdownHelpMixin, click.Command):  # lgtm [py/conflicting-attributes]
 	"""
 	Subclass of :class:`click.Command` which treats the help text as markdown
 	and prints a rendered representation.
@@ -226,7 +226,7 @@ class MarkdownHelpCommand(MarkdownHelpMixin, click.Command):
 		return args
 
 
-class MarkdownHelpGroup(MarkdownHelpMixin, click.Group):
+class MarkdownHelpGroup(MarkdownHelpMixin, click.Group):  # lgtm [py/conflicting-attributes]
 	"""
 	Subclass of :class:`click.Group` which treats the help text as markdown
 	and prints a rendered representation.

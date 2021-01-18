@@ -70,6 +70,7 @@ from mistletoe import block_token  # type: ignore
 
 # this package
 from consolekit.terminal_colours import ColourTrilean, resolve_color_default, strip_ansi
+from consolekit.utils import TerminalRenderer
 
 __all__ = [
 		"MarkdownHelpCommand",
@@ -80,9 +81,6 @@ __all__ = [
 		"RawHelpMixin",
 		"SuggestionGroup",
 		]
-
-# this package
-from consolekit.utils import TerminalRenderer
 
 _argument = Plural("argument", "arguments")
 

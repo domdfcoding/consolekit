@@ -65,7 +65,7 @@ See: http://en.wikipedia.org/wiki/ANSI_escape_code
 
 # stdlib
 from abc import ABC
-from typing import Deque, List, Optional, Union
+from typing import Deque, List, Optional, Type, TypeVar, Union
 
 # 3rd party
 from typing_extensions import Final
@@ -90,6 +90,8 @@ def clear_line(mode: int = ...) -> str: ...
 
 def strip_ansi(value: str) -> str: ...
 
+_C = TypeVar("_C", bound="Colour")
+
 
 class Colour(str):
 	style: str
@@ -100,6 +102,18 @@ class Colour(str):
 	def __enter__(self) -> None: ...
 	def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
 	def __call__(self, text) -> str: ...
+	@classmethod
+	def from_code(cls: Type[_C], code: Union[str, int], background: bool = False) -> _C: ...
+	@classmethod
+	def from_rgb(
+			cls: Type[_C],
+			r: Union[str, int],
+			g: Union[str, int],
+			b: Union[str, int],
+			background: bool = False
+			) -> _C: ...
+	@classmethod
+	def from_hex(cls: Type[_C], hex_colour: str, background: bool = False) -> _C: ...
 
 
 class AnsiCodes(ABC):

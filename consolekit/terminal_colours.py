@@ -73,7 +73,7 @@ import os
 import re
 from abc import ABC
 from collections import deque
-from typing import Deque, List, Optional, Pattern, Union
+from typing import Deque, List, Optional, Pattern, Type, TypeVar, Union
 
 # 3rd party
 import click
@@ -105,8 +105,11 @@ try:
 	# 3rd party
 	import colorama  # type: ignore
 	colorama.init()
+
 except ImportError:
 	pass
+
+_C = TypeVar("_C", bound="Colour")
 
 ColourTrilean = Optional[bool]
 """
@@ -225,6 +228,84 @@ class Colour(str):
 
 		return f"{self}{text}{self.reset}"
 
+	@classmethod
+	def from_code(cls: Type[_C], code: Union[str, int], background: bool = False) -> _C:
+		"""
+		Returns a :class:`~.Colour` to create coloured text.
+
+		The colour can be reset using :py:obj:`.Fore.RESET` or :py:obj:`.Back.RESET`.
+
+		.. versionadded:: 0.9.0
+
+		:param code: A 3- or 4- bit ANSI colour code.
+		:param background: Whether to set the colour for the background.
+		"""
+
+		if background:
+			stack = back_stack
+			reset = AnsiBack._reset
+		else:
+			stack = fore_stack
+			reset = AnsiFore._reset
+
+		return cls(code_to_chars(code), stack=stack, reset=reset)
+
+	@classmethod
+	def from_rgb(
+			cls: Type[_C],
+			r: Union[str, int],
+			g: Union[str, int],
+			b: Union[str, int],
+			background: bool = False
+			) -> _C:
+		"""
+		Returns a :class:`~.Colour` to create 24-bit coloured text.
+
+		The colour can be reset using :py:obj:`.Fore.RESET` or :py:obj:`.Back.RESET`.
+
+		.. versionadded:: 0.9.0
+
+		:param r:
+		:param g:
+		:param b:
+		:param background: Whether to set the colour for the background.
+		"""
+
+		if background:
+			template = CSI + "48;2;{r};{g};{b}m"
+			stack = back_stack
+			reset = AnsiBack._reset
+
+		else:
+			template = CSI + "38;2;{r};{g};{b}m"
+			stack = fore_stack
+			reset = AnsiFore._reset
+
+		return cls(template.format(r=r, g=g, b=b), stack=stack, reset=reset)
+
+	@classmethod
+	def from_hex(cls: Type[_C], hex_colour: str, background: bool = False) -> _C:
+		"""
+		Returns a :class:`~.Colour` to create 24-bit coloured text.
+
+		The colour can be reset using :py:obj:`.Fore.RESET` or :py:obj:`.Back.RESET`.
+
+		.. versionadded:: 0.9.0
+
+		:param hex_colour: The hex colour code.
+		:param background: Whether to set the colour for the background.
+		"""
+
+		# From https://stackoverflow.com/q/29643352
+		# https://stackoverflow.com/users/3924370/julian-white
+		# CC BY-SA 3.0
+
+		value = hex_colour.lstrip('#')
+		lv = len(value)
+		r, g, b = tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+
+		return cls.from_rgb(r, g, b, background=background)
+
 
 class AnsiCodes(ABC):
 	"""
@@ -306,7 +387,7 @@ class AnsiCursor:
 		.. versionadded:: 0.7.0
 		"""
 
-		return "\u001b[?25l"
+		return f"{CSI}?25l"
 
 	def SHOW(self) -> str:
 		"""
@@ -315,7 +396,7 @@ class AnsiCursor:
 		.. versionadded:: 0.7.0
 		"""
 
-		return "\u001b[?25h"
+		return f"{CSI}?25h"
 
 
 class AnsiFore(AnsiCodes):
@@ -346,7 +427,7 @@ class AnsiFore(AnsiCodes):
 	"""
 
 	_stack = fore_stack
-	_reset = "\u001b[39m"
+	_reset = f"{CSI}39m"
 
 	BLACK = 30
 	RED = 31
@@ -397,7 +478,7 @@ class AnsiBack(AnsiCodes):
 	"""
 
 	_stack = back_stack
-	_reset = "\u001b[49m"
+	_reset = f"{CSI}49m"
 
 	BLACK = 40
 	RED = 41
@@ -435,7 +516,7 @@ class AnsiStyle(AnsiCodes):
 	"""
 
 	_stack = style_stack
-	_reset = "\u001b[22m"
+	_reset = f"{CSI}22m"
 
 	BRIGHT = 1
 	DIM = 2

@@ -1,3 +1,6 @@
+# stdlib
+from collections import deque
+
 # this package
 from consolekit import terminal_colours
 
@@ -9,9 +12,9 @@ def test_terminal_colours_constants():
 
 
 def test_terminal_colours_stacks():
-	assert terminal_colours.fore_stack == [terminal_colours.Fore.RESET]
-	assert terminal_colours.back_stack == [terminal_colours.Back.RESET]
-	assert terminal_colours.style_stack == [terminal_colours.Style.NORMAL]
+	assert terminal_colours.fore_stack == deque([terminal_colours.Fore.RESET])
+	assert terminal_colours.back_stack == deque([terminal_colours.Back.RESET])
+	assert terminal_colours.style_stack == deque([terminal_colours.Style.NORMAL])
 
 
 def test_terminal_colours_functions():

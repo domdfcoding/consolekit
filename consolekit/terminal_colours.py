@@ -72,7 +72,8 @@ This module generates ANSI character codes to printing colors to terminals.
 import os
 import re
 from abc import ABC
-from typing import List, Optional, Pattern
+from collections import deque
+from typing import Deque, List, Optional, Pattern, Union
 
 # 3rd party
 import click
@@ -118,9 +119,9 @@ CSI: Final[str] = "\u001b["
 OSC: Final[str] = "\u001b]"
 BEL: Final[str] = '\x07'
 
-fore_stack: List[str] = []
-back_stack: List[str] = []
-style_stack: List[str] = []
+fore_stack: Deque[str] = deque()
+back_stack: Deque[str] = deque()
+style_stack: Deque[str] = deque()
 
 
 def resolve_color_default(color: ColourTrilean = None) -> ColourTrilean:
@@ -198,9 +199,9 @@ class Colour(str):
 
 	style: str
 	reset: str
-	stack: List[str]
+	stack: Union[Deque[str], List[str]]
 
-	def __new__(cls, style: str, stack: List[str], reset: str) -> "Colour":  # noqa D102
+	def __new__(cls, style: str, stack: Union[Deque[str], List[str]], reset: str) -> "Colour":  # noqa D102
 		color = super().__new__(cls, style)  # type: ignore
 		color.style = style
 		color.stack = stack
@@ -230,7 +231,7 @@ class AnsiCodes(ABC):
 	Abstract base class for ANSI Codes.
 	"""
 
-	_stack: List[str]
+	_stack: Union[Deque[str], List[str]]
 	_reset: str
 
 	def __init__(self) -> None:

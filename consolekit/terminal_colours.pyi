@@ -65,7 +65,7 @@ See: http://en.wikipedia.org/wiki/ANSI_escape_code
 
 # stdlib
 from abc import ABC
-from typing import List, Optional
+from typing import Deque, List, Optional, Union
 
 # 3rd party
 from typing_extensions import Final
@@ -76,9 +76,9 @@ CSI: Final[str]
 OSC: Final[str]
 BEL: Final[str]
 
-fore_stack: List[str]
-back_stack: List[str]
-style_stack: List[str]
+fore_stack: Deque[str]
+back_stack: Deque[str]
+style_stack: Deque[str]
 
 
 def resolve_color_default(color: Optional[bool] = ...) -> Optional[bool]: ...
@@ -94,16 +94,16 @@ def strip_ansi(value: str) -> str: ...
 class Colour(str):
 	style: str
 	reset: str
-	stack: List[str]
+	stack: Union[Deque[str], List[str]]
 
-	def __new__(cls, style: str, stack: List[str], reset: str) -> "Colour": ...
+	def __new__(cls, style: str, stack: Union[Deque[str], List[str]], reset: str) -> "Colour": ...
 	def __enter__(self) -> None: ...
 	def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
 	def __call__(self, text) -> str: ...
 
 
 class AnsiCodes(ABC):
-	_stack: List[str]
+	_stack: Union[Deque[str], List[str]]
 	_reset: str
 
 	def __init__(self) -> None: ...

@@ -153,7 +153,8 @@ To install with ``conda``:
 
 .. end installation
 
-Additionally, for better support, install `psutil <https://pypi.org/project/psutil/>`_ by specifying the ``terminals`` extra:
+Additionally, for better support in terminals,
+install `psutil <https://pypi.org/project/psutil/>`_ by specifying the ``terminals`` extra:
 
 .. code-block:: bash
 

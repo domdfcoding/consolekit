@@ -136,6 +136,14 @@ Installation
 
 .. end installation
 
+Additionally, for better support in terminals,
+install `psutil <https://pypi.org/project/psutil/>`_ by specifying the ``terminals`` extra:
+
+.. prompt:: bash
+
+	python -m pip install consolekit[terminals]
+
+
 .. toctree::
 	:hidden:
 

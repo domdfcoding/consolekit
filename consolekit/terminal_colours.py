@@ -73,10 +73,12 @@ import os
 import re
 from abc import ABC
 from collections import deque
-from typing import Deque, List, Optional, Pattern, Type, TypeVar, Union
+from functools import partial
+from typing import Deque, Iterable, List, Optional, Pattern, Type, TypeVar, Union
 
 # 3rd party
 import click
+from domdf_python_tools.iterative import chunks
 from typing_extensions import Final
 
 __all__ = [
@@ -239,6 +241,13 @@ class Colour(str):
 
 		:param code: A 3- or 4- bit ANSI colour code.
 		:param background: Whether to set the colour for the background.
+
+		:rtype:
+
+		.. note::
+
+			The ``background`` option only influences the reset value and the stack used.
+			It will not handle conversion of foreground codes to background codes etc.
 		"""
 
 		if background:
@@ -249,6 +258,33 @@ class Colour(str):
 			reset = AnsiFore._reset
 
 		return cls(code_to_chars(code), stack=stack, reset=reset)
+
+	@classmethod
+	def from_256_code(cls: Type[_C], code: Union[str, int], background: bool = False) -> _C:
+		"""
+		Returns a :class:`~.Colour` to create 256-colour text.
+
+		The colour can be reset using :py:obj:`.Fore.RESET` or :py:obj:`.Back.RESET`.
+
+		.. versionadded:: 0.9.0
+
+		.. note:: Not all terminals support 256-colour mode.
+
+		:param code: A 256-colour ANSI code.
+		:param background: Whether to set the colour for the background.
+		"""
+
+		if background:
+			stack = back_stack
+			reset = AnsiBack._reset
+			template = CSI + "48;5;{}m"
+
+		else:
+			stack = fore_stack
+			reset = AnsiFore._reset
+			template = CSI + "38;5;{}m"
+
+		return cls(template.format(code), stack=stack, reset=reset)
 
 	@classmethod
 	def from_rgb(
@@ -264,6 +300,8 @@ class Colour(str):
 		The colour can be reset using :py:obj:`.Fore.RESET` or :py:obj:`.Back.RESET`.
 
 		.. versionadded:: 0.9.0
+
+		.. note:: Not all terminals support 24-bit colours.
 
 		:param r:
 		:param g:
@@ -292,6 +330,8 @@ class Colour(str):
 
 		.. versionadded:: 0.9.0
 
+		.. note:: Not all terminals support 24-bit colours.
+
 		:param hex_colour: The hex colour code.
 		:param background: Whether to set the colour for the background.
 		"""
@@ -305,6 +345,51 @@ class Colour(str):
 		r, g, b = tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
 
 		return cls.from_rgb(r, g, b, background=background)
+
+
+def print_256_colour_testpattern() -> None:
+	"""
+	Print a 256-colour test pattern to the terminal.
+
+	.. versionadded:: 0.9.0
+
+	.. note:: Not all terminals support 24-bit colours.
+	"""
+
+	def print_heading(text: str, block_size: int = 3, n_blocks: int = 36):
+		click.echo()
+		click.echo(str(text).center(((block_size + 1) * n_blocks) - 1, '-'))
+
+	def print_line(values: Iterable[int], block_size: int = 3):
+		values = list(values)
+		mid = len(values) // 2
+
+		colour: Optional[bool] = resolve_color_default()
+		echo = partial(click.echo, nl=False, color=colour)
+
+		for code in values[:mid]:
+			echo(Colour.from_256_code(code, background=True)(str(code).center(block_size)) + ' ')
+		with Fore.BLACK:
+			for code in values[mid:]:
+				echo(Colour.from_256_code(code, background=True)(str(code).center(block_size)) + ' ')
+		click.echo()
+
+	print_heading(
+			"Standard Colours".center((9 * 8) - 1, '-') + ' ' + "High-Intensity Colours".center((9 * 8) - 1, '-'),
+			block_size=8,
+			n_blocks=16
+			)
+
+	print_line(range(16), block_size=8)
+
+	print_heading("216 Colours")
+	for row in chunks(range(16, 232), 36):
+		print_line(row)
+
+	print_heading("Greyscale Colours", block_size=5, n_blocks=24)
+	print_line(range(232, 256), block_size=5)
+
+	click.echo('\n')
 
 
 class AnsiCodes(ABC):
@@ -532,3 +617,6 @@ Cursor = AnsiCursor()
 fore_stack.append(Fore.RESET)
 back_stack.append(Back.RESET)
 style_stack.append(Style.NORMAL)
+
+if __name__ == "__main__":
+	print_256_colour_testpattern()

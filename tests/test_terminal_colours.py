@@ -1,8 +1,13 @@
 # stdlib
 from collections import deque
 
+# 3rd party
+from domdf_python_tools.testing import check_file_regression
+from pytest_regressions.file_regression import FileRegressionFixture
+
 # this package
 from consolekit import terminal_colours
+from consolekit.terminal_colours import Colour, print_256_colour_testpattern, strip_ansi
 
 
 def test_terminal_colours_constants():
@@ -62,3 +67,46 @@ def test_ansi_cursor():
 	assert terminal_colours.Cursor.POS(2, 2) == "\u001b[2;2H"
 	assert terminal_colours.Cursor.POS(3, 3) == "\u001b[3;3H"
 	assert terminal_colours.Cursor.POS(x=2, y=3) == "\u001b[3;2H"
+
+
+class TestColour:
+
+	def test_from_code(self):
+		black = Colour.from_code(30)
+		assert black == "\u001b[30m"
+		assert black("Hello") == "\u001b[30mHello\u001b[39m"
+
+		black = Colour.from_code(40, background=True)
+		assert black == "\u001b[40m"
+		assert black("Hello") == "\u001b[40mHello\u001b[49m"
+
+	def test_from_rgb(self):
+		yellow = Colour.from_rgb(252, 186, 3)
+		assert yellow == "\u001b[38;2;252;186;3m"
+		assert yellow("Hello") == "\u001b[38;2;252;186;3mHello\u001b[39m"
+
+		yellow = Colour.from_rgb(252, 186, 3, background=True)
+		assert yellow == "\u001b[48;2;252;186;3m"
+		assert yellow("Hello") == "\u001b[48;2;252;186;3mHello\u001b[49m"
+
+	def test_from_hex(self):
+		yellow = Colour.from_hex("#fcba03")
+		assert yellow == "\u001b[38;2;252;186;3m"
+		assert yellow("Hello") == "\u001b[38;2;252;186;3mHello\u001b[39m"
+
+		yellow = Colour.from_hex("#fcba03", background=True)
+		assert yellow == "\u001b[48;2;252;186;3m"
+		assert yellow("Hello") == "\u001b[48;2;252;186;3mHello\u001b[49m"
+
+
+def test_print_256_colour_testpattern(
+		monkeypatch,
+		file_regression: FileRegressionFixture,
+		capsys,
+		):
+	monkeypatch.setattr(terminal_colours, "resolve_color_default", lambda *args: False)
+
+	# Checks only the structure, not the colours
+	print_256_colour_testpattern()
+
+	check_file_regression(strip_ansi(capsys.readouterr().out.strip()), file_regression)

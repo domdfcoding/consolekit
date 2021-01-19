@@ -370,9 +370,12 @@ def print_256_colour_testpattern() -> None:
 		for code in values[:mid]:
 			echo(Colour.from_256_code(code, background=True)(str(code).center(block_size)) + ' ')
 		with Fore.BLACK:
-			for code in values[mid:]:
+			for code in values[mid:-1]:
 				echo(Colour.from_256_code(code, background=True)(str(code).center(block_size)) + ' ')
-		click.echo()
+			click.echo(
+					Colour.from_256_code(values[-1], background=True)(str(values[-1]).center(block_size).rstrip()),
+					color=colour
+					)
 
 	print_heading(
 			"Standard Colours".center((9 * 8) - 1, '-') + ' ' + "High-Intensity Colours".center((9 * 8) - 1, '-'),

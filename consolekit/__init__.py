@@ -3,6 +3,18 @@
 #  __init__.py
 """
 Additional utilities for `click <https://click.palletsprojects.com/en/7.x/>`_.
+
+.. attention::
+
+	``consolekit`` disables Python's readline history to prevent unrelated histories appearing for prompts.
+	If the original behaviour is desired run:
+
+	.. code-block:: python
+
+		import readline
+		readline.set_history_length(-1)
+		readline.set_auto_history(True)
+
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>

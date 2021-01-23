@@ -99,8 +99,7 @@ if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
 		# stdlib
 		import readline
 		readline.set_history_length(0)
-		# Ref: https://github.com/python/typeshed/pull/4688
-		readline.set_auto_history(False)  # type: ignore  # TODO
+		readline.set_auto_history(False)
 	except (ImportError, AttributeError):
 		# Attribute error on PyPy, ImportError on Windows etc.
 		pass

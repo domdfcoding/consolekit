@@ -180,8 +180,6 @@ def strip_ansi(value: str) -> str:
 	"""
 	Strip ANSI colour codes from the given string to return a plaintext output.
 
-	.. versionadded:: 1.1.0
-
 	:param value:
 	"""
 

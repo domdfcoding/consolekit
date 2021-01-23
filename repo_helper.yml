@@ -53,3 +53,5 @@ extra_sphinx_extensions:
 
 sphinx_conf_epilogue:
  - toctree_plus_types.add("fixture")
+
+mypy_version: "0.800"

@@ -145,7 +145,10 @@ def traceback_handler():
 		yield
 
 
-def handle_tracebacks(show_traceback: bool = False, cls: Type[TracebackHandler] = TracebackHandler) -> ContextManager:
+def handle_tracebacks(
+		show_traceback: bool = False,
+		cls: Type[TracebackHandler] = TracebackHandler,
+		) -> ContextManager:
 	"""
 	Context manager to conditionally handle tracebacks, usually based on the value of a command line flag.
 

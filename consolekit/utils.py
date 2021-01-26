@@ -3,6 +3,12 @@
 #  utils.py
 """
 Utility functions.
+
+.. versionchanged:: 1.0.0
+
+	:func:`~.tracebacks.traceback_handler` and :func:`~.tracebacks.handle_tracebacks`
+	moved to :mod:`consolekit.tracebacks`.
+	They will still be importable from here until v2.0.0
 """
 #
 #  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -30,11 +36,10 @@ Utility functions.
 import contextlib
 import difflib
 import os
-import sys
 from functools import lru_cache
 from itertools import cycle
 from types import ModuleType
-from typing import IO, Callable, ContextManager, Iterator, List, Sequence
+from typing import IO, Iterator, List, Sequence
 
 # 3rd party
 import click
@@ -46,6 +51,7 @@ from mistletoe.base_renderer import BaseRenderer  # type: ignore
 
 # this package
 from consolekit import terminal_colours
+from consolekit.tracebacks import handle_tracebacks, traceback_handler
 
 __all__ = [
 		"get_env_vars",
@@ -63,6 +69,8 @@ __all__ = [
 		"TerminalRenderer",
 		"hidden_cursor",
 		]
+
+# TODO: Raise deprecation warning for handle_tracebacks and traceback_handler
 
 
 def get_env_vars(ctx, args, incomplete):  # noqa: D103
@@ -280,70 +288,6 @@ def hidden_cursor() -> Iterator:
 		yield
 	finally:
 		show_cursor()
-
-
-nullcontext: Callable[..., ContextManager]
-
-if sys.version_info < (3, 7):  # pragma: no cover (py37+)
-
-	@contextlib.contextmanager
-	def nullcontext():
-		yield
-else:  # pragma: no cover (<py37)
-	nullcontext = contextlib.nullcontext
-
-
-@contextlib.contextmanager
-def traceback_handler():
-	"""
-	Context manager to abort execution with a short error message on the following exception types:
-
-	* :exc:`FileNotFoundError`
-	* :exc:`FileExistsError`
-
-	Other custom exception classes inheriting from :exc:`Exception` are also handled,
-	but with a generic message.
-
-	The following exception classes are ignored:
-
-	* :exc:`EOFError`
-	* :exc:`KeyboardInterrupt`
-	* :exc:`click.ClickException`
-
-	.. versionadded:: 0.8.0
-
-	.. seealso:: :func:`~.handle_tracebacks`.
-	"""  # noqa: D400
-
-	try:
-		yield
-	except (EOFError, KeyboardInterrupt, click.ClickException, click.Abort):
-		raise
-	except FileNotFoundError as e:
-		raise abort(f"File Not Found: {e}")
-	except FileExistsError as e:
-		raise abort(f"File Exists: {e}")
-	except Exception as e:
-		raise abort(f"An error occurred: {e}")
-
-
-def handle_tracebacks(show_traceback: bool = False) -> ContextManager:
-	"""
-	Context manager to conditionally handle tracebacks, usually based on the value of a command line flag.
-
-	.. versionadded:: 0.8.0
-
-	:param show_traceback: If :py:obj:`True`, the full Python traceback will be shown on errors.
-		If :py:obj:`False`, only the summary of the traceback will be shown.
-		In either case the program execution will stop on error.
-
-	.. seealso:: :func:`~.traceback_handler`.
-	"""
-
-	if show_traceback:
-		return nullcontext()
-	else:
-		return traceback_handler()
 
 
 @lru_cache(1)

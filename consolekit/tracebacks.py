@@ -30,15 +30,11 @@ Functions for handling exceptions and their tracebacks.
 
 # stdlib
 import contextlib
-from typing import Callable, ContextManager, TypeVar
+from typing import Callable, ContextManager, Type, TypeVar
 
 # 3rd party
 import click
 from domdf_python_tools.compat import nullcontext
-
-# this package
-from consolekit.options import flag_option
-from consolekit.utils import abort
 
 __all__ = ["TracebackHandler", "handle_tracebacks", "traceback_handler", "traceback_option"]
 
@@ -85,12 +81,24 @@ class TracebackHandler:
 		raise e
 
 	def handle_FileNotFoundError(self, e: FileNotFoundError) -> bool:
+
+		# this package
+		from consolekit.utils import abort
+
 		raise abort(f"File Not Found: {e}")
 
 	def handle_FileExistsError(self, e: FileExistsError) -> bool:
+
+		# this package
+		from consolekit.utils import abort
+
 		raise abort(f"File Exists: {e}")
 
 	def handle(self, e: Exception) -> bool:
+
+		# this package
+		from consolekit.utils import abort
+
 		if hasattr(self, f"handle_{e.__class__.__name__}"):
 			return getattr(self, f"handle_{e.__class__.__name__}")(e)
 
@@ -137,7 +145,7 @@ def traceback_handler():
 		yield
 
 
-def handle_tracebacks(show_traceback: bool = False, cls: TracebackHandler = TracebackHandler) -> ContextManager:
+def handle_tracebacks(show_traceback: bool = False, cls: Type[TracebackHandler] = TracebackHandler) -> ContextManager:
 	"""
 	Context manager to conditionally handle tracebacks, usually based on the value of a command line flag.
 
@@ -172,5 +180,8 @@ def traceback_option(help_text="Show the complete traceback on error.") -> Calla
 
 	:param help_text: The help text for the option.
 	"""
+
+	# this package
+	from consolekit.options import flag_option
 
 	return flag_option("-T", "--traceback", "show_traceback", help=help_text)

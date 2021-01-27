@@ -53,7 +53,7 @@ from consolekit.options import _Option
 __author__: str = "Dominic Davis-Foster"
 __copyright__: str = "2020 Dominic Davis-Foster"
 __license__: str = "MIT License"
-__version__: str = "0.9.0"
+__version__: str = "1.0.0"
 __email__: str = "dominic@davis-foster.co.uk"
 
 if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover

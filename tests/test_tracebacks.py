@@ -100,7 +100,7 @@ def test_handle_tracebacks_ignored_exceptions(
 		contextmanager: Callable[..., ContextManager],
 		):
 
-	with pytest.raises(exception):
+	with pytest.raises(exception):  # noqa: PT012
 		with contextmanager():
 			raise exception
 

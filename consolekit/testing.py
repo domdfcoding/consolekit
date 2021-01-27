@@ -63,7 +63,7 @@ from typing import IO, Any, Iterable, Mapping, Optional, Union
 # 3rd party
 import click.testing
 import pytest  # nodep
-from coincidence import check_file_regression
+from coincidence.regressions import check_file_regression  # nodep
 from pytest_regressions.file_regression import FileRegressionFixture  # nodep
 from typing_extensions import Literal
 

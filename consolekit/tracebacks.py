@@ -68,26 +68,26 @@ class TracebackHandler:
 	.. seealso:: :func:`~.handle_tracebacks`.
 	"""  # noqa: D400
 
-	def handle_EOFError(self, e: EOFError) -> bool:
+	def handle_EOFError(self, e: EOFError) -> bool:  # noqa: D102
 		raise e
 
-	def handle_KeyboardInterrupt(self, e: KeyboardInterrupt) -> bool:
+	def handle_KeyboardInterrupt(self, e: KeyboardInterrupt) -> bool:  # noqa: D102
 		raise e
 
-	def handle_ClickException(self, e: click.ClickException) -> bool:
+	def handle_ClickException(self, e: click.ClickException) -> bool:  # noqa: D102
 		raise e
 
-	def handle_Abort(self, e: click.Abort) -> bool:
+	def handle_Abort(self, e: click.Abort) -> bool:  # noqa: D102
 		raise e
 
-	def handle_FileNotFoundError(self, e: FileNotFoundError) -> bool:
+	def handle_FileNotFoundError(self, e: FileNotFoundError) -> bool:  # noqa: D102
 
 		# this package
 		from consolekit.utils import abort
 
 		raise abort(f"File Not Found: {e}")
 
-	def handle_FileExistsError(self, e: FileExistsError) -> bool:
+	def handle_FileExistsError(self, e: FileExistsError) -> bool:  # noqa: D102
 
 		# this package
 		from consolekit.utils import abort
@@ -95,6 +95,11 @@ class TracebackHandler:
 		raise abort(f"File Exists: {e}")
 
 	def handle(self, e: BaseException) -> bool:
+		"""
+		Handle the given exception.
+
+		:param e:
+		"""
 
 		# this package
 		from consolekit.utils import abort
@@ -112,6 +117,10 @@ class TracebackHandler:
 
 	@contextlib.contextmanager
 	def __call__(self):
+		"""
+		Use the :class:`~.TracebackHandler` with a :keyword:`with` block, and handle any exceptions raised within.
+		"""
+
 		try:
 			yield
 		except BaseException as e:

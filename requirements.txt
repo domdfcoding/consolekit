@@ -1,5 +1,5 @@
 click>=7.1.2
 colorama>=0.4.3; python_version < "3.10"
-domdf-python-tools>=2.1.0
+domdf-python-tools>=2.5.1
 mistletoe>=0.7.2
 typing-extensions>=3.7.4.3

@@ -1,15 +1,11 @@
 # stdlib
 import math
-import re
 import sys
-from typing import Callable, ContextManager
 
 # 3rd party
 import click
-import pytest
+from coincidence.regressions import AdvancedDataRegressionFixture, check_file_regression
 from domdf_python_tools.paths import PathPlus
-from domdf_python_tools.testing import check_file_regression
-from pytest_regressions.data_regression import DataRegressionFixture
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
@@ -19,11 +15,11 @@ from consolekit.utils import (
 		coloured_diff,
 		hidden_cursor,
 		hide_cursor,
+		import_commands,
 		is_command,
 		overtype,
 		show_cursor,
-		solidus_spinner,
-		traceback_handler
+		solidus_spinner
 		)
 
 
@@ -90,7 +86,7 @@ def test_is_command():
 	assert not is_command(math.ceil)
 
 
-def test_hidden_cursor(monkeypatch, capsys, data_regression: DataRegressionFixture):
+def test_hidden_cursor(monkeypatch, capsys, advanced_data_regression: AdvancedDataRegressionFixture):
 	monkeypatch.setattr(consolekit.terminal_colours, "resolve_color_default", lambda *args: True)
 
 	hide_cursor()
@@ -101,4 +97,17 @@ def test_hidden_cursor(monkeypatch, capsys, data_regression: DataRegressionFixtu
 		click.echo(f"\r{next(solidus_spinner)}", nl=False)
 		click.echo(f"\r{next(solidus_spinner)}", nl=False)
 
-	data_regression.check(tuple(capsys.readouterr()))
+	advanced_data_regression.check(tuple(capsys.readouterr()))
+
+
+def test_import_commands():
+	# this package
+	from tests import import_commands_demo
+
+	commands = import_commands(import_commands_demo)
+	assert commands == [
+			import_commands_demo.command1,
+			import_commands_demo.commando,
+			import_commands_demo.submodule.command2,
+			import_commands_demo.submodule.group2,
+			]

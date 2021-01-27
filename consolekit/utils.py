@@ -39,7 +39,7 @@ import os
 from functools import lru_cache
 from itertools import cycle
 from types import ModuleType
-from typing import IO, Iterator, List, Sequence
+from typing import IO, Iterator, List, Optional, Sequence
 
 # 3rd party
 import click
@@ -87,7 +87,7 @@ def is_command(obj) -> bool:
 	return isinstance(obj, click.Command)
 
 
-def import_commands(source: ModuleType, entry_point: str) -> List[click.Command]:
+def import_commands(source: Optional[ModuleType] = None, entry_point: Optional[str] = None) -> List[click.Command]:
 	"""
 	Returns a list of all commands.
 
@@ -102,9 +102,14 @@ def import_commands(source: ModuleType, entry_point: str) -> List[click.Command]
 	:param entry_point:
 	"""
 
-	local_commands = discover(source, is_command, exclude_side_effects=False)
-	third_party_commands = discover_entry_points(entry_point, is_command)
-	return [*local_commands, *third_party_commands]
+	all_commands = []
+
+	if source is not None:
+		all_commands.extend(discover(source, is_command, exclude_side_effects=False))
+	if entry_point is not None:
+		all_commands.extend(discover_entry_points(entry_point, is_command))
+
+	return all_commands
 
 
 def abort(message: str) -> Exception:

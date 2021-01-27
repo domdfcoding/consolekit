@@ -6,7 +6,7 @@ from typing import Tuple
 # 3rd party
 import click
 import pytest
-from domdf_python_tools.testing import not_windows
+from coincidence import not_windows
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package

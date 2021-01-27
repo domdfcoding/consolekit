@@ -75,10 +75,9 @@ def test_handle_tracebacks_show_traceback(
 
 @pytest.mark.parametrize("exception", [EOFError(), KeyboardInterrupt(), click.Abort()])
 @contextmanagers
-def test_handle_tracebacks_ignored_exceptions(
+def test_handle_tracebacks_ignored_exceptions_click(
 		exception,
 		contextmanager: Callable[..., ContextManager],
-		file_regression,
 		cli_runner: CliRunner,
 		):
 
@@ -92,6 +91,18 @@ def test_handle_tracebacks_ignored_exceptions(
 
 	assert result.stdout.strip() == "Aborted!"
 	assert result.exit_code == 1
+
+
+@pytest.mark.parametrize("exception", [EOFError, KeyboardInterrupt, click.Abort])
+@contextmanagers
+def test_handle_tracebacks_ignored_exceptions(
+		exception,
+		contextmanager: Callable[..., ContextManager],
+		):
+
+	with pytest.raises(exception):
+		with contextmanager():
+			raise exception
 
 
 @pytest.mark.parametrize(

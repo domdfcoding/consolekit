@@ -94,13 +94,15 @@ class TracebackHandler:
 
 		raise abort(f"File Exists: {e}")
 
-	def handle(self, e: Exception) -> bool:
+	def handle(self, e: BaseException) -> bool:
 
 		# this package
 		from consolekit.utils import abort
 
-		if hasattr(self, f"handle_{e.__class__.__name__}"):
-			return getattr(self, f"handle_{e.__class__.__name__}")(e)
+		exception_name = e.__class__.__name__
+
+		if hasattr(self, f"handle_{exception_name}"):
+			return getattr(self, f"handle_{exception_name}")(e)
 
 		for base in e.__class__.__mro__:
 			if hasattr(self, f"handle_{base.__name__}"):
@@ -112,7 +114,7 @@ class TracebackHandler:
 	def __call__(self):
 		try:
 			yield
-		except Exception as e:
+		except BaseException as e:
 			self.handle(e)
 
 

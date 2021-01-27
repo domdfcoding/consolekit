@@ -27,7 +27,7 @@ conda_channels:
  - conda-forge
 
 additional_ignore:
- - consolekit/_command.py
+ - _command.py
 
 keywords:
  - click
@@ -55,3 +55,4 @@ sphinx_conf_epilogue:
  - toctree_plus_types.add("fixture")
 
 mypy_version: "0.800"
+min_coverage: 90

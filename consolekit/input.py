@@ -307,8 +307,7 @@ def choice(
 		show_default: bool = ...,
 		err: bool = ...,
 		start_index: int = ...
-		) -> int:
-	...  # pragma: no cover
+		) -> int: ...
 
 
 @overload
@@ -320,8 +319,7 @@ def choice(
 		show_default: bool = ...,
 		err: bool = ...,
 		start_index: int = ...
-		) -> str:
-	...  # pragma: no cover
+		) -> str: ...
 
 
 def choice(

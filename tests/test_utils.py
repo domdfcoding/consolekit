@@ -82,8 +82,7 @@ def test_coloured_diff(file_regression: FileRegressionFixture):
 def test_is_command():
 
 	@click_command()
-	def main():
-		...
+	def main(): ...
 
 	assert is_command(main)
 	assert not is_command(int)

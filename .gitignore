@@ -85,4 +85,4 @@ profile_default/
 ipython_config.py
 Pipfile.lock
 .pyre/
-consolekit/_command.py
+_command.py

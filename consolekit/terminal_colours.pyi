@@ -80,19 +80,16 @@ fore_stack: Deque[str]
 back_stack: Deque[str]
 style_stack: Deque[str]
 
-
 def resolve_color_default(color: Optional[bool] = ...) -> Optional[bool]: ...
 def code_to_chars(code) -> str: ...
 def set_title(title: str) -> str: ...
+
 # def clear_screen(mode: int = ...) -> str: ...
+
 def clear_line(mode: int = ...) -> str: ...
-
-
 def strip_ansi(value: str) -> str: ...
 
-
 _C = TypeVar("_C", bound="Colour")
-
 
 class Colour(str):
 	style: str
@@ -101,6 +98,7 @@ class Colour(str):
 
 	def __new__(cls, style: str, stack: Union[Deque[str], List[str]], reset: str) -> "Colour": ...
 	def __enter__(self) -> None: ...
+
 	def __exit__(self, exc_type, exc_val, exc_tb) -> None: ...
 	def __call__(self, text) -> str: ...
 
@@ -122,16 +120,13 @@ class Colour(str):
 	@classmethod
 	def from_hex(cls: Type[_C], hex_colour: str, background: bool = ...) -> _C: ...
 
-
 def print_256_colour_testpattern() -> None: ...
-
 
 class AnsiCodes(ABC):
 	_stack: Union[Deque[str], List[str]]
 	_reset: str
 
 	def __init__(self) -> None: ...
-
 
 class AnsiCursor:
 
@@ -143,9 +138,7 @@ class AnsiCursor:
 	def HIDE(self) -> str: ...
 	def SHOW(self) -> str: ...
 
-
 class AnsiFore(AnsiCodes):
-
 	BLACK: Colour
 	RED: Colour
 	GREEN: Colour
@@ -155,7 +148,6 @@ class AnsiFore(AnsiCodes):
 	CYAN: Colour
 	WHITE: Colour
 	RESET: Colour
-
 	# These are fairly well supported, but not part of the standard.
 	LIGHTBLACK_EX: Colour
 	LIGHTRED_EX: Colour
@@ -165,13 +157,10 @@ class AnsiFore(AnsiCodes):
 	LIGHTMAGENTA_EX: Colour
 	LIGHTCYAN_EX: Colour
 	LIGHTWHITE_EX: Colour
-
 
 class AnsiBack(AnsiCodes):
-
 	_stack: List[str]
 	_reset: str
-
 	BLACK: Colour
 	RED: Colour
 	GREEN: Colour
@@ -181,7 +170,6 @@ class AnsiBack(AnsiCodes):
 	CYAN: Colour
 	WHITE: Colour
 	RESET: Colour
-
 	# These are fairly well supported, but not part of the standard.
 	LIGHTBLACK_EX: Colour
 	LIGHTRED_EX: Colour
@@ -192,17 +180,13 @@ class AnsiBack(AnsiCodes):
 	LIGHTCYAN_EX: Colour
 	LIGHTWHITE_EX: Colour
 
-
 class AnsiStyle(AnsiCodes):
-
 	_stack: List[str]
 	_reset: str
-
 	BRIGHT: Colour
 	DIM: Colour
 	NORMAL: Colour
 	RESET_ALL: Colour
-
 
 Fore = AnsiFore()
 Back = AnsiBack()

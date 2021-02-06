@@ -51,6 +51,7 @@ from mistletoe.base_renderer import BaseRenderer  # type: ignore
 
 # this package
 from consolekit import terminal_colours
+from consolekit.terminal_colours import resolve_color_default
 from consolekit.tracebacks import handle_tracebacks, traceback_handler
 
 __all__ = [
@@ -112,14 +113,19 @@ def import_commands(source: Optional[ModuleType] = None, entry_point: Optional[s
 	return all_commands
 
 
-def abort(message: str) -> Exception:
+# TODO: Turn this into a class so the message is only printed when raised.
+def abort(message: str, colour: bool = None) -> Exception:
 	"""
 	Aborts the program execution.
 
 	:param message:
+	:param colour: Whether to use coloured output. Default auto-detect.
+	:no-default colour:
+
+	.. versionchanged:: 1.0.1  Added the ``colour`` option.
 	"""
 
-	click.echo(terminal_colours.Fore.RED(message), err=True)
+	click.echo(terminal_colours.Fore.RED(message), err=True, color=resolve_color_default(colour))
 	return click.Abort()
 
 

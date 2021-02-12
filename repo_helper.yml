@@ -39,7 +39,7 @@ extras_require:
  testing:
   - pytest>=6.0.0
   - pytest-regressions>=2.0.2
-  - domdf_python_tools[testing]>=1.5.0
+  - coincidence>=0.1.0
 
 tox_testenv_extras: all
 
@@ -54,5 +54,4 @@ extra_sphinx_extensions:
 sphinx_conf_epilogue:
  - toctree_plus_types.add("fixture")
 
-mypy_version: "0.800"
 min_coverage: 90

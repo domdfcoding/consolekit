@@ -80,6 +80,7 @@ __all__ = [
 		"RawHelpGroup",
 		"RawHelpMixin",
 		"SuggestionGroup",
+		"ContextInheritingGroup",
 		]
 
 _argument = Plural("argument", "arguments")
@@ -322,3 +323,22 @@ class SuggestionGroup(click.Group):
 		#  I think typeshed is wrong.
 		#  https://github.com/python/typeshed/blob/484c014665cdf071b292dd9630f207c03e111895/third_party/2and3/click/core.pyi#L171
 		return cmd_name, cmd, args[1:]  # type: ignore
+
+
+class ContextInheritingGroup(click.Group):
+	"""
+	Subclass of :class:`click.Group` which whose children inherit its :attr:`context_settings`.
+
+	The group's commands can be given different context settings by passing the
+	``context_settings`` keyword argument to :meth:`~.command` and :meth:`~.group` as normal.
+
+	.. versionadded 1.1.0
+	"""
+
+	def command(self, *args, **kwargs):
+		kwargs.setdefault("context_settings", self.context_settings)
+		super().command(*args, **kwargs)
+
+	def group(self, *args, **kwargs):
+		kwargs.setdefault("context_settings", self.context_settings)
+		super().group(*args, **kwargs)

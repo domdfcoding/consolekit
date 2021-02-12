@@ -37,6 +37,7 @@ known_third_party = [
     "colorama",
     "coverage",
     "coverage_pyver_pragma",
+    "deprecation_alias",
     "domdf_python_tools",
     "github",
     "mistletoe",

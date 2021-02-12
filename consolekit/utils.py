@@ -43,6 +43,7 @@ from typing import IO, Iterator, List, Optional, Sequence
 
 # 3rd party
 import click
+import deprecation_alias
 from domdf_python_tools.import_tools import discover, discover_entry_points
 from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.words import SANS_SERIF_ITALIC_LETTERS
@@ -50,9 +51,8 @@ from mistletoe import block_token, span_token  # type: ignore
 from mistletoe.base_renderer import BaseRenderer  # type: ignore
 
 # this package
-from consolekit import terminal_colours
+from consolekit import terminal_colours, tracebacks
 from consolekit.terminal_colours import resolve_color_default
-from consolekit.tracebacks import handle_tracebacks, traceback_handler
 
 __all__ = [
 		"get_env_vars",
@@ -63,6 +63,7 @@ __all__ = [
 		"coloured_diff",
 		"solidus_spinner",
 		"braille_spinner",
+		"snake_spinner",
 		"hide_cursor",
 		"show_cursor",
 		"handle_tracebacks",
@@ -72,6 +73,16 @@ __all__ = [
 		]
 
 # TODO: Raise deprecation warning for handle_tracebacks and traceback_handler
+
+_deprecator = deprecation_alias.deprecated(
+		deprecated_in="1.0.0",
+		removed_in="2.0.0",
+		current_version="1.0.1",
+		details="Import from consolekit.tracebacks instead."
+		)
+
+handle_tracebacks = _deprecator(tracebacks.handle_tracebacks)
+traceback_handler = _deprecator(tracebacks.traceback_handler)
 
 
 def get_env_vars(ctx, args, incomplete):  # noqa: D103
@@ -248,6 +259,13 @@ braille_spinner = cycle("⢿ ⣻ ⣽ ⣾ ⣷ ⣯ ⣟ ⡿ ".split(' '))
 :func:`itertools.cycle` of braille characters to use as a loading spinner.
 
 .. versionadded:: 0.7.0
+"""
+
+snake_spinner = cycle(['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'])
+"""
+:func:`itertools.cycle` of braille characters to use as a loading spinner which looks like a snake.
+
+.. versionadded:: 1.2.0
 """
 
 

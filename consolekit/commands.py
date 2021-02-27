@@ -327,7 +327,7 @@ class SuggestionGroup(click.Group):
 
 class ContextInheritingGroup(click.Group):
 	"""
-	Subclass of :class:`click.Group` which whose children inherit its :attr:`context_settings`.
+	Subclass of :class:`click.Group` whose children inherit its :attr:`click.BaseCommand.context_settings`.
 
 	The group's commands can be given different context settings by passing the
 	``context_settings`` keyword argument to :meth:`~.command` and :meth:`~.group` as normal.
@@ -336,9 +336,25 @@ class ContextInheritingGroup(click.Group):
 	"""
 
 	def command(self, *args, **kwargs):
+		"""
+		A shortcut decorator for declaring and attaching a command to the group.
+
+		This takes the same arguments as :func:`click.command` but
+		immediately registers the created command with this instance
+		by calling into :meth:`click.Group.add_command`.
+		"""
+
 		kwargs.setdefault("context_settings", self.context_settings)
 		super().command(*args, **kwargs)
 
 	def group(self, *args, **kwargs):
+		"""
+		A shortcut decorator for declaring and attaching a group to the group.
+
+		This takes the same arguments as :func:`click.group` but
+		immediately registers the created group with this instance
+		by calling into :meth:`click.Group.add_command`.
+		"""
+
 		kwargs.setdefault("context_settings", self.context_settings)
 		super().group(*args, **kwargs)

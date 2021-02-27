@@ -3,3 +3,4 @@
 ========================
 
 .. automodule:: consolekit
+	:exclude-members: SuggestionGroup

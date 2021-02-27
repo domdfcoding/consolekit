@@ -200,17 +200,19 @@ class Colour(str):
 	:type reset: :class:`str`
 	"""
 
+	__slots__ = ("style", "reset", "stack")
+
 	style: str
 	reset: str
 	stack: Union[Deque[str], List[str]]
 
 	def __new__(cls, style: str, stack: Union[Deque[str], List[str]], reset: str) -> "Colour":  # noqa D102
-		color = super().__new__(cls, style)  # type: ignore
-		color.style = style
-		color.stack = stack
-		color.reset = reset
+		self = super().__new__(cls, style)  # type: ignore
+		self.style = style
+		self.stack = stack
+		self.reset = reset
 
-		return color
+		return self
 
 	def __enter__(self) -> None:
 		print(self.style, end='')

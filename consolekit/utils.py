@@ -265,7 +265,7 @@ snake_spinner = cycle(['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '
 """
 :func:`itertools.cycle` of braille characters to use as a loading spinner which looks like a snake.
 
-.. versionadded:: 1.2.0
+.. versionadded:: 1.1.0
 """
 
 

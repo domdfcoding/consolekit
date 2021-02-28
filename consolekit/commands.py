@@ -57,9 +57,8 @@ Customised click commands and command groups.
 
 # stdlib
 import difflib
-from abc import ABC, abstractmethod
 from textwrap import indent
-from typing import Any, Callable, List, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple
 
 # 3rd party
 import click
@@ -133,7 +132,7 @@ class RawHelpGroup(RawHelpMixin, click.Group):  # lgtm [py/conflicting-attribute
 	"""
 
 
-class MarkdownHelpMixin(ABC):
+class MarkdownHelpMixin:
 	"""
 	Mixin class for :class:`click.Command` and :class:`click.Group` which treats the help text as markdown
 	and prints a rendered representation.
@@ -159,25 +158,25 @@ class MarkdownHelpMixin(ABC):
 	no_args_is_help: bool
 	_colour: ColourTrilean = None
 
-	@abstractmethod
-	def get_params(self, ctx: click.Context) -> List[click.Parameter]:
-		"""
-		Returns the list of parameters for this command in the order they should appear in the help page.
+	if TYPE_CHECKING:
 
-		:param ctx:
-		"""
+		def get_params(self, ctx: click.Context) -> List[click.Parameter]:
+			"""
+			Returns the list of parameters for this command in the order they should appear in the help page.
 
-		raise NotImplementedError
+			:param ctx:
+			"""
 
-	@abstractmethod
-	def make_parser(self, ctx: click.Context) -> click.OptionParser:
-		"""
-		Creates the underlying option parser for this command.
+			raise NotImplementedError
 
-		:param ctx:
-		"""
+		def make_parser(self, ctx: click.Context) -> click.OptionParser:
+			"""
+			Creates the underlying option parser for this command.
 
-		raise NotImplementedError
+			:param ctx:
+			"""
+
+			raise NotImplementedError
 
 	def format_help_text(self, ctx: click.Context, formatter: click.formatting.HelpFormatter):
 		"""

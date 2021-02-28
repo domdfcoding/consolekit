@@ -27,7 +27,8 @@ Customised click commands and command groups.
 #  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
-#  MarkdownHelpCommand.parse_args based on https://github.com/pallets/click
+#  MarkdownHelpCommand.parse_args and the docstrings of ContextInheritingGroup
+#  based on https://github.com/pallets/click
 #  Copyright 2014 Pallets
 #  |  Redistribution and use in source and binary forms, with or without modification,
 #  |  are permitted provided that the following conditions are met:
@@ -56,8 +57,9 @@ Customised click commands and command groups.
 
 # stdlib
 import difflib
+from abc import ABC, abstractmethod
 from textwrap import indent
-from typing import List, Optional, Tuple
+from typing import Any, Callable, List, Optional, Tuple
 
 # 3rd party
 import click
@@ -131,7 +133,7 @@ class RawHelpGroup(RawHelpMixin, click.Group):  # lgtm [py/conflicting-attribute
 	"""
 
 
-class MarkdownHelpMixin:
+class MarkdownHelpMixin(ABC):
 	"""
 	Mixin class for :class:`click.Command` and :class:`click.Group` which treats the help text as markdown
 	and prints a rendered representation.
@@ -157,6 +159,26 @@ class MarkdownHelpMixin:
 	no_args_is_help: bool
 	_colour: ColourTrilean = None
 
+	@abstractmethod
+	def get_params(self, ctx: click.Context) -> List[click.Parameter]:
+		"""
+		Returns the list of parameters for this command in the order they should appear in the help page.
+
+		:param ctx:
+		"""
+
+		raise NotImplementedError
+
+	@abstractmethod
+	def make_parser(self, ctx: click.Context) -> click.OptionParser:
+		"""
+		Creates the underlying option parser for this command.
+
+		:param ctx:
+		"""
+
+		raise NotImplementedError
+
 	def format_help_text(self, ctx: click.Context, formatter: click.formatting.HelpFormatter):
 		"""
 		Writes the help text to the formatter if it exists.
@@ -177,6 +199,41 @@ class MarkdownHelpMixin:
 		formatter.write('\n')
 		formatter.write(rendered_doc)
 		formatter.write('\n')
+
+
+def parse_help_args(obj: MarkdownHelpMixin, ctx: click.Context, args: List[str]) -> List[str]:
+	"""
+	Helper function for markdown help classes to parse the given arguments
+	and modify the context as necessary.
+
+	.. versionadded:: 1.1.0
+
+	:param obj:
+	:param ctx:
+	:param args:
+	"""  # noqa: D400
+
+	# This is necessary to parse any --colour/--no-colour commands before generating the help,
+	# to ensure the option is honoured.
+
+	if not args and obj.no_args_is_help and not ctx.resilient_parsing:
+		click.echo(ctx.get_help(), color=ctx.color)
+		ctx.exit()
+
+	parser = obj.make_parser(ctx)
+	opts, args, param_order = parser.parse_args(args=args)
+
+	obj._colour = opts.get("colour", ctx.color)
+
+	for param in iter_params_for_processing(param_order, obj.get_params(ctx)):
+		value, args = param.handle_parse_result(ctx, opts, args)
+
+	if args and not ctx.allow_extra_args and not ctx.resilient_parsing:
+		args_string = DelimitedList(map(make_str, args))
+		ctx.fail(f"Got unexpected extra {_argument(len(args))} ({args_string: })")
+
+	ctx.args = args
+	return args
 
 
 class MarkdownHelpCommand(MarkdownHelpMixin, click.Command):  # lgtm [py/conflicting-attributes]
@@ -202,27 +259,7 @@ class MarkdownHelpCommand(MarkdownHelpMixin, click.Command):  # lgtm [py/conflic
 		:param args:
 		"""
 
-		# This is necessary to parse any --colour/--no-colour commands before generating the help,
-		# to ensure the option is honoured.
-
-		if not args and self.no_args_is_help and not ctx.resilient_parsing:
-			click.echo(ctx.get_help(), color=ctx.color)
-			ctx.exit()
-
-		parser = self.make_parser(ctx)
-		opts, args, param_order = parser.parse_args(args=args)
-
-		self._colour = opts.get("colour", ctx.color)
-
-		for param in iter_params_for_processing(param_order, self.get_params(ctx)):
-			value, args = param.handle_parse_result(ctx, opts, args)
-
-		if args and not ctx.allow_extra_args and not ctx.resilient_parsing:
-			args_string = DelimitedList(map(make_str, args))
-			ctx.fail(f"Got unexpected extra {_argument(len(args))} ({args_string: })")
-
-		ctx.args = args
-		return args
+		return parse_help_args(self, ctx, args)
 
 
 class MarkdownHelpGroup(MarkdownHelpMixin, click.Group):  # lgtm [py/conflicting-attributes]
@@ -255,7 +292,8 @@ class MarkdownHelpGroup(MarkdownHelpMixin, click.Group):  # lgtm [py/conflicting
 			click.echo(ctx.get_help(), color=ctx.color)
 			ctx.exit()
 
-		rest = MarkdownHelpCommand.parse_args(self, ctx, args)  # type: ignore
+		rest = parse_help_args(self, ctx, args)
+
 		if self.chain:
 			ctx.protected_args = rest
 			ctx.args = []

@@ -160,7 +160,7 @@ def test_markdown_help_command(
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_command, args=["--help"], color=True)
-	result.check_stdout(file_regression)
+	result.check_stdout(file_regression, extension=".md")
 
 
 @not_windows("Windows support for bold and italics is non-existent.")
@@ -200,7 +200,7 @@ def test_markdown_help_command_ordered_list(
 		"""
 
 	result = cli_runner.invoke(demo, args=["--help"], color=True)
-	result.check_stdout(file_regression)
+	result.check_stdout(file_regression, extension=".md")
 
 
 @not_windows("Windows support for bold and italics is non-existent.")
@@ -231,7 +231,7 @@ def test_markdown_help_command_no_colour(
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_command_numbered, args=["--help", "--no-colour"], color=True)
-	result.check_stdout(file_regression)
+	result.check_stdout(file_regression, extension=".md")
 
 
 def test_markdown_help_no_args_is_help(
@@ -241,7 +241,18 @@ def test_markdown_help_no_args_is_help(
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_command_numbered)
-	result.check_stdout(file_regression)
+	result.check_stdout(file_regression, extension=".md")
+	assert result.exit_code == 0
+
+
+def test_markdown_help_group_no_args_is_help(
+		file_regression: FileRegressionFixture,
+		force_not_pycharm,
+		markdown_demo_group,
+		cli_runner: CliRunner,
+		):
+	result = cli_runner.invoke(markdown_demo_group[0])
+	result.check_stdout(file_regression, extension=".md")
 	assert result.exit_code == 0
 
 
@@ -250,10 +261,7 @@ def test_suggestion_group(
 		cli_runner: CliRunner,
 		):
 
-	@click_group(
-			cls=consolekit.commands.SuggestionGroup,
-			context_settings={**CONTEXT_SETTINGS, "token_normalize_func": lambda x: x.lower()}
-			)
+	@click_group(context_settings={**CONTEXT_SETTINGS, "token_normalize_func": lambda x: x.lower()})
 	def demo():
 		"""
 		A program.
@@ -276,3 +284,48 @@ def test_suggestion_group(
 	result = cli_runner.invoke(demo, args=["SEARCH"])
 	assert not result.stdout.rstrip()
 	assert result.exit_code == 0
+
+
+def test_context_inheriting_group(
+		file_regression: FileRegressionFixture,
+		cli_runner: CliRunner,
+		):
+
+	@click_group(cls=consolekit.commands.ContextInheritingGroup)
+	def demo():
+		"""
+		A program.
+		"""
+
+	@demo.command()
+	def search():
+		"""
+		Conduct a search.
+		"""
+
+	@demo.group()
+	def foo():
+		"""
+		Does bar.
+		"""
+
+	result = cli_runner.invoke(demo, args=["--help"])
+	assert result.exit_code == 0
+
+	result = cli_runner.invoke(demo, args=["-h"])
+	assert result.exit_code == 0
+	result.check_stdout(file_regression, extension=".md")
+
+	result = cli_runner.invoke(foo, args=["--help"])
+	assert result.exit_code == 0
+
+	result = cli_runner.invoke(foo, args=["-h"])
+	assert result.exit_code == 0
+	result.check_stdout(file_regression, extension="_foo.md")
+
+	result = cli_runner.invoke(search, args=["--help"])
+	assert result.exit_code == 0
+
+	result = cli_runner.invoke(search, args=["-h"])
+	assert result.exit_code == 0
+	result.check_stdout(file_regression, extension="_search.md")

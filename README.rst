@@ -157,3 +157,9 @@ install `psutil <https://pypi.org/project/psutil/>`_ by specifying the ``termina
 .. code-block:: bash
 
 	$ python -m pip install consolekit[terminals]
+
+or, if you installed ``consolekit`` through conda:
+
+.. code-block:: bash
+
+	$ conda install -c conda-forge psutil

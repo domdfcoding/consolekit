@@ -23,7 +23,7 @@ rst_prolog = f""".. |pkgname| replace:: consolekit
 """
 
 author = "Dominic Davis-Foster"
-project = "consolekit"
+project = "consolekit".replace('_', '-')
 slug = re.sub(r'\W+', '-', project.lower())
 release = version = __version__
 copyright = "2020-2021 Dominic Davis-Foster"  # pylint: disable=redefined-builtin

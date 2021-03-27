@@ -9,9 +9,11 @@ description = "Additional utilities for click."
 readme = "README.rst"
 keywords = [ "click", "terminal",]
 dynamic = [ "requires-python", "classifiers", "dependencies",]
+
 [[project.authors]]
 email = "dominic@davis-foster.co.uk"
 name = "Dominic Davis-Foster"
+
 
 [project.license]
 file = "LICENSE"

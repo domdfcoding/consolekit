@@ -85,14 +85,14 @@ class TracebackHandler:
 		# this package
 		from consolekit.utils import abort
 
-		raise abort(f"File Not Found: {e}")
+		raise abort(f"File Not Found: {e}", colour=False)
 
 	def handle_FileExistsError(self, e: FileExistsError) -> bool:  # noqa: D102
 
 		# this package
 		from consolekit.utils import abort
 
-		raise abort(f"File Exists: {e}")
+		raise abort(f"File Exists: {e}", colour=False)
 
 	def handle(self, e: BaseException) -> bool:
 		"""
@@ -113,7 +113,7 @@ class TracebackHandler:
 			if hasattr(self, f"handle_{base.__name__}"):
 				return getattr(self, f"handle_{base.__name__}")(e)
 
-		raise abort(f"An error occurred: {e}")
+		raise abort(f"An error occurred: {e}", colour=False)
 
 	@contextlib.contextmanager
 	def __call__(self):

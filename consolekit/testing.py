@@ -5,7 +5,7 @@
 Test helpers.
 
 .. extras-require:: testing
-	:__pkginfo__:
+	:pyproject:
 
 .. versionadded:: 0.9.0
 """

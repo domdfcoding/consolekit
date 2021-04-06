@@ -57,6 +57,7 @@ class TracebackHandler:
 	* :exc:`EOFError`
 	* :exc:`KeyboardInterrupt`
 	* :exc:`click.ClickException`
+	* :exc:`SystemExit` (.. versionadded:: 1.1.2)
 
 	How these exceptions are handled can be changed, and supported can be added for
 	further exception classes by subclassing this class.
@@ -78,6 +79,9 @@ class TracebackHandler:
 		raise e
 
 	def handle_Abort(self, e: click.Abort) -> bool:  # noqa: D102
+		raise e
+
+	def handle_SystemExit(self, e: SystemExit) -> bool:  # noqa: D102
 		raise e
 
 	def handle_FileNotFoundError(self, e: FileNotFoundError) -> bool:  # noqa: D102

@@ -93,7 +93,7 @@ def test_handle_tracebacks_ignored_exceptions_click(
 	assert result.exit_code == 1
 
 
-@pytest.mark.parametrize("exception", [EOFError, KeyboardInterrupt, click.Abort])
+@pytest.mark.parametrize("exception", [EOFError, KeyboardInterrupt, click.Abort, SystemExit])
 @contextmanagers
 def test_handle_tracebacks_ignored_exceptions(
 		exception,

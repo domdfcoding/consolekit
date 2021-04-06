@@ -28,3 +28,8 @@ Documentation = "https://consolekit.readthedocs.io/en/latest"
 terminals = [ "psutil>=5.8.0",]
 testing = [ "coincidence>=0.1.0", "pytest>=6.0.0", "pytest-regressions>=2.0.2",]
 all = [ "coincidence>=0.1.0", "psutil>=5.8.0", "pytest>=6.0.0", "pytest-regressions>=2.0.2",]
+
+[tool.mkrecipe]
+conda-channels = [ "conda-forge", "domdfcoding",]
+extras = []
+license-key = "MIT"

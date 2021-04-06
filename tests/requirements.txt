@@ -1,4 +1,5 @@
-coincidence>=0.1.0
+backports-entry-points-selectable>=1.0.2
+coincidence>=0.2.0
 colorama>=0.4.4; python_version == "3.10" and platform_system != "Windows"
 coverage>=5.1
 coverage-pyver-pragma>=0.2.1
@@ -6,6 +7,6 @@ domdf-python-tools[testing]>=2.0.1
 iniconfig!=1.1.0,>=1.0.1
 pytest>=6.0.0
 pytest-cov>=2.8.1
-pytest-randomly>=3.3.1
+pytest-randomly>=3.6.0
 pytest-regressions>=2.0.1
 pytest-timeout>=1.4.2

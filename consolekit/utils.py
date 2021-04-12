@@ -412,7 +412,7 @@ class TerminalRenderer(BaseRenderer):
 		:param token: The token to render.
 		"""
 
-		return '\n{}\n'.format(self.render_inner(token))
+		return f'\n{self.render_inner(token)}\n'
 
 	_in_ordered_list: bool = False
 	_ol_number: int = 0

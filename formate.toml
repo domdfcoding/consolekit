@@ -41,6 +41,7 @@ known_third_party = [
     "deprecation_alias",
     "domdf_python_tools",
     "github",
+    "importlib_metadata",
     "mistletoe",
     "pytest",
     "pytest_cov",

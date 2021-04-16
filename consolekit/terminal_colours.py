@@ -112,6 +112,7 @@ except ImportError:
 	pass
 
 _C = TypeVar("_C", bound="Colour")
+_AC = TypeVar("_AC", bound="AnsiCodes")
 
 ColourTrilean = Optional[bool]
 """
@@ -403,7 +404,7 @@ class AnsiCodes(ABC):
 	_stack: Union[Deque[str], List[str]]
 	_reset: str
 
-	def __init__(self) -> None:
+	def __init_subclass__(cls, **kwargs) -> None:
 		"""
 		The subclasses declare class attributes which are numbers.
 
@@ -411,10 +412,13 @@ class AnsiCodes(ABC):
 		as the class attributes but wrapped with the ANSI escape sequence.
 		"""
 
-		for name in dir(self):
+		for name in dir(cls):
 			if not name.startswith('_'):
-				value = getattr(self, name)
-				setattr(self, name, Colour(code_to_chars(value), self._stack, self._reset))
+				value = getattr(cls, name)
+				setattr(cls, name, Colour(code_to_chars(value), cls._stack, cls._reset))
+
+	def __new__(cls: Type[_AC], *args, **kwargs) -> Type[_AC]:
+		return cls
 
 
 class AnsiCursor:
@@ -512,6 +516,8 @@ class AnsiFore(AnsiCodes):
 	* LIGHTMAGENTA_EX
 	* LIGHTCYAN_EX
 	* LIGHTWHITE_EX
+
+	This class is also available under the shorter alias ``Fore``.
 	"""
 
 	_stack = fore_stack
@@ -563,6 +569,8 @@ class AnsiBack(AnsiCodes):
 	* LIGHTMAGENTA_EX
 	* LIGHTCYAN_EX
 	* LIGHTWHITE_EX
+
+	This class is also available under the shorter alias ``Back``.
 	"""
 
 	_stack = back_stack
@@ -601,6 +609,8 @@ class AnsiStyle(AnsiCodes):
 
 	Additionally, ``AnsiStyle.RESET_ALL`` can be used to reset the
 	foreground and background colours as well as the text style.
+
+	This class is also available under the shorter alias ``Style``.
 	"""
 
 	_stack = style_stack
@@ -612,9 +622,9 @@ class AnsiStyle(AnsiCodes):
 	RESET_ALL = 0
 
 
-Fore = AnsiFore()
-Back = AnsiBack()
-Style = AnsiStyle()
+Fore = AnsiFore
+Back = AnsiBack
+Style = AnsiStyle
 Cursor = AnsiCursor()
 
 fore_stack.append(Fore.RESET)

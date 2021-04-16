@@ -90,6 +90,7 @@ def clear_line(mode: int = ...) -> str: ...
 def strip_ansi(value: str) -> str: ...
 
 _C = TypeVar("_C", bound="Colour")
+_AC = TypeVar("_AC", bound="AnsiCodes")
 
 class Colour(str):
 	style: str
@@ -125,7 +126,7 @@ class AnsiCodes(ABC):
 	_stack: Union[Deque[str], List[str]]
 	_reset: str
 
-	def __init__(self) -> None: ...
+	def __new__(cls: Type[_AC], *args, **kwargs) -> Type[_AC]: ...  # type: ignore[misc]
 
 class AnsiCursor:
 	def UP(self, n: int = ...) -> str: ...
@@ -186,7 +187,7 @@ class AnsiStyle(AnsiCodes):
 	NORMAL: Colour
 	RESET_ALL: Colour
 
-Fore = AnsiFore()
-Back = AnsiBack()
-Style = AnsiStyle()
+Fore = AnsiFore
+Back = AnsiBack
+Style = AnsiStyle
 Cursor = AnsiCursor()

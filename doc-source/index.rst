@@ -149,6 +149,25 @@ or, if you installed ``consolekit`` through conda:
 	conda install -c conda-forge psutil
 
 
+Highlights
+---------------
+
+.. api-highlights::
+	:module: consolekit
+	:colours: blue,green,red,orange
+
+	.commands.MarkdownHelpCommand
+	.commands.SuggestionGroup
+	.input.choice
+	.options.auto_default_option
+
+..  .options.flag_option
+..	.tracebacks.TracebackHandler
+..	.utils.coloured_diff
+..	.utils.hidden_cursor
+
+
+
 .. toctree::
 	:hidden:
 

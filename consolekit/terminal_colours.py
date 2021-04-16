@@ -417,7 +417,7 @@ class AnsiCodes(ABC):
 				value = getattr(cls, name)
 				setattr(cls, name, Colour(code_to_chars(value), cls._stack, cls._reset))
 
-	def __new__(cls: Type[_AC], *args, **kwargs) -> Type[_AC]:
+	def __new__(cls: Type[_AC], *args, **kwargs) -> Type[_AC]:  # noqa: D102
 		return cls
 
 

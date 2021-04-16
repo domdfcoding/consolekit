@@ -36,10 +36,12 @@ Utility functions.
 import contextlib
 import difflib
 import os
+import shutil
+import sys
 from functools import lru_cache
 from itertools import cycle
 from types import ModuleType
-from typing import IO, Iterator, List, Optional, Sequence
+from typing import IO, Iterable, Iterator, List, Optional, Sequence, Union
 
 # 3rd party
 import click
@@ -52,7 +54,7 @@ from mistletoe.base_renderer import BaseRenderer  # type: ignore
 
 # this package
 from consolekit import terminal_colours, tracebacks
-from consolekit.terminal_colours import resolve_color_default
+from consolekit.terminal_colours import ColourTrilean, resolve_color_default
 
 __all__ = [
 		"get_env_vars",
@@ -70,9 +72,8 @@ __all__ = [
 		"traceback_handler",
 		"TerminalRenderer",
 		"hidden_cursor",
+		"long_echo",
 		]
-
-# TODO: Raise deprecation warning for handle_tracebacks and traceback_handler
 
 _deprecator = deprecation_alias.deprecated(
 		deprecated_in="1.0.0",
@@ -125,7 +126,7 @@ def import_commands(source: Optional[ModuleType] = None, entry_point: Optional[s
 
 
 # TODO: Turn this into a class so the message is only printed when raised.
-def abort(message: str, colour: bool = None) -> Exception:
+def abort(message: str, colour: ColourTrilean = None) -> Exception:
 	"""
 	Aborts the program execution.
 
@@ -412,7 +413,7 @@ class TerminalRenderer(BaseRenderer):
 		:param token: The token to render.
 		"""
 
-		return '\n{}\n'.format(self.render_inner(token))
+		return f'\n{self.render_inner(token)}\n'
 
 	_in_ordered_list: bool = False
 	_ol_number: int = 0
@@ -452,3 +453,44 @@ class TerminalRenderer(BaseRenderer):
 		"""
 
 		return super().render(token).replace("\n\n\n", "\n\n")
+
+
+def long_echo(
+		text: Union[str, StringList, Iterable[str]],
+		use_pager: Optional[bool] = None,
+		colour: ColourTrilean = None
+		) -> None:
+	"""
+	Echo ``text`` to the terminal, optionally via a pager.
+
+	.. versionadded:: 1.2.0
+
+	:param text:
+	:param use_pager: If :py:obj:`True`, forces the use of the pager. If :py:obj:`False` the pager is never used.
+		If :py:obj:`None` the pager is used if `sys.stdout`` is a TTY and the number of lines is
+		less than the terminal height.
+	:param colour:  Whether to use coloured output. Default auto-detect.
+	:no-default colour:
+
+	.. tip:: Allow the user to control the value of ``use_pager`` with the :func:`no_pager_option` decorator.
+	"""
+
+	if isinstance(text, str):
+		text = StringList(text.split('\n'))
+	elif not isinstance(text, StringList):
+		text = StringList(text)
+
+	if use_pager is None:
+		use_pager = True
+
+		if shutil.get_terminal_size().lines >= len(text):
+			# Don't use pager if fewer lines than terminal height
+			use_pager = False
+
+		if not sys.stdout.isatty():
+			use_pager = False
+
+	if use_pager:
+		return click.echo_via_pager(str(text), color=colour)
+	else:
+		return click.echo(str(text), color=colour)

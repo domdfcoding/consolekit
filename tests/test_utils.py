@@ -1,11 +1,14 @@
 # stdlib
 import math
+import os
+import shutil
 import sys
 
 # 3rd party
 import click
 from coincidence.regressions import AdvancedDataRegressionFixture, check_file_regression
 from domdf_python_tools.paths import PathPlus
+from domdf_python_tools.utils import redirect_output
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
@@ -17,6 +20,7 @@ from consolekit.utils import (
 		hide_cursor,
 		import_commands,
 		is_command,
+		long_echo,
 		overtype,
 		show_cursor,
 		solidus_spinner
@@ -111,3 +115,46 @@ def test_import_commands():
 			import_commands_demo.submodule.command2,
 			import_commands_demo.submodule.group2,
 			]
+
+
+def test_long_echo(monkeypatch):
+
+	def get_terminal_size(fallback=(80, 24)):
+		return os.terminal_size((80, 5))
+
+	def echo_via_pager(text_or_generator, color=None):
+		click.echo('\n'.join(f"|{line}" for line in text_or_generator.splitlines()))
+
+	monkeypatch.setattr(shutil, "get_terminal_size", get_terminal_size)
+	monkeypatch.setattr(click, "echo_via_pager", echo_via_pager)
+
+	with redirect_output() as (stdout, stderr):
+		stdout.isatty = lambda *args: True  # type: ignore
+		assert stdout.isatty()
+		assert sys.stdout.isatty()
+
+		long_echo([
+				"Line 1",
+				"Line 2",
+				"Line 3",
+				"Line 4",
+				"Line 5",
+				"Line 6",
+				])
+
+	assert stdout.getvalue() == "|Line 1\n|Line 2\n|Line 3\n|Line 4\n|Line 5\n|Line 6\n"
+
+	with redirect_output() as (stdout, stderr):
+		stdout.isatty = lambda *args: True  # type: ignore
+		assert stdout.isatty()
+		assert sys.stdout.isatty()
+
+		long_echo('\n'.join([
+				"Line 1",
+				"Line 2",
+				"Line 3",
+				"Line 4",
+				"Line 5",
+				]))
+
+	assert stdout.getvalue() == "Line 1\nLine 2\nLine 3\nLine 4\nLine 5\n"

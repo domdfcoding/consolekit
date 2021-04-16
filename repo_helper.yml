@@ -56,6 +56,8 @@ third_party_version_matrix:
 
 extra_sphinx_extensions:
  - sphinx_autofixture
+ - sphinx_highlights
+
 
 sphinx_conf_epilogue:
  - toctree_plus_types.add("fixture")

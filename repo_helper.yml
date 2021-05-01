@@ -52,7 +52,7 @@ extras_require:
 third_party_version_matrix:
  click:
   - 7.1
-  - 8.0.0a1
+  - 8.0.0rc1
 
 extra_sphinx_extensions:
  - sphinx_autofixture

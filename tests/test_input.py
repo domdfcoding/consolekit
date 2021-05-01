@@ -7,6 +7,7 @@ from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
 from consolekit.input import choice, confirm, prompt
+from consolekit.testing import _click_major
 
 
 def test_choice_letters(capsys, monkeypatch, data_regression: DataRegressionFixture):
@@ -40,15 +41,11 @@ def test_choice_letters(capsys, monkeypatch, data_regression: DataRegressionFixt
 		[
 				pytest.param(
 						'7',
-						marks=pytest.mark.skipif(
-								not click.__version__.startswith('7'), reason="Output differs on click 8"
-								)
+						marks=pytest.mark.skipif(_click_major == 8, reason="Output differs on click 8"),
 						),
 				pytest.param(
 						'8',
-						marks=pytest.mark.skipif(
-								not click.__version__.startswith('8'), reason="Output differs on click 8"
-								)
+						marks=pytest.mark.skipif(_click_major != 8, reason="Output differs on click 8"),
 						),
 				]
 		)

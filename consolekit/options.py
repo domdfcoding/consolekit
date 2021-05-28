@@ -119,12 +119,12 @@ def verbose_option(help_text: str = "Show verbose output.") -> Callable[[_C], _C
 	"""
 
 	return click.option(  # type: ignore
-			"-v",
-			"--verbose",
-			count=True,
-			help=help_text,
-			type=VerboseVersionCountType(),
-			)
+		"-v",
+		"--verbose",
+		count=True,
+		help=help_text,
+		type=VerboseVersionCountType(),
+		)
 
 
 def version_option(callback: Callable[[click.Context, click.Option, int], Any]) -> Callable[[_C], _C]:
@@ -156,14 +156,14 @@ def version_option(callback: Callable[[click.Context, click.Option, int], Any]) 
 	"""
 
 	return click.option(  # type: ignore
-			"--version",
-			count=True,
-			expose_value=False,
-			is_eager=True,
-			help="Show the version and exit.",
-			type=VerboseVersionCountType(),
-			callback=cast(Callback, callback),
-			)
+		"--version",
+		count=True,
+		expose_value=False,
+		is_eager=True,
+		help="Show the version and exit.",
+		type=VerboseVersionCountType(),
+		callback=cast(Callback, callback),
+		)
 
 
 def colour_option(help_text="Whether to use coloured output.") -> Callable[[_C], _C]:

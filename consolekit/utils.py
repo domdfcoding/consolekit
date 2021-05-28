@@ -9,9 +9,12 @@ Utility functions.
 	:func:`~.tracebacks.traceback_handler` and :func:`~.tracebacks.handle_tracebacks`
 	moved to :mod:`consolekit.tracebacks`.
 	They will still be importable from here until v2.0.0
+
+.. automodulesumm:: consolekit.utils
+.. latex:clearpage::
 """
 #
-#  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal
@@ -68,8 +71,6 @@ __all__ = [
 		"snake_spinner",
 		"hide_cursor",
 		"show_cursor",
-		"handle_tracebacks",
-		"traceback_handler",
 		"TerminalRenderer",
 		"hidden_cursor",
 		"long_echo",
@@ -150,8 +151,7 @@ def overtype(*objects, sep: str = ' ', end: str = '', file: IO = None, flush: bo
 
 	All non-keyword arguments are converted to strings like :class:`str` does and written to the stream,
 	separated by `sep` and followed by `end`.
-
-	If no objects are given, :func:`~consolekit.utils.overtype` will just write ``"\\r"``.
+	If no such arguments are given, :func:`~consolekit.utils.overtype` will just write ``"\\r"``.
 
 	.. TODO:: This does not currently work in the PyCharm console, at least on Windows
 
@@ -201,12 +201,17 @@ def coloured_diff(
 	``fromfile``, ``tofile``, ``fromfiledate``, and ``tofiledate``.
 	The modification times are normally expressed in the ISO 8601 format.
 
+	.. versionadded:: 0.3.0
+	.. latex:clearpage::
+
 	**Example:**
 
-	>>> for line in coloured_diff('one two three four'.split(),
-	...             'zero one tree four'.split(), 'Original', 'Current',
-	...             '2005-01-26 23:30:50', '2010-04-02 10:20:52',
-	...             lineterm=''):
+	>>> for line in coloured_diff(
+	...     'one two three four'.split(),
+	...     'zero one tree four'.split(), 'Original', 'Current',
+	...     '2005-01-26 23:30:50', '2010-04-02 10:20:52',
+	...     lineterm='',
+	...     ):
 	...     print(line)                 # doctest: +NORMALIZE_WHITESPACE
 	--- Original        2005-01-26 23:30:50
 	+++ Current         2010-04-02 10:20:52
@@ -228,8 +233,6 @@ def coloured_diff(
 	:param lineterm:
 	:param removed_colour: The :class:`~consolekit.terminal_colours.Colour` to use for lines that were removed.
 	:param added_colour: The :class:`~consolekit.terminal_colours.Colour` to use for lines that were added.
-
-	.. versionadded:: 0.3.0
 	"""
 
 	buf = StringList()
@@ -385,7 +388,7 @@ class TerminalRenderer(BaseRenderer):
 
 	def render_inline_code(self, token: span_token.InlineCode) -> str:
 		r"""
-		Render inline code (``\`code\```).
+		Render inline code (:inline-code:`code`).
 
 		:param token: The token to render.
 		"""

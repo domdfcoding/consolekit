@@ -5,6 +5,7 @@ consolekit
 .. start short_desc
 
 .. documentation-summary::
+	:meta:
 
 .. end short_desc
 
@@ -135,6 +136,10 @@ Installation
 
 .. end installation
 
+.. only:: latex
+
+	.. transition::
+
 Additionally, for better support in terminals,
 install `psutil <https://pypi.org/project/psutil/>`_ by specifying the ``terminals`` extra:
 
@@ -152,6 +157,8 @@ or, if you installed ``consolekit`` through conda:
 Highlights
 ---------------
 
+.. latex:vspace:: -20px
+
 .. api-highlights::
 	:module: consolekit
 	:colours: blue,green,red,orange
@@ -167,6 +174,11 @@ Highlights
 ..	.utils.hidden_cursor
 
 
+Contents
+------------
+
+.. html-section::
+
 
 .. toctree::
 	:hidden:
@@ -175,18 +187,26 @@ Highlights
 
 .. toctree::
 	:maxdepth: 3
-	:caption: API Reference
 	:glob:
 
 	api/consolekit
 	api/*
 
-.. toctree::
-	:maxdepth: 3
-	:caption: Contributing
 
-	contributing
-	Source
+.. only:: html
+
+	.. toctree::
+		:maxdepth: 3
+		:caption: Contributing
+
+		contributing
+		Source
+
+.. sidebar-links::
+	:caption: Links
+	:github:
+	:pypi: consolekit
+
 
 .. start links
 
@@ -194,6 +214,6 @@ Highlights
 
 	View the :ref:`Function Index <genindex>` or browse the `Source Code <_modules/index.html>`__.
 
-	`Browse the GitHub Repository <https://github.com/domdfcoding/consolekit>`__
+	:github:repo:`Browse the GitHub Repository <domdfcoding/consolekit>`
 
 .. end links

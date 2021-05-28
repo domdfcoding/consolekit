@@ -2,4 +2,36 @@
 :mod:`consolekit.commands`
 =============================
 
+.. autosummary-widths:: 63/128
+	:html: 32/100
+
 .. automodule:: consolekit.commands
+	:no-members:
+	:autosummary-members:
+
+.. currentmodule:: consolekit.commands
+
+.. autoclass:: ContextInheritingGroup
+
+.. class:: MarkdownHelpCommand
+		   MarkdownHelpGroup
+
+	Subclasses of :class:`click.Command` and :class:`click.Group`
+	which treat the help text as markdown and print a rendered representation.
+
+	Tested in Gnome Terminal and Terminator (both libVTE-based), and PyCharm.
+	libVTE has the best support.
+	PyCharm's support for italics and strikethrough is poor.
+	Support on Windows is, as expected, poor.
+
+	Not tested on other terminals, but contributions are welcome to improve support.
+
+	.. versionadded:: 0.8.0
+
+	.. automethod:: MarkdownHelpCommand.parse_args
+
+
+.. automodule:: consolekit.commands
+	:exclude-members: ContextInheritingGroup,MarkdownHelpCommand,MarkdownHelpGroup
+	:no-autosummary:
+	:no-docstring:

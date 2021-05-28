@@ -40,7 +40,7 @@ Additional utilities for `click <https://click.palletsprojects.com/en/7.x/>`_.
 
 # stdlib
 import sys
-from functools import partial
+from typing import Any, Callable, Optional, Type, TypeVar, cast
 
 # 3rd party
 import click
@@ -74,22 +74,66 @@ __all__ = [
 		"SuggestionGroup",
 		]
 
+_C = TypeVar("_C", bound=click.Command)
+
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"], max_content_width=120)
 
-click_command = partial(click.command, context_settings=CONTEXT_SETTINGS)
-"""
-Shortcut to :func:`click.command`, with the ``-h``/``--help`` option enabled and a max width of ``120``.
-"""
 
-click_group = partial(click.group, context_settings=CONTEXT_SETTINGS, cls=SuggestionGroup)
-"""
-Shortcut to :func:`click.group`, with the ``-h``/``--help`` option enabled and a max width of ``120``.
-"""
+def click_command(
+		name: Optional[str] = None,
+		cls: Type[_C] = click.Command,  # type: ignore
+		**attrs: Any,
+		) -> Callable[[Callable], _C]:
+	r"""
+	Shortcut to :func:`click.command`, with the ``-h``/``--help`` option enabled and a max width of ``120``.
 
-option = partial(click.option, cls=_Option)
-"""
-Shortcut to :func:`click.option`, but using :func:`consolekit.input.confirm` when prompting for a boolean flag.
-"""
+	:param name:
+	:param cls:
+	:type cls: :class:`~typing.Type`\[:class:`~click.Command`\]
+	:param \*\*attrs: Additional keyword arguments passed to :func:`click.command`.
+
+	:rtype: :class:`~typing.Callable`\[[:class:`~typing.Callable`\], :class:`~click.Command`\]
+	"""
+
+	attrs.setdefault("context_settings", CONTEXT_SETTINGS)
+	return cast(Callable[[Callable], _C], click.command(name, cls=cls, **attrs))
+
+
+def click_group(
+		name: Optional[str] = None,
+		cls: Type[click.Group] = SuggestionGroup,
+		**attrs: Any,
+		) -> Callable[[Callable], click.Group]:
+	r"""
+	Shortcut to :func:`click.group`, with the ``-h``/``--help`` option enabled and a max width of ``120``.
+
+	:param name:
+	:param cls:
+	:param \*\*attrs: Additional keyword arguments passed to :func:`click.command`.
+
+	:rtype:
+
+	.. latex:clearpage::
+	"""
+
+	attrs.setdefault("context_settings", CONTEXT_SETTINGS)
+	return click_command(name, cls=cls, **attrs)
+
+
+def option(
+		*param_decls: str,
+		**attrs: Any,
+		) -> Callable[[_C], _C]:
+	r"""
+	Shortcut to :func:`click.option`, but using :func:`consolekit.input.confirm` when prompting for a boolean flag.
+
+	:param \*param_decls:
+	:param \*\*attrs: Additional keyword arguments passed to :func:`click.command`.
+	"""
+
+	attrs.setdefault("cls", _Option)
+	return cast(Callable[[_C], _C], click.option(*param_decls, **attrs))
+
 
 # Fixes intersphinx links
 click.Command.__module__ = "click"

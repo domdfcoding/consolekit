@@ -57,7 +57,7 @@ class TracebackHandler:
 	* :exc:`EOFError`
 	* :exc:`KeyboardInterrupt`
 	* :exc:`click.ClickException`
-	* :exc:`SystemExit` (.. versionadded:: 1.1.2)
+	* :exc:`SystemExit` (new in version 1.1.2)
 
 	How these exceptions are handled can be changed, and supported can be added for
 	further exception classes by subclassing this class.
@@ -65,8 +65,8 @@ class TracebackHandler:
 	is the name of the exception class to handle.
 
 	.. versionadded:: 1.0.0
-
 	.. seealso:: :func:`~.handle_tracebacks`.
+	.. latex:clearpage::
 	"""  # noqa: D400
 
 	def handle_EOFError(self, e: EOFError) -> bool:  # noqa: D102
@@ -150,10 +150,7 @@ def traceback_handler():
 
 	.. versionadded:: 0.8.0
 
-	.. seealso::
-
-		* :func:`~.handle_tracebacks`
-		* :class:`~.TracebackHandler`
+	.. seealso:: :func:`~.handle_tracebacks` and :class:`~.TracebackHandler`
 	"""  # noqa: D400
 
 	with TracebackHandler()():
@@ -176,10 +173,7 @@ def handle_tracebacks(
 
 	.. versionchanged:: 1.0.0  Added the ``cls`` parameter.
 
-	.. seealso::
-
-		* :func:`~.traceback_handler`
-		* :class:`~.TracebackHandler`
+	.. seealso:: :func:`~.traceback_handler` and :class:`~.TracebackHandler`
 	"""
 
 	if show_traceback:

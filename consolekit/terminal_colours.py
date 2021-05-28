@@ -2,15 +2,12 @@
 #
 #  terminal_colours.py
 """
-Functions for adding colours to terminal print statements.
-
-This module generates ANSI character codes to printing colors to terminals.
-
+Functions for adding ANSI character codes to terminal print statements.
 
 .. seealso:: http://en.wikipedia.org/wiki/ANSI_escape_code
 """
 #
-#  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal
@@ -82,25 +79,25 @@ from domdf_python_tools.iterative import chunks
 from typing_extensions import Final
 
 __all__ = [
-		"CSI",
-		"OSC",
-		"BEL",
-		"resolve_color_default",
-		"code_to_chars",
-		"set_title",
-		"clear_line",
-		"Colour",
-		"AnsiCodes",
-		"AnsiCursor",
 		"AnsiFore",
 		"AnsiBack",
 		"AnsiStyle",
+		"AnsiCursor",
 		"Fore",
 		"Back",
 		"Style",
 		"Cursor",
-		"strip_ansi",
+		"AnsiCodes",
+		"Colour",
 		"ColourTrilean",
+		"clear_line",
+		"code_to_chars",
+		"resolve_color_default",
+		"set_title",
+		"strip_ansi",
+		"CSI",
+		"OSC",
+		"BEL",
 		]
 
 try:
@@ -199,6 +196,9 @@ class Colour(str):
 	:type stack: :class:`~typing.List`\[:class:`str`\]
 	:param reset: The escape sequence to reset the style.
 	:type reset: :class:`str`
+
+	.. autosummary-widths:: 7/16
+		:html: 3/10
 	"""
 
 	__slots__ = ("style", "reset", "stack")
@@ -243,12 +243,12 @@ class Colour(str):
 		:param code: A 3- or 4- bit ANSI colour code.
 		:param background: Whether to set the colour for the background.
 
-		:rtype:
+		:rtype: :class:`~.Colour`
 
 		.. note::
 
 			The ``background`` option only influences the reset value and the stack used.
-			It will not handle conversion of foreground codes to background codes etc.
+			It will not handle conversion of foreground codes to background codes.
 		"""
 
 		if background:
@@ -273,6 +273,13 @@ class Colour(str):
 
 		:param code: A 256-colour ANSI code.
 		:param background: Whether to set the colour for the background.
+
+		:rtype: :class:`~.Colour`
+
+		.. note::
+
+			The ``background`` option only influences the reset value and the stack used.
+			It will not handle conversion of foreground codes to background codes.
 		"""
 
 		if background:
@@ -308,6 +315,13 @@ class Colour(str):
 		:param g:
 		:param b:
 		:param background: Whether to set the colour for the background.
+
+		:rtype: :class:`~.Colour`
+
+		.. note::
+
+			The ``background`` option only influences the reset value and the stack used.
+			It will not handle conversion of foreground codes to background codes.
 		"""
 
 		if background:
@@ -335,6 +349,13 @@ class Colour(str):
 
 		:param hex_colour: The hex colour code.
 		:param background: Whether to set the colour for the background.
+
+		:rtype: :class:`~.Colour`
+
+		.. note::
+
+			The ``background`` option only influences the reset value and the stack used.
+			It will not handle conversion of foreground codes to background codes.
 		"""
 
 		# From https://stackoverflow.com/q/29643352
@@ -492,12 +513,17 @@ class AnsiCursor:
 
 
 class AnsiFore(AnsiCodes):
-	"""
+	r"""
 	ANSI Colour Codes for foreground colour.
 
 	The colours can be used as a context manager, a string, or a function.
 
 	Valid values are:
+
+	.. raw:: latex
+
+		\vspace{-5px}
+		\begin{multicols}{3}
 
 	* BLACK
 	* RED
@@ -517,7 +543,12 @@ class AnsiFore(AnsiCodes):
 	* LIGHTCYAN_EX
 	* LIGHTWHITE_EX
 
-	This class is also available under the shorter alias ``Fore``.
+	.. raw:: latex
+
+		\end{multicols}
+		\vspace{-5px}
+
+	This class is also available under the shorter alias :py:obj:`Fore`.
 	"""
 
 	_stack = fore_stack
@@ -545,12 +576,17 @@ class AnsiFore(AnsiCodes):
 
 
 class AnsiBack(AnsiCodes):
-	"""
+	r"""
 	ANSI Colour Codes for background colour.
 
 	The colours can be used as a context manager, a string, or a function.
 
 	Valid values are:
+
+	.. raw:: latex
+
+		\vspace{-5px}
+		\begin{multicols}{3}
 
 	* BLACK
 	* RED
@@ -570,7 +606,12 @@ class AnsiBack(AnsiCodes):
 	* LIGHTCYAN_EX
 	* LIGHTWHITE_EX
 
-	This class is also available under the shorter alias ``Back``.
+	.. raw:: latex
+
+		\end{multicols}
+		\vspace{-5px}
+
+	This class is also available under the shorter alias :py:obj:`Back`.
 	"""
 
 	_stack = back_stack
@@ -610,7 +651,7 @@ class AnsiStyle(AnsiCodes):
 	Additionally, ``AnsiStyle.RESET_ALL`` can be used to reset the
 	foreground and background colours as well as the text style.
 
-	This class is also available under the shorter alias ``Style``.
+	This class is also available under the shorter alias :py:obj:`Style`.
 	"""
 
 	_stack = style_stack

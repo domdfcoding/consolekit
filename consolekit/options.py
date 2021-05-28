@@ -306,6 +306,8 @@ class MultiValueOption(click.Option):
 	"""
 	Subclass of :class:`click.Option` that behaves like argparse's ``nargs='+'``.
 
+	.. versionadded:: 0.6.0
+
 	:param param_decls: The parameter declarations for this option or argument.
 		This is a list of flags or argument names.
 	:param show_default: Controls whether the default value should be shown on the help page.
@@ -325,8 +327,6 @@ class MultiValueOption(click.Option):
 	:param expose_value: If :py:obj:`True` then the value is passed onwards to the command callback
 		and stored on the context, otherwise it is skipped.
 	:param is_eager: Eager values are processed before non eager ones.
-
-	.. versionadded:: 0.6.0
 
 	Example usage:
 

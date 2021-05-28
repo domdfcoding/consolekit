@@ -325,8 +325,8 @@ def choice(
 
 	:param options:
 	:param text: The text to show for the prompt.
-	:param default: The index of the default value to use if no input happens.
-		If this is not given it will prompt until it is aborted.
+	:param default: The index of the default value to use if the user does not enter anything.
+		If this is not given it will prompt the user until aborted.
 	:param prompt_suffix: A suffix that should be added to the prompt.
 	:param show_default: Shows or hides the default value in the prompt.
 	:param err: If :py:obj:`True` the file defaults to ``stderr`` instead of

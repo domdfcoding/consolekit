@@ -9,3 +9,5 @@
 - 'Error: the two entered values do not match'
 - 'Password: badpassword'
 - 'Repeat for confirmation: badpassword'
+- 'Password: badpassword'
+- Are you sure about that? badpassword

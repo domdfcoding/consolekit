@@ -91,10 +91,7 @@ class RawHelpMixin:
 	"""
 	Mixin class for :class:`click.Command` and :class:`click.Group` which leaves the help text unformatted.
 
-	.. seealso::
-
-		* :class:`~.RawHelpCommand`
-		* :class:`~.RawHelpGroup`
+	.. seealso:: :class:`~.RawHelpCommand` and :class:`~.RawHelpGroup`
 
 	.. tip:: This can be combined with groups such as :class:`~.SuggestionGroup`.
 
@@ -137,10 +134,7 @@ class MarkdownHelpMixin:
 	Mixin class for :class:`click.Command` and :class:`click.Group` which treats the help text as markdown
 	and prints a rendered representation.
 
-	.. seealso::
-
-		* :class:`~.MarkdownHelpCommand`
-		* :class:`~.MarkdownHelpGroup`
+	.. seealso:: :class:`~.MarkdownHelpCommand` and :class:`~.MarkdownHelpGroup`
 
 	.. tip:: This can be combined with groups such as :class:`~.SuggestionGroup`.
 
@@ -304,12 +298,15 @@ class MarkdownHelpGroup(MarkdownHelpMixin, click.Group):  # lgtm [py/conflicting
 
 class ContextInheritingGroup(click.Group):
 	"""
-	Subclass of :class:`click.Group` whose children inherit its :attr:`click.BaseCommand.context_settings`.
+	Subclass of :class:`click.Group` whose children inherit its :attr:`~click.BaseCommand.context_settings`.
 
 	The group's commands can be given different context settings by passing the
 	``context_settings`` keyword argument to :meth:`~.command` and :meth:`~.group` as normal.
 
 	.. versionadded:: 1.1.0
+
+	.. autosummary-widths:: 5/16
+		:html: 2/10
 	"""
 
 	def command(self, *args, **kwargs) -> Callable[[Callable[..., Any]], click.Command]:

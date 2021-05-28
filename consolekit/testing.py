@@ -4,13 +4,13 @@
 """
 Test helpers.
 
+.. versionadded:: 0.9.0
+
 .. extras-require:: testing
 	:pyproject:
-
-.. versionadded:: 0.9.0
 """
 #
-#  Copyright © 2020 Dominic Davis-Foster <dominic@davis-foster.co.uk>
+#  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal
@@ -181,7 +181,7 @@ class Result(click.testing.Result):
 
 class CliRunner(click.testing.CliRunner):  # noqa: D101
 	"""
-	Provides functionality to invoke and test a Click script for in an isolated environment.
+	Provides functionality to invoke and test a Click script in an isolated environment.
 
 	This only works in single-threaded systems without any concurrency as it changes the global interpreter state.
 
@@ -193,6 +193,9 @@ class CliRunner(click.testing.CliRunner):  # noqa: D101
 	:param mix_stderr: If :py:obj:`False`, then stdout and stderr are preserved as independent streams.
 		This is useful for Unix-philosophy apps that have predictable stdout and noisy stderr,
 		such that each may be measured independently.
+
+	.. autoclasssumm:: CliRunner
+		:autosummary-sections: ;;
 	"""
 
 	def __init__(

@@ -16,6 +16,8 @@
 .. class:: MarkdownHelpCommand
 		   MarkdownHelpGroup
 
+	Bases: :class:`~.MarkdownHelpMixin`
+
 	Subclasses of :class:`click.Command` and :class:`click.Group`
 	which treat the help text as markdown and print a rendered representation.
 
@@ -30,8 +32,21 @@
 
 	.. automethod:: MarkdownHelpCommand.parse_args
 
-
-.. automodule:: consolekit.commands
-	:exclude-members: ContextInheritingGroup,MarkdownHelpCommand,MarkdownHelpGroup
+.. autoclass:: consolekit.commands.MarkdownHelpMixin
 	:no-autosummary:
-	:no-docstring:
+
+.. class:: RawHelpCommand
+		   RawHelpGroup
+
+	Bases: :class:`~.RawHelpMixin`
+
+	Subclasses of :class:`click.Command` and :class:`click.Group`
+	which leave the help text unformatted.
+
+	.. versionadded:: 0.8.0
+
+.. autoclass:: consolekit.commands.RawHelpMixin
+	:no-autosummary:
+
+.. autoclass:: consolekit.commands.SuggestionGroup
+	:no-autosummary:

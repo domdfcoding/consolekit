@@ -64,7 +64,7 @@ from typing import Any, Callable, Iterable, List, Optional, Tuple, TypeVar, cast
 
 # 3rd party
 import click
-from click.decorators import _param_memo  # type: ignore
+from click.decorators import _param_memo
 
 # this package
 import consolekit.input
@@ -118,7 +118,13 @@ def verbose_option(help_text: str = "Show verbose output.") -> Callable[[_C], _C
 	:param help_text: The help text for the option.
 	"""
 
-	return click.option("-v", "--verbose", count=True, help=help_text, type=VerboseVersionCountType())
+	return click.option(  # type: ignore
+			"-v",
+			"--verbose",
+			count=True,
+			help=help_text,
+			type=VerboseVersionCountType(),
+			)
 
 
 def version_option(callback: Callable[[click.Context, click.Option, int], Any]) -> Callable[[_C], _C]:
@@ -149,7 +155,7 @@ def version_option(callback: Callable[[click.Context, click.Option, int], Any]) 
 
 	"""
 
-	return click.option(
+	return click.option(  # type: ignore
 			"--version",
 			count=True,
 			expose_value=False,
@@ -215,7 +221,7 @@ def flag_option(*args, default: Optional[bool] = False, **kwargs) -> Callable[[_
 	:param \*\*kwargs: Keyword arguments passed to :func:`click.option`.
 	"""
 
-	return click.option(
+	return click.option(  # type: ignore
 			*args,
 			is_flag=True,
 			default=default,
@@ -258,6 +264,10 @@ def auto_default_option(*param_decls, **attrs) -> Callable[[_C], _C]:
 def _get_default_from_callback_and_set(command: click.Command, param: click.Parameter):
 	if command.callback is not None:
 		# The callback *can* be None, for a no-op
+
+		if param.name is None:  # pragma: no cover
+			raise ValueError("The parameter name cannot be None")
+
 		signature: inspect.Signature = inspect.signature(command.callback)
 
 		param_default = signature.parameters[param.name].default
@@ -421,7 +431,7 @@ class MultiValueOption(click.Option):
 			if isinstance(value, Iterable) and not isinstance(value, str):
 				return tuple(self.type_cast_value(ctx, v) for v in value)
 			elif value in ("()", str(self.default)) or not value:
-				return self.default
+				return self.default  # type: ignore
 			else:
 				return self.type_cast_value(ctx, value)
 		else:
@@ -440,12 +450,17 @@ class _Option(click.Option):
 		# Calculate the default before prompting anything to be stable.
 		default = self.get_default(ctx)
 
+		prompt_string = cast(str, self.prompt)
+
 		# If this is a prompt for a flag we need to handle this differently.
 		if self.is_bool_flag:
-			return consolekit.input.confirm(self.prompt, default)
+			return consolekit.input.confirm(
+					prompt_string,
+					default,  # type: ignore
+					)
 
 		return consolekit.input.prompt(
-				self.prompt,
+				prompt_string,
 				default=default,
 				type=self.type,
 				hide_input=self.hide_input,

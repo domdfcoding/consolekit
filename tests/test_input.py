@@ -96,7 +96,20 @@ def test_confirm(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
 def test_prompt(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
-	inputs = iter(['', '', '', '', "24", "Bond007", "badpassword", "baspassword", "badpassword", "badpassword"])
+	inputs = iter([
+			'',
+			'',
+			'',
+			'',
+			"24",
+			"Bond007",
+			"badpassword",
+			"baspassword",
+			"badpassword",
+			"badpassword",
+			"badpassword",
+			"badpassword",
+			])
 
 	def fake_input(prompt):
 		value = next(inputs)
@@ -109,6 +122,11 @@ def test_prompt(capsys, monkeypatch, data_regression: DataRegressionFixture):
 
 	assert prompt(text="Username", type=click.STRING) == "Bond007"
 	assert prompt(text="Password", type=click.STRING, confirmation_prompt=True) == "badpassword"
+	assert prompt(
+			text="Password",
+			type=click.STRING,
+			confirmation_prompt="Are you sure about that? ",
+			) == "badpassword"
 
 	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 

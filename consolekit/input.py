@@ -93,7 +93,7 @@ def prompt(
 		text: str,
 		default: Optional[str] = None,
 		hide_input: bool = False,
-		confirmation_prompt: bool = False,
+		confirmation_prompt: Union[bool, str] = False,
 		type: Optional[_ConvertibleType] = None,  # noqa: A002  # pylint: disable=redefined-builtin
 		value_proc: Optional[Callable[[Optional[str]], Any]] = None,
 		prompt_suffix: str = ": ",
@@ -112,6 +112,7 @@ def prompt(
 		If this is not given it will prompt until it is aborted.
 	:param hide_input: If :py:obj:`True` then the input value will be hidden.
 	:param confirmation_prompt: Asks for confirmation for the value.
+		Can be set to a string instead of :py:obj:`True` to customize the message.
 	:param type: The type to check the value against.
 	:param value_proc: If this parameter is provided it must be a function that
 		is invoked instead of the type conversion to convert a value.
@@ -162,8 +163,12 @@ def prompt(
 		if not confirmation_prompt:
 			return result
 
+		if confirmation_prompt:
+			if confirmation_prompt is True:
+				confirmation_prompt = "Repeat for confirmation: "
+
 		while True:
-			value2 = prompt_func("Repeat for confirmation: ")
+			value2 = prompt_func(confirmation_prompt)
 			if value2:
 				break
 
@@ -276,7 +281,7 @@ def _prompt(text, err: bool, hide_input: bool):
 	elif err:
 		return stderr_input(text, file=sys.stderr)
 	else:
-		return click.termui.visible_prompt_func(text)  # type: ignore
+		return click.termui.visible_prompt_func(text)
 
 
 @overload

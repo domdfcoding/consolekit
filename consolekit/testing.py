@@ -58,7 +58,8 @@ Test helpers.
 #
 
 # stdlib
-from typing import IO, Any, Iterable, Mapping, Optional, Union
+from types import TracebackType
+from typing import IO, Any, Iterable, Mapping, Optional, Tuple, Type, Union
 
 # 3rd party
 import click.testing
@@ -86,33 +87,23 @@ class Result(click.testing.Result):
 
 	runner: click.testing.CliRunner
 	exit_code: int
-	exception: Any
+	exception: Optional[BaseException]
 	exc_info: Optional[Any]
 	stdout_bytes: bytes
-	stderr_bytes: bytes
-	return_value: Any
+	stderr_bytes: Optional[bytes]
+	return_value: Optional[Tuple[Type[BaseException], BaseException, TracebackType]]
 
 	def __init__(
 			self,
 			runner: click.testing.CliRunner,
 			stdout_bytes: bytes,
-			stderr_bytes: bytes,
+			stderr_bytes: Optional[bytes],
 			exit_code: int,
-			exception: Any,
-			exc_info: Optional[Any] = None,
+			exception: Optional[BaseException],
+			exc_info: Optional[Tuple[Type[BaseException], BaseException, TracebackType]] = None,
 			) -> None:
 
 		if _click_major >= 8:
-			super().__init__(  # type: ignore
-				runner=runner,
-				stdout_bytes=stdout_bytes,
-				stderr_bytes=stderr_bytes,
-				exit_code=exit_code,
-				exception=exception,
-				exc_info=exc_info,
-				return_value=None,
-				)
-		else:
 			super().__init__(
 					runner=runner,
 					stdout_bytes=stdout_bytes,
@@ -120,7 +111,17 @@ class Result(click.testing.Result):
 					exit_code=exit_code,
 					exception=exception,
 					exc_info=exc_info,
+					return_value=None,
 					)
+		else:
+			super().__init__(  # type: ignore
+				runner=runner,
+				stdout_bytes=stdout_bytes,
+				stderr_bytes=stderr_bytes,
+				exit_code=exit_code,
+				exception=exception,
+				exc_info=exc_info,
+				)
 
 	@property
 	def output(self) -> str:
@@ -233,6 +234,9 @@ class CliRunner(click.testing.CliRunner):  # noqa: D101
 			The application can still override this explicitly.
 		:param \*\*extra: The keyword arguments to pass to :meth:`click.Command.main`.
 		"""
+
+		if args is not None and not isinstance(args, str):
+			args = list(args)
 
 		result = super().invoke(
 				cli,

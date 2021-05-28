@@ -126,12 +126,26 @@ def test_handle_tracebacks_ignored_exceptions(
 				]
 		)
 @contextmanagers
+@pytest.mark.parametrize(
+		"click_version",
+		[
+				pytest.param(
+						'7',
+						marks=pytest.mark.skipif(_click_major == 8, reason="Output differs on click 8"),
+						),
+				pytest.param(
+						'8',
+						marks=pytest.mark.skipif(_click_major != 8, reason="Output differs on click 8"),
+						),
+				]
+		)
 def test_handle_tracebacks_ignored_click(
 		exception,
 		contextmanager: Callable[..., ContextManager],
 		file_regression,
 		code: int,
 		cli_runner: CliRunner,
+		click_version: str
 		):
 
 	@click.command()

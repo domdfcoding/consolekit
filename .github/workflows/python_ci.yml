@@ -5,6 +5,10 @@ name: Windows
 on:
   push:
 
+permissions:
+  actions: write
+  contents: read
+
 jobs:
   tests:
     name: "windows-2019 / Python ${{ matrix.config.python-version }}"
@@ -56,7 +60,7 @@ jobs:
 
       - name: "Run Tests for Python ${{ matrix.config.python-version }}"
         if: steps.setup-python.outcome == 'success'
-        run: python -m tox -e "${{ matrix.config.testenvs }}"
+        run: python -m tox -e "${{ matrix.config.testenvs }}" -s false
 
       - name: "Upload Coverage 🚀"
         uses: actions/upload-artifact@v2

@@ -79,7 +79,7 @@ __all__ = [
 _deprecator = deprecation_alias.deprecated(
 		deprecated_in="1.0.0",
 		removed_in="2.0.0",
-		current_version="1.1.2",
+		current_version="1.2.0",
 		details="Import from consolekit.tracebacks instead."
 		)
 
@@ -135,7 +135,7 @@ def abort(message: str, colour: ColourTrilean = None) -> Exception:
 	:param colour: Whether to use coloured output. Default auto-detect.
 	:no-default colour:
 
-	.. versionchanged:: 1.1.2  Added the ``colour`` option.
+	.. versionchanged:: 1.0.1  Added the ``colour`` option.
 	"""
 
 	click.echo(terminal_colours.Fore.RED(message), err=True, color=resolve_color_default(colour))
@@ -269,7 +269,7 @@ snake_spinner = cycle(['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '
 """
 :func:`itertools.cycle` of braille characters to use as a loading spinner which looks like a snake.
 
-.. versionadded:: 1.1.2
+.. versionadded:: 1.1.0
 """
 
 

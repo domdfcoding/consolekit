@@ -16,7 +16,7 @@ __all__ = [
 		"extras_require",
 		]
 
-__version__ = "1.1.2"
+__version__ = "1.2.0"
 extras_require = {
 		"terminals": ["psutil>=5.8.0"],
 		"testing": ["coincidence>=0.1.0", "pytest>=6.0.0", "pytest-regressions>=2.0.2"],

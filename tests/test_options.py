@@ -9,6 +9,7 @@ from pytest_regressions.file_regression import FileRegressionFixture
 # this package
 from consolekit import click_command
 from consolekit.options import (
+		DescribedArgument,
 		MultiValueOption,
 		auto_default_argument,
 		auto_default_option,
@@ -21,6 +22,35 @@ from consolekit.options import (
 		)
 from consolekit.terminal_colours import ColourTrilean
 from consolekit.testing import CliRunner, Result
+
+
+def test_described_argument(
+		file_regression: FileRegressionFixture,
+		cli_runner: CliRunner,
+		):
+
+	@click.argument(
+			"dest",
+			cls=DescribedArgument,
+			type=click.STRING,
+			description="The destination directory.",
+			)
+	@click_command()
+	def main(dest: str):
+		print(dest)
+
+	result = cli_runner.invoke(main, args="--help")
+	result.check_stdout(file_regression, extension=".md")
+	assert result.exit_code == 0
+
+	result = cli_runner.invoke(main, catch_exceptions=False, args="./staging")
+	assert result.stdout.rstrip() == "./staging"
+	assert result.exit_code == 0
+
+	ctx = click.Context(main, info_name="main", parent=None)
+	argument = ctx.command.params[0]
+	assert isinstance(argument, DescribedArgument)
+	assert argument.description == "The destination directory."
 
 
 def test_auto_default_option(

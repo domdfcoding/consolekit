@@ -80,6 +80,7 @@ __all__ = [
 		"flag_option",
 		"auto_default_option",
 		"auto_default_argument",
+		"DescribedArgument",
 		"_A",
 		"_C",
 		]
@@ -119,12 +120,12 @@ def verbose_option(help_text: str = "Show verbose output.") -> Callable[[_C], _C
 	"""
 
 	return click.option(  # type: ignore
-			"-v",
-			"--verbose",
-			count=True,
-			help=help_text,
-			type=VerboseVersionCountType(),
-			)
+		"-v",
+		"--verbose",
+		count=True,
+		help=help_text,
+		type=VerboseVersionCountType(),
+		)
 
 
 def version_option(callback: Callable[[click.Context, click.Option, int], Any]) -> Callable[[_C], _C]:
@@ -156,14 +157,14 @@ def version_option(callback: Callable[[click.Context, click.Option, int], Any]) 
 	"""
 
 	return click.option(  # type: ignore
-			"--version",
-			count=True,
-			expose_value=False,
-			is_eager=True,
-			help="Show the version and exit.",
-			type=VerboseVersionCountType(),
-			callback=cast(Callback, callback),
-			)
+		"--version",
+		count=True,
+		expose_value=False,
+		is_eager=True,
+		help="Show the version and exit.",
+		type=VerboseVersionCountType(),
+		callback=cast(Callback, callback),
+		)
 
 
 def colour_option(help_text="Whether to use coloured output.") -> Callable[[_C], _C]:
@@ -468,3 +469,30 @@ class _Option(click.Option):
 				confirmation_prompt=self.confirmation_prompt,
 				value_proc=lambda x: self.process_value(ctx, x),
 				)
+
+
+class DescribedArgument(click.Argument):
+	r"""
+	:class:`click.Argument` with an additional keyword argument and attribute giving a short description.
+
+	This is not shown in the help text,
+	but may be useful for manpages or HTML documentation where additional information can be provided.
+
+	.. versionadded:: 1.2.0
+
+	:param description:
+
+	See :class:`click.Argument` and :class:`click.Parameter` for descriptions of the other keyword argu
+	ments.
+
+	.. attribute:: description
+
+		**Type:** |nbsp| |nbsp| |nbsp| |nbsp| :py:obj:`~typing.Optional`\[:py:class:`str`\]
+
+		A short description of the argument.
+	"""
+
+	def __init__(self, *args, description: Optional[str] = None, **kwargs):
+		super().__init__(*args, **kwargs)
+
+		self.description: Optional[str] = description

@@ -45,6 +45,8 @@ known_third_party = [
     "mistletoe",
     "pytest",
     "pytest_cov",
+    "pytest_mypy_plugins",
+    "pytest_mypy_plugins_shim",
     "pytest_randomly",
     "pytest_regressions",
     "pytest_timeout",

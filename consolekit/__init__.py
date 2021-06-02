@@ -40,7 +40,7 @@ Additional utilities for `click <https://click.palletsprojects.com/en/7.x/>`_.
 
 # stdlib
 import sys
-from typing import Any, Callable, Optional, Type, TypeVar, cast
+from typing import Any, Callable, Dict, Optional, Type, TypeVar, cast
 
 # 3rd party
 import click
@@ -75,13 +75,14 @@ __all__ = [
 		]
 
 _C = TypeVar("_C", bound=click.Command)
+_G = TypeVar("_G", bound=click.Group)
 
-CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"], max_content_width=120)
+CONTEXT_SETTINGS: Dict[str, Any] = dict(help_option_names=["-h", "--help"], max_content_width=120)
 
 
 def click_command(
 		name: Optional[str] = None,
-		cls: Type[_C] = click.Command,  # type: ignore
+		cls: Optional[Type[_C]] = None,
 		**attrs: Any,
 		) -> Callable[[Callable], _C]:
 	r"""
@@ -90,7 +91,8 @@ def click_command(
 	:param name:
 	:param cls:
 	:type cls: :class:`~typing.Type`\[:class:`~click.Command`\]
-	:param \*\*attrs: Additional keyword arguments passed to :func:`click.command`.
+	:default type: :class:`click.Command`
+	:param \*\*attrs: Additional keyword arguments passed to the :class:`~click.Command`.
 
 	:rtype: :class:`~typing.Callable`\[[:class:`~typing.Callable`\], :class:`~click.Command`\]
 	"""
@@ -101,23 +103,28 @@ def click_command(
 
 def click_group(
 		name: Optional[str] = None,
-		cls: Type[click.Group] = SuggestionGroup,
+		cls: Optional[Type[_G]] = None,
 		**attrs: Any,
-		) -> Callable[[Callable], click.Group]:
+		) -> Callable[[Callable], _G]:
 	r"""
 	Shortcut to :func:`click.group`, with the ``-h``/``--help`` option enabled and a max width of ``120``.
 
 	:param name:
 	:param cls:
-	:param \*\*attrs: Additional keyword arguments passed to :func:`click.command`.
+	:type cls: :class:`~typing.Type`\[:class:`~click.Group`\]
+	:default type: :class:`click.Group`
+	:param \*\*attrs: Additional keyword arguments passed to the :class:`~click.Group`.
 
 	:rtype:
 
 	.. latex:clearpage::
 	"""
 
+	if cls is None:
+		cls = SuggestionGroup  # type: ignore
+
 	attrs.setdefault("context_settings", CONTEXT_SETTINGS)
-	return click_command(name, cls=cls, **attrs)
+	return click_command(name, cls=cls, **attrs)  # type: ignore
 
 
 def option(

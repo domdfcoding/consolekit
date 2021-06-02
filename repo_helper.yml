@@ -66,3 +66,6 @@ extra_sphinx_extensions:
 sphinx_conf_epilogue:
  - toctree_plus_types.add("fixture")
  - latex_elements["preamble"] = "\\usepackage{multicol}"
+
+tox_unmanaged:
+ - pytest

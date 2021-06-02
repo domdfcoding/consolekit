@@ -71,7 +71,7 @@ def test_auto_default_option(
 	argument = main.params[0]
 	assert argument.default == 80
 	assert not argument.required
-	assert argument.show_default
+	assert argument.show_default  # type: ignore
 
 	result = cli_runner.invoke(main, args="--help")
 	result.check_stdout(file_regression, extension=".md")

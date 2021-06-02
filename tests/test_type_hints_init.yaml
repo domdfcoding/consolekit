@@ -1,5 +1,8 @@
 - case: mypy_path_from_env
-  mypy_config: ignore_missing_imports = True
+  mypy_config: |
+    ignore_missing_imports = True
+    no_silence_site_packages = False
+    follow_imports = silent
   main: |
     import click
     from consolekit import click_command, click_group

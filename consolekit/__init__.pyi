@@ -5,8 +5,8 @@ from typing import Any, Callable, Dict, List, Optional, Type, TypeVar, overload
 import click
 
 # this package
-from consolekit import commands as commands  # noqa: A001  # pylint: disable=redefined-builtin
-from consolekit import input as input
+from consolekit import commands as commands
+from consolekit import input as input  # noqa: A001  # pylint: disable=redefined-builtin
 from consolekit import terminal_colours as terminal_colours
 from consolekit import tracebacks as tracebacks
 from consolekit import utils as utils

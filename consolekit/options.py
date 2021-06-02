@@ -275,6 +275,7 @@ def _get_default_from_callback_and_set(command: click.Command, param: click.Para
 
 		if param_default is not inspect.Signature.empty:
 			param.default = param_default
+			param.required = False
 
 
 def auto_default_argument(*param_decls, **attrs) -> Callable[[_C], _C]:

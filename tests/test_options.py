@@ -68,6 +68,11 @@ def test_auto_default_option(
 	def main(width: int = 80):
 		print(width)
 
+	argument = main.params[0]
+	assert argument.default == 80
+	assert not argument.required
+	assert argument.show_default
+
 	result = cli_runner.invoke(main, args="--help")
 	result.check_stdout(file_regression, extension=".md")
 	assert result.exit_code == 0
@@ -271,6 +276,10 @@ def test_auto_default_argument(cli_runner: CliRunner):
 	@click_command()
 	def main(greeting: str = "Hello"):
 		print(f"{greeting} User!")
+
+	argument = main.params[0]
+	assert argument.default == "Hello"
+	assert not argument.required
 
 	result = cli_runner.invoke(main)
 	assert result.stdout.rstrip() == "Hello User!"

@@ -84,59 +84,6 @@ class TransitionDirective(SphinxDirective):
 		return [nodes.transition()]
 
 
-# Backported from Sphinx 4
-# See https://github.com/sphinx-doc/sphinx/pull/8997
-new_commands = r"""
-\makeatletter
-
-\renewcommand{\py@sigparams}[2]{%
-  % The \py@argswidth has been computed in \pysiglinewithargsret to make this
-  % occupy full available width on line.
-  \parbox[t]{\py@argswidth}{\raggedright #1\sphinxcode{)}#2\strut}%
-  % final strut is to help get correct vertical separation in case of multi-line
-  % box with the item contents.
-}
-\renewcommand{\pysigline}[1]{%
-% the \py@argswidth is available we use it despite its name (no "args" here)
-% the \relax\relax is because \py@argswidth is a "skip" variable and the first
-% \relax only ends its "dimen" part
-  \py@argswidth=\dimexpr\linewidth+\labelwidth\relax\relax
-  \item[{\parbox[t]{\py@argswidth}{\raggedright #1\strut}}]
-% this strange incantation is because at its root LaTeX in fact did not
-% imagine a multi-line label, it is always wrapped in a horizontal box at core
-% LaTeX level and we have to find tricks to get correct interline distances.
-  \leavevmode\par\nobreak\vskip-\parskip\prevdepth\dp\strutbox}
-\renewcommand{\pysiglinewithargsret}[3]{%
-  \settowidth{\py@argswidth}{#1\sphinxcode{(}}%
-  \py@argswidth=\dimexpr\linewidth+\labelwidth-\py@argswidth\relax\relax
-  \item[{#1\sphinxcode{(}\py@sigparams{#2}{#3}}]
-  \leavevmode\par\nobreak\vskip-\parskip\prevdepth\dp\strutbox}
-
-\makeatother
-"""
-
-
-def configure(app: Sphinx, config: Config):
-	"""
-	Configure Sphinx Extension.
-
-	:param app: The Sphinx application.
-	:param config:
-	"""
-
-	if not hasattr(config, "latex_elements"):  # pragma: no cover
-		config.latex_elements = {}  # type: ignore
-
-	latex_elements = (config.latex_elements or {})
-
-	latex_preamble = latex_elements.get("preamble", '')
-
-	config.latex_elements["preamble"] = '\n'.join([
-			latex_preamble,
-			new_commands,
-			])
-
-
 def depart_desc_annotation(translator: LaTeXTranslator, node: addnodes.desc_annotation) -> None:
 	translator.body.append("}}")
 	parent = node.parent
@@ -157,7 +104,6 @@ class InlineRole(SphinxRole):
 def setup(app: Sphinx):
 	app.add_directive("transition", TransitionDirective)
 	app.add_transform(TransitionTransform)
-	app.connect("config-inited", configure)
 	app.add_node(
 			addnodes.desc_annotation,
 			latex=(LaTeXTranslator.visit_desc_annotation, depart_desc_annotation),

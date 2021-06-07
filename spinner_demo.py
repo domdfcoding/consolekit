@@ -1,9 +1,10 @@
 # Demo of consolekit's spinners
 
-from itertools import cycle
+# stdlib
 import time
-from consolekit.utils import braille_spinner, solidus_spinner, snake_spinner
-from consolekit.utils import hidden_cursor
+
+# this package
+from consolekit.utils import braille_spinner, hidden_cursor, snake_spinner, solidus_spinner
 
 REPEATS = 50
 SLEEP = 0.5

@@ -258,14 +258,14 @@ solidus_spinner = cycle("|/-\\")
 .. versionadded:: 0.7.0
 """
 
-braille_spinner = cycle("⢿ ⣻ ⣽ ⣾ ⣷ ⣯ ⣟ ⡿ ".split(' '))
+braille_spinner = cycle(['⢿', '⣻', '⣽', '⣾', '⣷', '⣯', '⣟', '⡿'])
 """
 :func:`itertools.cycle` of braille characters to use as a loading spinner.
 
 .. versionadded:: 0.7.0
 """
 
-snake_spinner = cycle(['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'])
+snake_spinner = cycle(['⠋', '⠙', '⠸', '⠴', '⠦', '⠇'])
 """
 :func:`itertools.cycle` of braille characters to use as a loading spinner which looks like a snake.
 

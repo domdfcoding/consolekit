@@ -192,6 +192,8 @@ def confirm(
 	If the user aborts the input by sending a interrupt signal this
 	function will catch it and raise a :exc:`click.Abort` exception.
 
+	.. latex:clearpage::
+
 	:param text: The question to ask.
 	:param default: The default for the prompt.
 	:param abort: If :py:obj:`True` a negative answer aborts the exception by raising :exc:`click.Abort`.

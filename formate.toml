@@ -43,6 +43,7 @@ known_third_party = [
     "github",
     "importlib_metadata",
     "mistletoe",
+    "mypy",
     "pytest",
     "pytest_cov",
     "pytest_mypy_plugins",

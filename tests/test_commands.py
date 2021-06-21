@@ -6,8 +6,8 @@ from typing import Tuple
 # 3rd party
 import click
 import pytest
-from coincidence import not_windows
-from pytest_regressions.file_regression import FileRegressionFixture
+from coincidence.regressions import AdvancedFileRegressionFixture
+from coincidence.selectors import not_windows
 
 # this package
 import consolekit.commands
@@ -37,6 +37,10 @@ def markdown_demo_command() -> click.Command:
 		* This
 		* That
 		* ~~The other~~ (deprecated)
+
+		A
+		multiline
+		paragraph
 		"""
 
 	return demo
@@ -92,7 +96,7 @@ def markdown_demo_group() -> Tuple[click.Command, click.Command]:
 
 
 def test_raw_help_command(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		cli_runner: CliRunner,
 		):
 
@@ -109,7 +113,7 @@ def test_raw_help_command(
 		"""
 
 	result = cli_runner.invoke(demo, args=["--help"])
-	result.check_stdout(file_regression, extension=".md")
+	result.check_stdout(advanced_file_regression, extension=".md")
 
 	assert demo.callback.__doc__ is not None
 	expected = inspect.cleandoc(demo.callback.__doc__)
@@ -117,7 +121,7 @@ def test_raw_help_command(
 
 
 def test_raw_help_group(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		cli_runner: CliRunner,
 		):
 
@@ -146,26 +150,26 @@ def test_raw_help_group(
 		"""
 
 	result = cli_runner.invoke(demo, args=["--help"])
-	result.check_stdout(file_regression, extension="_group.md")
+	result.check_stdout(advanced_file_regression, extension="_group.md")
 
 	result = cli_runner.invoke(foo, args=["--help"])
-	result.check_stdout(file_regression, extension="_command.md")
+	result.check_stdout(advanced_file_regression, extension="_command.md")
 
 
 @not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_command(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		force_not_pycharm,
 		markdown_demo_command,
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_command, args=["--help"], color=True)
-	result.check_stdout(file_regression, extension=".md")
+	result.check_stdout(advanced_file_regression, extension=".md")
 
 
 @not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_group(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		force_not_pycharm,
 		markdown_demo_group,
 		cli_runner: CliRunner,
@@ -174,15 +178,15 @@ def test_markdown_help_group(
 	demo_group, demo_command = markdown_demo_group
 
 	result = cli_runner.invoke(demo_group, args=["--help"], color=True)
-	result.check_stdout(file_regression, extension="_group.md")
+	result.check_stdout(advanced_file_regression, extension="_group.md")
 
 	result = cli_runner.invoke(demo_command, args=["--help"], color=True)
-	result.check_stdout(file_regression, extension="_command.md")
+	result.check_stdout(advanced_file_regression, extension="_command.md")
 
 
 @not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_command_ordered_list(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		force_not_pycharm,
 		cli_runner: CliRunner,
 		):
@@ -200,12 +204,12 @@ def test_markdown_help_command_ordered_list(
 		"""
 
 	result = cli_runner.invoke(demo, args=["--help"], color=True)
-	result.check_stdout(file_regression, extension=".md")
+	result.check_stdout(advanced_file_regression, extension=".md")
 
 
 @not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_command_pycharm(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		monkeypatch,
 		markdown_demo_command,
 		cli_runner: CliRunner,
@@ -214,7 +218,7 @@ def test_markdown_help_command_pycharm(
 	monkeypatch.setattr(consolekit.utils, "_pycharm_terminal", lambda: False)
 
 	result = cli_runner.invoke(markdown_demo_command, args=["--help"], color=True)
-	result.check_stdout(file_regression, extension=".md")
+	result.check_stdout(advanced_file_regression, extension=".md")
 
 
 def test_private_helpers(monkeypatch):
@@ -225,39 +229,39 @@ def test_private_helpers(monkeypatch):
 
 
 def test_markdown_help_command_no_colour(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		force_not_pycharm,
 		markdown_demo_command_numbered,
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_command_numbered, args=["--help", "--no-colour"], color=True)
-	result.check_stdout(file_regression, extension=".md")
+	result.check_stdout(advanced_file_regression, extension=".md")
 
 
 def test_markdown_help_no_args_is_help(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		force_not_pycharm,
 		markdown_demo_command_numbered,
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_command_numbered)
-	result.check_stdout(file_regression, extension=".md")
+	result.check_stdout(advanced_file_regression, extension=".md")
 	assert result.exit_code == 0
 
 
 def test_markdown_help_group_no_args_is_help(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		force_not_pycharm,
 		markdown_demo_group,
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_group[0])
-	result.check_stdout(file_regression, extension=".md")
+	result.check_stdout(advanced_file_regression, extension=".md")
 	assert result.exit_code == 0
 
 
 def test_suggestion_group(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		cli_runner: CliRunner,
 		):
 
@@ -274,11 +278,11 @@ def test_suggestion_group(
 		"""
 
 	result = cli_runner.invoke(demo, args=["searh"])
-	result.check_stdout(file_regression, extension="_success.md")
+	result.check_stdout(advanced_file_regression, extension="_success.md")
 	assert result.exit_code == 2
 
 	result = cli_runner.invoke(demo, args=["list"])
-	result.check_stdout(file_regression, extension="_failure.md")
+	result.check_stdout(advanced_file_regression, extension="_failure.md")
 	assert result.exit_code == 2
 
 	result = cli_runner.invoke(demo, args=["SEARCH"])
@@ -287,7 +291,7 @@ def test_suggestion_group(
 
 
 def test_context_inheriting_group(
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		cli_runner: CliRunner,
 		):
 
@@ -314,18 +318,18 @@ def test_context_inheriting_group(
 
 	result = cli_runner.invoke(demo, args=["-h"])
 	assert result.exit_code == 0
-	result.check_stdout(file_regression, extension=".md")
+	result.check_stdout(advanced_file_regression, extension=".md")
 
 	result = cli_runner.invoke(foo, args=["--help"])
 	assert result.exit_code == 0
 
 	result = cli_runner.invoke(foo, args=["-h"])
 	assert result.exit_code == 0
-	result.check_stdout(file_regression, extension="_foo.md")
+	result.check_stdout(advanced_file_regression, extension="_foo.md")
 
 	result = cli_runner.invoke(search, args=["--help"])
 	assert result.exit_code == 0
 
 	result = cli_runner.invoke(search, args=["-h"])
 	assert result.exit_code == 0
-	result.check_stdout(file_regression, extension="_search.md")
+	result.check_stdout(advanced_file_regression, extension="_search.md")

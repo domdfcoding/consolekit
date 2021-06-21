@@ -7,5 +7,7 @@ Usage: demo [OPTIONS]
    * That
    * The other (deprecated)
 
+  A multiline paragraph
+
 Options:
   -h, --help  Show this message and exit.

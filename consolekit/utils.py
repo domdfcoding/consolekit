@@ -448,6 +448,16 @@ class TerminalRenderer(BaseRenderer):
 		else:
 			return f" * {self.render_inner(token).lstrip()}"
 
+	@staticmethod
+	def render_line_break(token):
+		"""
+		Render a line break in a multiline paragraph.
+
+		:param token:
+		"""
+
+		return ' '
+
 	def render(self, token) -> str:
 		"""
 		Render the given token for display in a terminal.

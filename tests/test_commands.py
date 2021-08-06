@@ -20,7 +20,7 @@ from consolekit.testing import CliRunner
 @pytest.fixture()
 def force_not_pycharm(monkeypatch):
 	# Pretend we aren't running in PyCharm, even if we are.
-	monkeypatch.setattr(consolekit.utils, "_pycharm_hosted", lambda: False)
+	monkeypatch.setenv("PYCHARM_HOSTED", "0")
 	monkeypatch.setattr(consolekit.utils, "_pycharm_terminal", lambda: False)
 
 
@@ -156,10 +156,10 @@ def test_raw_help_group(
 	result.check_stdout(advanced_file_regression, extension="_command.md")
 
 
+@pytest.mark.usefixtures("force_not_pycharm")
 @not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_command(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		force_not_pycharm,
 		markdown_demo_command,
 		cli_runner: CliRunner,
 		):
@@ -167,10 +167,10 @@ def test_markdown_help_command(
 	result.check_stdout(advanced_file_regression, extension=".md")
 
 
+@pytest.mark.usefixtures("force_not_pycharm")
 @not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_group(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		force_not_pycharm,
 		markdown_demo_group,
 		cli_runner: CliRunner,
 		):
@@ -184,10 +184,10 @@ def test_markdown_help_group(
 	result.check_stdout(advanced_file_regression, extension="_command.md")
 
 
+@pytest.mark.usefixtures("force_not_pycharm")
 @not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_command_ordered_list(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		force_not_pycharm,
 		cli_runner: CliRunner,
 		):
 
@@ -214,33 +214,39 @@ def test_markdown_help_command_pycharm(
 		markdown_demo_command,
 		cli_runner: CliRunner,
 		):
-	monkeypatch.setattr(consolekit.utils, "_pycharm_hosted", lambda: True)
+	monkeypatch.setenv("PYCHARM_HOSTED", "1")
 	monkeypatch.setattr(consolekit.utils, "_pycharm_terminal", lambda: False)
 
 	result = cli_runner.invoke(markdown_demo_command, args=["--help"], color=True)
 	result.check_stdout(advanced_file_regression, extension=".md")
 
 
-def test_private_helpers(monkeypatch):
+def test_private_helper(monkeypatch):
 	monkeypatch.setenv("PYCHARM_HOSTED", '1')
 
-	assert consolekit.utils._pycharm_hosted()
 	assert not consolekit.utils._pycharm_terminal()
 
 
+@pytest.mark.usefixtures("force_not_pycharm")
 def test_markdown_help_command_no_colour(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		force_not_pycharm,
 		markdown_demo_command_numbered,
 		cli_runner: CliRunner,
+		monkeypatch,
 		):
+
 	result = cli_runner.invoke(markdown_demo_command_numbered, args=["--help", "--no-colour"], color=True)
 	result.check_stdout(advanced_file_regression, extension=".md")
 
+	# Again with envvar
+	monkeypatch.setenv("NO_COLOR", "1")
+	result = cli_runner.invoke(markdown_demo_command_numbered, args=["--help"], color=True)
+	result.check_stdout(advanced_file_regression, extension=".md")
 
+
+@pytest.mark.usefixtures("force_not_pycharm")
 def test_markdown_help_no_args_is_help(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		force_not_pycharm,
 		markdown_demo_command_numbered,
 		cli_runner: CliRunner,
 		):
@@ -249,9 +255,9 @@ def test_markdown_help_no_args_is_help(
 	assert result.exit_code == 0
 
 
+@pytest.mark.usefixtures("force_not_pycharm")
 def test_markdown_help_group_no_args_is_help(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		force_not_pycharm,
 		markdown_demo_group,
 		cli_runner: CliRunner,
 		):

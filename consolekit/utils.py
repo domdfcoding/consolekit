@@ -323,10 +323,6 @@ def hidden_cursor() -> Iterator:
 		show_cursor()
 
 
-@lru_cache(1)
-def _pycharm_hosted():
-	return os.environ.get("PYCHARM_HOSTED", 0)
-
 
 @lru_cache(1)
 def _pycharm_terminal():
@@ -376,7 +372,7 @@ class TerminalRenderer(BaseRenderer):
 		:param token: The token to render.
 		"""
 
-		if _pycharm_hosted():
+		if int(os.environ.get("PYCHARM_HOSTED", 0)):
 			# Pycharm terminal doesn't support italic escape
 			return SANS_SERIF_ITALIC_LETTERS(self.render_inner(token))
 
@@ -403,7 +399,7 @@ class TerminalRenderer(BaseRenderer):
 		:param token: The token to render.
 		"""
 
-		if _pycharm_hosted() or _pycharm_terminal():
+		if int(os.environ.get("PYCHARM_HOSTED", 0)) or _pycharm_terminal():
 			# Pycharm terminal doesn't support strikethrough
 			return self.render_inner(token)
 

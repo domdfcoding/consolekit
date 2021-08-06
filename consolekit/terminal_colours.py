@@ -138,6 +138,21 @@ def resolve_color_default(color: ColourTrilean = None) -> ColourTrilean:
 	(which is the case if running in PyCharm)
 	the output will be coloured by default.
 
+	If the environment variable ``NO_COLOR`` is ``1``
+	the output will not be coloured by default. 
+	See https://no-color.org/ for more details.
+	This variable takes precedence over ``PYCHARM_HOSTED``. 
+	
+	If no value is passed in, there is no context, 
+	and neither environment variable is set,
+	:py:obj:`None` is returned.
+
+	.. versionchanged:: 1.3.0
+	
+		* Added support for the ``NO_COLOR`` environment variable.
+		* Only uses a value from the click context (:attr:`Context.color <click.Context.color>`)
+		  if it is not :py:obj:`None`. Otherwise falls back to checking the environment variables.
+
 	:param color:
 	"""  # noqa: D400
 
@@ -146,10 +161,13 @@ def resolve_color_default(color: ColourTrilean = None) -> ColourTrilean:
 
 	ctx = click.get_current_context(silent=True)
 
-	if ctx is not None:
+	if ctx is not None and ctx.color is not None:
 		return ctx.color
 
-	if os.environ.get("PYCHARM_HOSTED", 0):
+	if int(os.environ.get("NO_COLOR", 0)):
+		return False
+
+	if int(os.environ.get("PYCHARM_HOSTED", 0)):
 		return True
 
 	return None

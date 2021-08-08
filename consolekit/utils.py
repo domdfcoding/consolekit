@@ -323,7 +323,6 @@ def hidden_cursor() -> Iterator:
 		show_cursor()
 
 
-
 @lru_cache(1)
 def _pycharm_terminal():
 	try:

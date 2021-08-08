@@ -20,7 +20,7 @@ from consolekit.testing import CliRunner
 @pytest.fixture()
 def force_not_pycharm(monkeypatch):
 	# Pretend we aren't running in PyCharm, even if we are.
-	monkeypatch.setenv("PYCHARM_HOSTED", "0")
+	monkeypatch.setenv("PYCHARM_HOSTED", '0')
 	monkeypatch.setattr(consolekit.utils, "_pycharm_terminal", lambda: False)
 
 
@@ -214,7 +214,7 @@ def test_markdown_help_command_pycharm(
 		markdown_demo_command,
 		cli_runner: CliRunner,
 		):
-	monkeypatch.setenv("PYCHARM_HOSTED", "1")
+	monkeypatch.setenv("PYCHARM_HOSTED", '1')
 	monkeypatch.setattr(consolekit.utils, "_pycharm_terminal", lambda: False)
 
 	result = cli_runner.invoke(markdown_demo_command, args=["--help"], color=True)
@@ -239,7 +239,7 @@ def test_markdown_help_command_no_colour(
 	result.check_stdout(advanced_file_regression, extension=".md")
 
 	# Again with envvar
-	monkeypatch.setenv("NO_COLOR", "1")
+	monkeypatch.setenv("NO_COLOR", '1')
 	result = cli_runner.invoke(markdown_demo_command_numbered, args=["--help"], color=True)
 	result.check_stdout(advanced_file_regression, extension=".md")
 

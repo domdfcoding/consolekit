@@ -139,16 +139,16 @@ def resolve_color_default(color: ColourTrilean = None) -> ColourTrilean:
 	the output will be coloured by default.
 
 	If the environment variable ``NO_COLOR`` is ``1``
-	the output will not be coloured by default. 
+	the output will not be coloured by default.
 	See https://no-color.org/ for more details.
-	This variable takes precedence over ``PYCHARM_HOSTED``. 
-	
-	If no value is passed in, there is no context, 
+	This variable takes precedence over ``PYCHARM_HOSTED``.
+
+	If no value is passed in, there is no context,
 	and neither environment variable is set,
 	:py:obj:`None` is returned.
 
 	.. versionchanged:: 1.3.0
-	
+
 		* Added support for the ``NO_COLOR`` environment variable.
 		* Only uses a value from the click context (:attr:`Context.color <click.Context.color>`)
 		  if it is not :py:obj:`None`. Otherwise falls back to checking the environment variables.

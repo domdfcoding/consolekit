@@ -1,6 +1,5 @@
 git+https://github.com/sphinx-toolbox/sphinx-toolbox-experimental
 git+https://github.com/sphinx-contrib/emojicodes
-autodocsumm>=0.2.0
 default-values>=0.5.0
 domdf-sphinx-theme>=0.3.0
 extras-require>=0.2.0

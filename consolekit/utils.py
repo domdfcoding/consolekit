@@ -142,7 +142,13 @@ def abort(message: str, colour: ColourTrilean = None) -> Exception:
 	return click.Abort()
 
 
-def overtype(*objects, sep: str = ' ', end: str = '', file: IO = None, flush: bool = False) -> None:
+def overtype(
+		*objects,
+		sep: str = ' ',
+		end: str = '',
+		file: Optional[IO] = None,
+		flush: bool = False,
+		) -> None:
 	"""
 	Print ``objects`` to the text stream ``file``, starting with ``"\\r"``, separated by ``sep``
 	and followed by ``end``.

@@ -353,7 +353,7 @@ class SuggestionGroup(ContextInheritingGroup):
 			self,
 			ctx: click.Context,
 			args: List[str],
-			) -> Tuple[str, click.Command, List[str]]:  # noqa: D102
+			) -> Tuple[str, click.Command, List[str]]:
 		"""
 		Resolve the requested command belonging to this group, and print a suggestion if it can't be found.
 

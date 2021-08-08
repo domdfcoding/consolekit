@@ -149,15 +149,15 @@ def overtype(
 		file: Optional[IO] = None,
 		flush: bool = False,
 		) -> None:
-	"""
-	Print ``objects`` to the text stream ``file``, starting with ``"\\r"``, separated by ``sep``
+	r"""
+	Print ``objects`` to the text stream ``file``, starting with ``"\r"``, separated by ``sep``
 	and followed by ``end``.
 
 	``sep``, ``end``, ``file`` and ``flush``, if present, must be given as keyword arguments
 
 	All non-keyword arguments are converted to strings like :class:`str` does and written to the stream,
 	separated by `sep` and followed by `end`.
-	If no such arguments are given, :func:`~consolekit.utils.overtype` will just write ``"\\r"``.
+	If no such arguments are given, :func:`~consolekit.utils.overtype` will just write ``"\r"``.
 
 	.. TODO:: This does not currently work in the PyCharm console, at least on Windows
 
@@ -167,7 +167,7 @@ def overtype(
 	:param file: An object with a ``write(string)`` method.
 	:default file: ``sys.stdout``
 	:param flush: If :py:obj:`True`, the stream is forcibly flushed.
-	"""  # noqa D400
+	"""  # noqa: D400
 
 	object0 = f"\r{objects[0]}"
 	objects = (object0, *objects[1:])

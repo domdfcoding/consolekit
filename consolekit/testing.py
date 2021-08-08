@@ -179,7 +179,7 @@ class Result(click.testing.Result):
 		return True
 
 
-class CliRunner(click.testing.CliRunner):  # noqa: D101
+class CliRunner(click.testing.CliRunner):
 	"""
 	Provides functionality to invoke and test a Click script in an isolated environment.
 

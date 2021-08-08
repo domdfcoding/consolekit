@@ -154,7 +154,7 @@ def resolve_color_default(color: ColourTrilean = None) -> ColourTrilean:
 		  if it is not :py:obj:`None`. Otherwise falls back to checking the environment variables.
 
 	:param color:
-	"""  # noqa: D400
+	"""
 
 	if color is not None:
 		return color
@@ -225,7 +225,7 @@ class Colour(str):
 	reset: str
 	stack: Union[Deque[str], List[str]]
 
-	def __new__(cls, style: str, stack: Union[Deque[str], List[str]], reset: str) -> "Colour":  # noqa D102
+	def __new__(cls, style: str, stack: Union[Deque[str], List[str]], reset: str) -> "Colour":  # noqa: D102
 		self = super().__new__(cls, style)  # type: ignore
 		self.style = style
 		self.stack = stack

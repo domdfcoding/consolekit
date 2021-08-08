@@ -157,7 +157,7 @@ def prompt(
 		try:
 			result = value_proc(value)
 		except click.UsageError as e:
-			click.echo(f"Error: {e.message}", err=err)  # noqa: B306
+			click.echo(f"Error: {e.message}", err=err)
 			continue
 
 		if not confirmation_prompt:

@@ -137,3 +137,7 @@ namespace_packages = true
 check_untyped_defs = true
 warn_unused_ignores = true
 no_implicit_optional = true
+
+[tool.dependency-dash]
+include = [ "requirements.txt",]
+display-only = [ "doc-source/requirements.txt", "tests/requirements.txt",]

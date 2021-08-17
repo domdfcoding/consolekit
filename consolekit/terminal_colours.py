@@ -75,7 +75,6 @@ from typing import Deque, Iterable, List, Optional, Pattern, Type, TypeVar, Unio
 
 # 3rd party
 import click
-from domdf_python_tools.iterative import chunks
 from typing_extensions import Final
 
 __all__ = [
@@ -395,6 +394,9 @@ def print_256_colour_testpattern() -> None:
 
 	.. note:: Not all terminals support 24-bit colours.
 	"""
+
+	# 3rd party
+	from domdf_python_tools.iterative import chunks
 
 	def print_heading(text: str, block_size: int = 3, n_blocks: int = 36):
 		click.echo()

@@ -49,7 +49,6 @@ from typing import IO, Iterable, Iterator, List, Optional, Sequence, Union
 # 3rd party
 import click
 import deprecation_alias
-from domdf_python_tools.import_tools import discover, discover_entry_points
 from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.words import SANS_SERIF_ITALIC_LETTERS
 from mistletoe import block_token, span_token  # type: ignore
@@ -115,6 +114,9 @@ def import_commands(source: Optional[ModuleType] = None, entry_point: Optional[s
 	:param source:
 	:param entry_point:
 	"""
+
+	# 3rd party
+	from domdf_python_tools.import_tools import discover, discover_entry_points
 
 	all_commands = []
 

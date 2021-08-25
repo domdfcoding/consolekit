@@ -138,6 +138,11 @@ check_untyped_defs = true
 warn_unused_ignores = true
 no_implicit_optional = true
 
-[tool.dependency-dash]
-include = [ "requirements.txt",]
-display-only = [ "doc-source/requirements.txt", "tests/requirements.txt",]
+[tool.dependency-dash."requirements.txt"]
+
+[tool.dependency-dash."doc-source/requirements.txt"]
+include = false
+
+[tool.dependency-dash."tests/requirements.txt"]
+include = false
+format = "requirements.txt"

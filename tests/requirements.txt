@@ -9,7 +9,7 @@ iniconfig!=1.1.0,>=1.0.1
 mypy==0.931; platform_python_implementation == "CPython"
 pytest>=6.0.0
 pytest-cov>=2.8.1
-pytest-mypy-plugins>=1.6.1; platform_python_implementation == "CPython"
+pytest-mypy-plugins>=1.9.1; platform_python_implementation == "CPython"
 pytest-mypy-plugins-shim>=0.1.0; platform_python_implementation != "CPython"
 pytest-randomly>=3.7.0
 pytest-regressions>=2.0.1

@@ -19,12 +19,12 @@
     def group():
         pass
 
-    reveal_type(click_command())  # N: Revealed type is 'def (def (*Any, **Any) -> Any) -> click.core.Command'
-    reveal_type(click_command(cls=MyCommand))  # N: Revealed type is 'def (def (*Any, **Any) -> Any) -> main.MyCommand*'
-    reveal_type(click_command(cls=click.Command))  # N: Revealed type is 'def (def (*Any, **Any) -> Any) -> click.core.Command*'
-    reveal_type(command)  # N: Revealed type is 'click.core.Command'
+    reveal_type(click_command())  # N: Revealed type is "def (def (*Any, **Any) -> Any) -> click.core.Command"
+    reveal_type(click_command(cls=MyCommand))  # N: Revealed type is "def (def (*Any, **Any) -> Any) -> main.MyCommand*"
+    reveal_type(click_command(cls=click.Command))  # N: Revealed type is "def (def (*Any, **Any) -> Any) -> click.core.Command*"
+    reveal_type(command)  # N: Revealed type is "click.core.Command"
 
-    reveal_type(click_group())  # N: Revealed type is 'def (def (*Any, **Any) -> Any) -> click.core.Group'
-    reveal_type(click_group(cls=MarkdownHelpGroup))  # N: Revealed type is 'def (def (*Any, **Any) -> Any) -> consolekit.commands.MarkdownHelpGroup*'
-    reveal_type(click_group(cls=click.Group))  # N: Revealed type is 'def (def (*Any, **Any) -> Any) -> click.core.Group*'
-    reveal_type(group)  # N: Revealed type is 'click.core.Group'
+    reveal_type(click_group())  # N: Revealed type is "def (def (*Any, **Any) -> Any) -> click.core.Group"
+    reveal_type(click_group(cls=MarkdownHelpGroup))  # N: Revealed type is "def (def (*Any, **Any) -> Any) -> consolekit.commands.MarkdownHelpGroup*"
+    reveal_type(click_group(cls=click.Group))  # N: Revealed type is "def (def (*Any, **Any) -> Any) -> click.core.Group*"
+    reveal_type(group)  # N: Revealed type is "click.core.Group"

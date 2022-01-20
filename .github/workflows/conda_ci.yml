@@ -54,5 +54,5 @@ jobs:
         run: |
           rm -rf consolekit
           $CONDA/bin/pip install -r tests/requirements.txt
-          $CONDA/bin/pip install git+https://github.com/domdfcoding/pytest-mypy-plugins@sys-executable-v2
+          $CONDA/bin/pip install git+https://github.com/domdfcoding/pytest-mypy-plugins@sys-executable-v2 --force-reinstall
           $CONDA/bin/pytest tests/

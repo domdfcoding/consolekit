@@ -4,12 +4,11 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "consolekit"
-version = "1.3.0"
+version = "1.3.1"
 description = "Additional utilities for click."
 readme = "README.rst"
-keywords = [ "click", "terminal",]
-dynamic = []
 requires-python = ">=3.6.1"
+keywords = [ "click", "terminal",]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
@@ -36,6 +35,7 @@ dependencies = [
     "mistletoe>=0.7.2",
     "typing-extensions>=3.7.4.3",
 ]
+dynamic = []
 
 [[project.authors]]
 name = "Dominic Davis-Foster"

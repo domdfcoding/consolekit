@@ -442,7 +442,7 @@ class MultiValueOption(click.Option):
 
 class _Option(click.Option):
 
-	def prompt_for_value(self, ctx):
+	def prompt_for_value(self, ctx: click.Context):
 		"""
 		This is an alternative flow that can be activated in the full value processing if a value does not exist.
 

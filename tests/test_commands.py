@@ -160,7 +160,7 @@ def test_raw_help_group(
 @not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_command(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		markdown_demo_command,
+		markdown_demo_command: click.Command,
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_command, args=["--help"], color=True)
@@ -171,7 +171,7 @@ def test_markdown_help_command(
 @not_windows("Windows support for bold and italics is non-existent.")
 def test_markdown_help_group(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		markdown_demo_group,
+		markdown_demo_group: Tuple[click.Command, click.Command],
 		cli_runner: CliRunner,
 		):
 
@@ -211,7 +211,7 @@ def test_markdown_help_command_ordered_list(
 def test_markdown_help_command_pycharm(
 		advanced_file_regression: AdvancedFileRegressionFixture,
 		monkeypatch,
-		markdown_demo_command,
+		markdown_demo_command: click.Command,
 		cli_runner: CliRunner,
 		):
 	monkeypatch.setenv("PYCHARM_HOSTED", '1')
@@ -230,7 +230,7 @@ def test_private_helper(monkeypatch):
 @pytest.mark.usefixtures("force_not_pycharm")
 def test_markdown_help_command_no_colour(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		markdown_demo_command_numbered,
+		markdown_demo_command_numbered: click.Command,
 		cli_runner: CliRunner,
 		monkeypatch,
 		):
@@ -247,7 +247,7 @@ def test_markdown_help_command_no_colour(
 @pytest.mark.usefixtures("force_not_pycharm")
 def test_markdown_help_no_args_is_help(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		markdown_demo_command_numbered,
+		markdown_demo_command_numbered: click.Command,
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_command_numbered)
@@ -258,7 +258,7 @@ def test_markdown_help_no_args_is_help(
 @pytest.mark.usefixtures("force_not_pycharm")
 def test_markdown_help_group_no_args_is_help(
 		advanced_file_regression: AdvancedFileRegressionFixture,
-		markdown_demo_group,
+		markdown_demo_group: Tuple[click.Command, click.Command],
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_group[0])

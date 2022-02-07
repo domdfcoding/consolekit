@@ -1,20 +1,27 @@
+# stdlib
+from typing import Type
+
 # 3rd party
 import click
 import pytest
 from click import echo
+from coincidence.regressions import AdvancedDataRegressionFixture
 from domdf_python_tools.stringlist import StringList
-from pytest_regressions.data_regression import DataRegressionFixture
 
 # this package
 from consolekit.input import choice, confirm, prompt
 from consolekit.testing import _click_major
 
 
-def test_choice_letters(capsys, monkeypatch, data_regression: DataRegressionFixture):
+def test_choice_letters(
+		capsys,
+		monkeypatch,
+		advanced_data_regression: AdvancedDataRegressionFixture,
+		):
 
 	inputs = iter(['F', 'G', 'D'])
 
-	def fake_input(prompt):
+	def fake_input(prompt: str):
 		value = next(inputs)
 		print(f"{prompt}{value}".rstrip())
 		return value
@@ -33,7 +40,7 @@ def test_choice_letters(capsys, monkeypatch, data_regression: DataRegressionFixt
 			}
 	assert choice(text="*** sudoers", options=options, default='N') == 'D'
 
-	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
+	advanced_data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 
 
 @pytest.mark.parametrize(
@@ -49,11 +56,16 @@ def test_choice_letters(capsys, monkeypatch, data_regression: DataRegressionFixt
 						),
 				]
 		)
-def test_choice_numbers(capsys, monkeypatch, data_regression: DataRegressionFixture, click_version):
+def test_choice_numbers(
+		capsys,
+		monkeypatch,
+		advanced_data_regression: AdvancedDataRegressionFixture,
+		click_version: str,
+		):
 
 	inputs = iter(["20", '0', '5'])
 
-	def fake_input(prompt):
+	def fake_input(prompt: str):
 		value = next(inputs)
 		print(f"{prompt}{value}".rstrip())
 		return value
@@ -72,14 +84,18 @@ def test_choice_numbers(capsys, monkeypatch, data_regression: DataRegressionFixt
 			]
 	assert choice(text='', options=options, start_index=1) == 4
 
-	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
+	advanced_data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 
 
-def test_confirm(capsys, monkeypatch, data_regression: DataRegressionFixture):
+def test_confirm(
+		capsys,
+		monkeypatch,
+		advanced_data_regression: AdvancedDataRegressionFixture,
+		):
 
 	inputs = iter(['Y', 'N', '', ''])
 
-	def fake_input(prompt):
+	def fake_input(prompt: str):
 		value = next(inputs)
 		print(f"{prompt}{value}".rstrip())
 		return value
@@ -91,10 +107,14 @@ def test_confirm(capsys, monkeypatch, data_regression: DataRegressionFixture):
 	assert confirm(text="Do you wish to delete all files in '/' ?", default=False) is False
 	assert confirm(text="Do you wish to delete all files in '/' ?", default=True) is True
 
-	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
+	advanced_data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 
 
-def test_prompt(capsys, monkeypatch, data_regression: DataRegressionFixture):
+def test_prompt(
+		capsys,
+		monkeypatch,
+		advanced_data_regression: AdvancedDataRegressionFixture,
+		):
 
 	inputs = iter([
 			'',
@@ -111,7 +131,7 @@ def test_prompt(capsys, monkeypatch, data_regression: DataRegressionFixture):
 			"badpassword",
 			])
 
-	def fake_input(prompt):
+	def fake_input(prompt: str):
 		value = next(inputs)
 		print(f"{prompt}{value}".rstrip())
 		return value
@@ -128,13 +148,18 @@ def test_prompt(capsys, monkeypatch, data_regression: DataRegressionFixture):
 			confirmation_prompt="Are you sure about that? ",
 			) == "badpassword"
 
-	data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
+	advanced_data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
 
 
 @pytest.mark.parametrize("exception", [KeyboardInterrupt, EOFError])
-def test_prompt_abort(capsys, monkeypatch, data_regression: DataRegressionFixture, exception):
+def test_prompt_abort(
+		capsys,
+		monkeypatch,
+		advanced_data_regression: AdvancedDataRegressionFixture,
+		exception: Type[Exception],
+		):
 
-	def fake_input(prompt):
+	def fake_input(prompt: str):
 		print(f"{prompt}", end='')
 		raise exception
 
@@ -147,9 +172,14 @@ def test_prompt_abort(capsys, monkeypatch, data_regression: DataRegressionFixtur
 
 
 @pytest.mark.parametrize("exception", [KeyboardInterrupt, EOFError])
-def test_confirm_abort(capsys, monkeypatch, data_regression: DataRegressionFixture, exception):
+def test_confirm_abort(
+		capsys,
+		monkeypatch,
+		advanced_data_regression: AdvancedDataRegressionFixture,
+		exception: Type[Exception],
+		):
 
-	def fake_input(prompt):
+	def fake_input(prompt: str):
 		print(f"{prompt}", end='')
 		raise exception
 

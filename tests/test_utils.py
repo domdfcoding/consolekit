@@ -3,6 +3,7 @@ import math
 import os
 import shutil
 import sys
+from typing import Tuple
 
 # 3rd party
 import click
@@ -119,7 +120,7 @@ def test_import_commands():
 
 def test_long_echo(monkeypatch):
 
-	def get_terminal_size(fallback=(80, 24)):
+	def get_terminal_size(fallback: Tuple[int, int] = (80, 24)):
 		return os.terminal_size((80, 5))
 
 	def echo_via_pager(text_or_generator, color=None):

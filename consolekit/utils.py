@@ -44,7 +44,7 @@ import sys
 from functools import lru_cache
 from itertools import cycle
 from types import ModuleType
-from typing import IO, Iterable, Iterator, List, Optional, Sequence, Union
+from typing import IO, Any, Iterable, Iterator, List, Optional, Sequence, Union
 
 # 3rd party
 import click
@@ -53,6 +53,7 @@ from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.words import SANS_SERIF_ITALIC_LETTERS
 from mistletoe import block_token, span_token  # type: ignore
 from mistletoe.base_renderer import BaseRenderer  # type: ignore
+from typing_extensions import TypeGuard
 
 # this package
 from consolekit import terminal_colours, tracebacks
@@ -90,7 +91,7 @@ def get_env_vars(ctx, args, incomplete):  # noqa: D103
 	return [k for k in os.environ.keys() if incomplete in k]
 
 
-def is_command(obj) -> bool:
+def is_command(obj: Any) -> TypeGuard[click.Command]:
 	"""
 	Return whether ``obj`` is a click command.
 

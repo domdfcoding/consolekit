@@ -2,8 +2,7 @@
 from collections import deque
 
 # 3rd party
-from coincidence import check_file_regression
-from pytest_regressions.file_regression import FileRegressionFixture
+from coincidence.regressions import AdvancedFileRegressionFixture, check_file_regression
 
 # this package
 from consolekit import terminal_colours
@@ -101,7 +100,7 @@ class TestColour:
 
 def test_print_256_colour_testpattern(
 		monkeypatch,
-		file_regression: FileRegressionFixture,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		capsys,
 		):
 	monkeypatch.setattr(terminal_colours, "resolve_color_default", lambda *args: False)
@@ -109,4 +108,4 @@ def test_print_256_colour_testpattern(
 	# Checks only the structure, not the colours
 	print_256_colour_testpattern()
 
-	check_file_regression(strip_ansi(capsys.readouterr().out.strip()), file_regression)
+	check_file_regression(strip_ansi(capsys.readouterr().out.strip()), advanced_file_regression)

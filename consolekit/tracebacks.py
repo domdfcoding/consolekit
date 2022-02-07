@@ -182,7 +182,7 @@ def handle_tracebacks(
 		return cls()()
 
 
-def traceback_option(help_text="Show the complete traceback on error.") -> Callable[[_C], _C]:
+def traceback_option(help_text: str = "Show the complete traceback on error.") -> Callable[[_C], _C]:
 	"""
 	Decorator to add the ``-T / --traceback`` option to a click command.
 

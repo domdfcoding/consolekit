@@ -1,12 +1,11 @@
 # stdlib
-import math
 import re
-import sys
-from typing import Callable, ContextManager
+from typing import Callable, ContextManager, Type
 
 # 3rd party
 import click
 import pytest
+from coincidence.regressions import AdvancedFileRegressionFixture
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
@@ -57,11 +56,7 @@ def test_handle_tracebacks(
 
 
 @exceptions
-def test_handle_tracebacks_show_traceback(
-		exception,
-		file_regression,
-		cli_runner: CliRunner,
-		):
+def test_handle_tracebacks_show_traceback(exception: Exception, cli_runner: CliRunner):
 
 	@click.command()
 	def demo():
@@ -76,7 +71,7 @@ def test_handle_tracebacks_show_traceback(
 @pytest.mark.parametrize("exception", [EOFError(), KeyboardInterrupt(), click.Abort()])
 @contextmanagers
 def test_handle_tracebacks_ignored_exceptions_click(
-		exception,
+		exception: Exception,
 		contextmanager: Callable[..., ContextManager],
 		cli_runner: CliRunner,
 		):
@@ -96,7 +91,7 @@ def test_handle_tracebacks_ignored_exceptions_click(
 @pytest.mark.parametrize("exception", [EOFError, KeyboardInterrupt, click.Abort, SystemExit])
 @contextmanagers
 def test_handle_tracebacks_ignored_exceptions(
-		exception,
+		exception: Type[Exception],
 		contextmanager: Callable[..., ContextManager],
 		):
 
@@ -140,9 +135,9 @@ def test_handle_tracebacks_ignored_exceptions(
 				]
 		)
 def test_handle_tracebacks_ignored_click(
-		exception,
+		exception: Exception,
 		contextmanager: Callable[..., ContextManager],
-		file_regression,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		code: int,
 		cli_runner: CliRunner,
 		click_version: str
@@ -155,7 +150,7 @@ def test_handle_tracebacks_ignored_click(
 			raise exception
 
 	result = cli_runner.invoke(demo, catch_exceptions=False)
-	result.check_stdout(file_regression)
+	result.check_stdout(advanced_file_regression)
 	assert result.exit_code == code
 
 

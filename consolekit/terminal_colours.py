@@ -172,7 +172,7 @@ def resolve_color_default(color: ColourTrilean = None) -> ColourTrilean:
 	return None
 
 
-def code_to_chars(code) -> str:  # noqa: D103
+def code_to_chars(code: Union[str, int]) -> str:  # noqa: D103
 	return CSI + str(code) + 'm'
 
 

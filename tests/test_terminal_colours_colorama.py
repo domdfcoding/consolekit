@@ -34,7 +34,7 @@ import sys
 import pytest
 
 # this package
-from consolekit.terminal_colours import Back, Fore, Style
+from consolekit.terminal_colours import Back, Colour, Fore, Style
 
 stdout_orig = sys.stdout
 stderr_orig = sys.stderr
@@ -79,7 +79,7 @@ def teardown_module():
 				(Fore.LIGHTWHITE_EX, "\u001b[97m"),
 				],
 		)
-def test_fore_attributes(obj, expects, capsys):
+def test_fore_attributes(obj: Colour, expects: str, capsys):
 	assert obj == expects
 	assert obj("Hello World") == f"{obj}Hello World\033[39m"
 
@@ -123,7 +123,7 @@ def test_fore_attributes(obj, expects, capsys):
 				(Back.LIGHTWHITE_EX, "\u001b[107m"),
 				],
 		)
-def test_back_attributes(obj, expects, capsys):
+def test_back_attributes(obj: Colour, expects: str, capsys):
 	assert obj == expects
 	assert obj("Hello World") == f"{obj}Hello World\033[49m"
 
@@ -151,7 +151,7 @@ def test_back_attributes(obj, expects, capsys):
 				(Style.BRIGHT, "\u001b[1m"),
 				],
 		)
-def test_style_attributes(obj, expects, capsys):
+def test_style_attributes(obj: Colour, expects: str, capsys):
 	assert obj == expects
 	assert obj("Hello World") == f"{obj}Hello World\033[22m"
 

@@ -2,7 +2,6 @@ pytest_plugins = ("coincidence", "consolekit.testing")
 
 try:
 	# 3rd party
-	import pytest_mypy_plugins.collect
 	from pytest_mypy_plugins.collect import YamlTestFile, pytest_addoption
 
 	def pytest_collect_file(path, parent):

@@ -170,6 +170,9 @@ show_error_codes = true
 [tool.snippet-fmt]
 directives = [ "code-block",]
 
+[tool.dep_checker]
+allowed_unused = [ "colorama",]
+
 [tool.dependency-dash."requirements.txt"]
 order = 10
 

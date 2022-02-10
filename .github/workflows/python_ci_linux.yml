@@ -177,6 +177,7 @@ jobs:
   Conda:
     needs: deploy
     runs-on: "ubuntu-18.04"
+    if: startsWith(github.ref, 'refs/tags/') || (startsWith(github.event.head_commit.message, 'Bump version') != true)
     steps:
       - name: Checkout 🛎️
         uses: "actions/checkout@v2"
@@ -212,19 +213,20 @@ jobs:
           $CONDA/bin/conda build conda -c conda-forge -c domdfcoding --output-folder conda/dist
 
       - name: Deploy Conda Package 🚀
-        if: startsWith(github.ref, 'refs/tags/') || (startsWith(github.event.head_commit.message, 'Bump version') != true)
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
           $CONDA/bin/conda config --set always_yes yes --set changeps1 no
           $CONDA/bin/conda install anaconda-client
           $CONDA/bin/conda info -a
+          $CONDA/bin/anaconda --help
 
-          for f in conda/dist/noarch/consolekit-*.tar.bz2; do
-            [ -e "$f" ] || continue
-            echo "$f"
-            conda install "$f" || exit 1
-            echo "Deploying to Anaconda.org..."
-            anaconda -t "$ANACONDA_TOKEN" upload "$f" || exit 1
-            echo "Successfully deployed to Anaconda.org."
-          done
+#          for f in conda/dist/noarch/consolekit-*.tar.bz2; do
+#            [ -e "$f" ] || continue
+#            echo "$f"
+#            conda install "$f" || exit 1
+#            echo "Deploying to Anaconda.org..."
+#            $CONDA/bin/anaconda -t "$ANACONDA_TOKEN" upload "$f" || exit 1
+#            echo "Successfully deployed to Anaconda.org."
+#          done
         env:
           ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}

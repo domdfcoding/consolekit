@@ -39,9 +39,9 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install --upgrade "whey-conda" "flit-core<4,>=3.2"
           # $CONDA is an environment variable pointing to the root of the miniconda directory
+          $CONDA/bin/conda update -n base conda
           $CONDA/bin/conda config --add channels conda-forge
           $CONDA/bin/conda config --add channels domdfcoding
-          $CONDA/bin/conda update -n base conda
 
       - name: "Build and index channel"
         run: |

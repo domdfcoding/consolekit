@@ -10,7 +10,8 @@ source "/home/runner/miniconda/etc/profile.d/conda.sh"
 hash -r
 conda activate base
 conda config --set always_yes yes --set changeps1 no
-conda install conda=4.8.5 conda-build=3.18.11
+conda update conda
+conda install conda-build=3.21.0
 conda info -a
 
 conda config --add channels conda-forge || exit 1

@@ -41,6 +41,7 @@ jobs:
           # $CONDA is an environment variable pointing to the root of the miniconda directory
           $CONDA/bin/conda config --add channels conda-forge
           $CONDA/bin/conda config --add channels domdfcoding
+          $CONDA/bin/conda update -n base conda
 
       - name: "Build and index channel"
         run: |

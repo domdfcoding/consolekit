@@ -57,6 +57,7 @@ third_party_version_matrix:
  click:
   - 7.1
   - 8.0
+  - 8.1
 
 extra_sphinx_extensions:
  - sphinx_autofixture

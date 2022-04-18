@@ -57,6 +57,7 @@ Customised click commands and command groups.
 
 # stdlib
 import difflib
+import inspect
 from textwrap import indent
 from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple
 
@@ -108,8 +109,16 @@ class RawHelpMixin:
 		:param formatter:
 		"""
 
+		if not self.help:
+			return
+
+		text = inspect.cleandoc(self.help or '').partition('\x0c')[0]
+
+		if getattr(self, "deprecated", False):
+			text = f"(Deprecated) {text}"
+
 		formatter.write('\n')
-		formatter.write(indent((self.help or ''), "  "))
+		formatter.write(indent(text, "  "))
 		formatter.write('\n')
 
 
@@ -180,7 +189,15 @@ class MarkdownHelpMixin:
 		:param formatter:
 		"""
 
-		doc = block_token.Document(self.help or '')
+		if not self.help:
+			return
+
+		text = inspect.cleandoc(self.help or '').partition('\x0c')[0]
+
+		if getattr(self, "deprecated", False):
+			text = f"(Deprecated) {text}"
+
+		doc = block_token.Document(text)
 
 		with TerminalRenderer() as renderer:
 			rendered_doc = indent(renderer.render(doc).strip(), "  ")

@@ -119,13 +119,13 @@ def verbose_option(help_text: str = "Show verbose output.") -> Callable[[_C], _C
 	:param help_text: The help text for the option.
 	"""
 
-	return click.option(  # type: ignore
-		"-v",
-		"--verbose",
-		count=True,
-		help=help_text,
-		type=VerboseVersionCountType(),
-		)
+	return click.option(
+			"-v",
+			"--verbose",
+			count=True,
+			help=help_text,
+			type=VerboseVersionCountType(),
+			)
 
 
 def version_option(callback: Callable[[click.Context, click.Option, int], Any]) -> Callable[[_C], _C]:
@@ -156,15 +156,15 @@ def version_option(callback: Callable[[click.Context, click.Option, int], Any]) 
 
 	"""
 
-	return click.option(  # type: ignore
-		"--version",
-		count=True,
-		expose_value=False,
-		is_eager=True,
-		help="Show the version and exit.",
-		type=VerboseVersionCountType(),
-		callback=cast(Callback, callback),
-		)
+	return click.option(
+			"--version",
+			count=True,
+			expose_value=False,
+			is_eager=True,
+			help="Show the version and exit.",
+			type=VerboseVersionCountType(),
+			callback=cast(Callback, callback),
+			)
 
 
 def colour_option(help_text="Whether to use coloured output.") -> Callable[[_C], _C]:
@@ -222,7 +222,7 @@ def flag_option(*args, default: Optional[bool] = False, **kwargs) -> Callable[[_
 	:param \*\*kwargs: Keyword arguments passed to :func:`click.option`.
 	"""
 
-	return click.option(  # type: ignore
+	return click.option(
 			*args,
 			is_flag=True,
 			default=default,

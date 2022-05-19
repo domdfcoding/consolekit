@@ -5,6 +5,7 @@
 Functions for handling exceptions and their tracebacks.
 
 .. versionadded:: 1.0.0
+.. latex:vspace:: -10px
 """
 #
 #  Copyright © 2020-2021 Dominic Davis-Foster <dominic@davis-foster.co.uk>
@@ -30,11 +31,16 @@ Functions for handling exceptions and their tracebacks.
 
 # stdlib
 import contextlib
-from typing import Callable, ContextManager, Type, TypeVar
+import sys
+from typing import TYPE_CHECKING, Callable, ContextManager, List, Type, TypeVar, Union
 
 # 3rd party
 import click
 from domdf_python_tools.compat import nullcontext
+
+if sys.version_info >= (3, 7) or TYPE_CHECKING:
+	# stdlib
+	from typing import NoReturn
 
 __all__ = ["TracebackHandler", "handle_tracebacks", "traceback_handler", "traceback_option"]
 
@@ -65,38 +71,65 @@ class TracebackHandler:
 	is the name of the exception class to handle.
 
 	.. versionadded:: 1.0.0
+
+	:param exception: The exception to raise after handling the traceback.
+		If not running within a click command or group you'll likely
+		want to set this to :exc:`SystemExit(1) <SystemExit>`.
+	:default exception: :class:`click.Abort() <click.Abort>`
+
+	.. versionchanged:: 1.4.0  Added the ``exception`` argument.
+
 	.. seealso:: :func:`~.handle_tracebacks`.
 	.. latex:clearpage::
 	"""  # noqa: D400
 
-	def handle_EOFError(self, e: EOFError) -> bool:  # noqa: D102
+	exception: Exception
+	"""
+	The exception to raise after handling the traceback.
+
+	.. versionadded:: 1.4.0
+	"""
+
+	def __init__(self, exception: BaseException = click.Abort()):
+		self.exception: BaseException = exception  # type: ignore[assignment]
+
+	def abort(self, msg: Union[str, List[str]]) -> "NoReturn":
+		"""
+		Abort the current process by calling ``self.exception``.
+
+		.. versionadded:: 1.4.0
+
+		:param msg: The message to write to stderr before raising the exception.
+		"""
+
+		if isinstance(msg, str):
+			msg = ''.join(msg)
+
+		if msg:
+			click.echo(msg, err=True, color=False)
+
+		raise self.exception
+
+	def handle_EOFError(self, e: EOFError) -> "NoReturn":  # noqa: D102
 		raise e
 
-	def handle_KeyboardInterrupt(self, e: KeyboardInterrupt) -> bool:  # noqa: D102
+	def handle_KeyboardInterrupt(self, e: KeyboardInterrupt) -> "NoReturn":  # noqa: D102
 		raise e
 
-	def handle_ClickException(self, e: click.ClickException) -> bool:  # noqa: D102
+	def handle_ClickException(self, e: click.ClickException) -> "NoReturn":  # noqa: D102
 		raise e
 
-	def handle_Abort(self, e: click.Abort) -> bool:  # noqa: D102
+	def handle_Abort(self, e: click.Abort) -> "NoReturn":  # noqa: D102
 		raise e
 
-	def handle_SystemExit(self, e: SystemExit) -> bool:  # noqa: D102
+	def handle_SystemExit(self, e: SystemExit) -> "NoReturn":  # noqa: D102
 		raise e
 
-	def handle_FileNotFoundError(self, e: FileNotFoundError) -> bool:  # noqa: D102
+	def handle_FileNotFoundError(self, e: FileNotFoundError) -> "NoReturn":  # noqa: D102
+		self.abort(f"File Not Found: {e}")
 
-		# this package
-		from consolekit.utils import abort
-
-		raise abort(f"File Not Found: {e}", colour=False)
-
-	def handle_FileExistsError(self, e: FileExistsError) -> bool:  # noqa: D102
-
-		# this package
-		from consolekit.utils import abort
-
-		raise abort(f"File Exists: {e}", colour=False)
+	def handle_FileExistsError(self, e: FileExistsError) -> "NoReturn":  # noqa: D102
+		self.abort(f"File Exists: {e}")
 
 	def handle(self, e: BaseException) -> bool:
 		"""
@@ -117,7 +150,7 @@ class TracebackHandler:
 			if hasattr(self, f"handle_{base.__name__}"):
 				return getattr(self, f"handle_{base.__name__}")(e)
 
-		raise abort(f"An error occurred: {e}", colour=False)
+		self.abort(f"An error occurred: {e}")
 
 	@contextlib.contextmanager
 	def __call__(self):
@@ -171,8 +204,9 @@ def handle_tracebacks(
 		In either case the program execution will stop on error.
 	:param cls: The class to use to handle the tracebacks.
 
-	.. versionchanged:: 1.0.0  Added the ``cls`` parameter.
+	:rtype:
 
+	.. versionchanged:: 1.0.0  Added the ``cls`` parameter.
 	.. seealso:: :func:`~.traceback_handler` and :class:`~.TracebackHandler`
 	"""
 

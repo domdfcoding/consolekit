@@ -26,11 +26,13 @@ exceptions = pytest.mark.parametrize(
 				]
 		)
 contextmanagers = pytest.mark.parametrize(
-		"contextmanager",
+		"contextmanager, exit_code",
 		[
-				pytest.param(handle_tracebacks, id="handle_tracebacks"),
-				pytest.param(traceback_handler, id="traceback_handler"),
-				pytest.param(TracebackHandler(), id="TracebackHandler"),
+				pytest.param(handle_tracebacks, 1, id="handle_tracebacks"),
+				pytest.param(traceback_handler, 1, id="traceback_handler"),
+				pytest.param(TracebackHandler(), 1, id="TracebackHandler"),
+				pytest.param(TracebackHandler(SystemExit(1)), 1, id="TracebackHandler_SystemExit"),
+				pytest.param(TracebackHandler(SystemExit(2)), 2, id="TracebackHandler_SystemExit_2"),
 				]
 		)
 
@@ -40,6 +42,7 @@ contextmanagers = pytest.mark.parametrize(
 def test_handle_tracebacks(
 		exception,
 		contextmanager: Callable[..., ContextManager],
+		exit_code: int,
 		file_regression,
 		cli_runner: CliRunner,
 		):
@@ -52,7 +55,7 @@ def test_handle_tracebacks(
 
 	result: Result = cli_runner.invoke(demo, catch_exceptions=False)
 	result.check_stdout(file_regression)
-	assert result.exit_code == 1
+	assert result.exit_code == exit_code
 
 
 @exceptions
@@ -74,6 +77,7 @@ def test_handle_tracebacks_ignored_exceptions_click(
 		exception: Exception,
 		contextmanager: Callable[..., ContextManager],
 		cli_runner: CliRunner,
+		exit_code: int,
 		):
 
 	@click.command()
@@ -93,6 +97,7 @@ def test_handle_tracebacks_ignored_exceptions_click(
 def test_handle_tracebacks_ignored_exceptions(
 		exception: Type[Exception],
 		contextmanager: Callable[..., ContextManager],
+		exit_code: int,
 		):
 
 	with pytest.raises(exception):  # noqa: PT012
@@ -140,7 +145,8 @@ def test_handle_tracebacks_ignored_click(
 		advanced_file_regression: AdvancedFileRegressionFixture,
 		code: int,
 		cli_runner: CliRunner,
-		click_version: str
+		click_version: str,
+		exit_code: int,
 		):
 
 	@click.command()
@@ -151,6 +157,10 @@ def test_handle_tracebacks_ignored_click(
 
 	result = cli_runner.invoke(demo, catch_exceptions=False)
 	result.check_stdout(advanced_file_regression)
+
+	# if code == 1 and exit_code == 2:
+	# 	code = 2
+
 	assert result.exit_code == code
 
 

@@ -63,13 +63,14 @@ extra_sphinx_extensions:
  - sphinx_autofixture
  - sphinx_highlights
  - latex_transition
- - docs_needspace
- - sphinx_toolbox_experimental.autosummary_widths
- - sphinx_toolbox_experimental.succinct_seealso
+# - docs_needspace
+ - sphinx_toolbox.more_autosummary.column_widths
+ - sphinx_toolbox.latex.succinct_seealso
 
 sphinx_conf_epilogue:
  - toctree_plus_types.add("fixture")
  - latex_elements["preamble"] = "\\usepackage{multicol}"
+ - needspace_amount = r"5\baselineskip"
 
 tox_unmanaged:
  - pytest

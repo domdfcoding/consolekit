@@ -2,7 +2,5 @@
 :mod:`consolekit.tracebacks`
 ===============================
 
-.. autosummary-widths:: 1/2
-	:html: 3/10
-
+.. latex:vspace:: -10px
 .. automodule:: consolekit.tracebacks

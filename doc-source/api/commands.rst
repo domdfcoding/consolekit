@@ -2,8 +2,7 @@
 :mod:`consolekit.commands`
 =============================
 
-.. autosummary-widths:: 63/128
-	:html: 32/100
+.. autosummary-widths:: 49/100
 
 .. automodule:: consolekit.commands
 	:no-members:
@@ -11,6 +10,7 @@
 
 .. currentmodule:: consolekit.commands
 
+.. latex:vspace:: -10px
 .. autoclass:: ContextInheritingGroup
 
 .. class:: MarkdownHelpCommand

@@ -215,7 +215,6 @@ class Colour(str):
 	:type reset: :class:`str`
 
 	.. autosummary-widths:: 7/16
-		:html: 3/10
 	"""
 
 	__slots__ = ("style", "reset", "stack")
@@ -266,6 +265,8 @@ class Colour(str):
 
 			The ``background`` option only influences the reset value and the stack used.
 			It will not handle conversion of foreground codes to background codes.
+
+		.. latex:clearpage::
 		"""
 
 		if background:
@@ -285,7 +286,6 @@ class Colour(str):
 		The colour can be reset using :py:obj:`.Fore.RESET` or :py:obj:`.Back.RESET`.
 
 		.. versionadded:: 0.9.0
-
 		.. note:: Not all terminals support 256-colour mode.
 
 		:param code: A 256-colour ANSI code.
@@ -339,6 +339,8 @@ class Colour(str):
 
 			The ``background`` option only influences the reset value and the stack used.
 			It will not handle conversion of foreground codes to background codes.
+
+		.. latex:clearpage::
 		"""
 
 		if background:

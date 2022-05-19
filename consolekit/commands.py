@@ -323,7 +323,6 @@ class ContextInheritingGroup(click.Group):
 	.. versionadded:: 1.1.0
 
 	.. autosummary-widths:: 5/16
-		:html: 2/10
 	"""
 
 	def command(self, *args, **kwargs) -> Callable[[Callable[..., Any]], click.Command]:

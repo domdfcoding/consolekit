@@ -74,3 +74,4 @@ def setup(app):
 
 toctree_plus_types.add("fixture")
 latex_elements["preamble"] = "\\usepackage{multicol}"
+needspace_amount = r"5\baselineskip"

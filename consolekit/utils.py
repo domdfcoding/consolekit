@@ -211,9 +211,8 @@ def coloured_diff(
 	The modification times are normally expressed in the ISO 8601 format.
 
 	.. versionadded:: 0.3.0
-	.. latex:clearpage::
 
-	**Example:**
+	:bold-title:`Example:`
 
 	>>> for line in coloured_diff(
 	...     'one two three four'.split(),
@@ -490,6 +489,7 @@ def long_echo(
 	:no-default colour:
 
 	.. tip:: Allow the user to control the value of ``use_pager`` with the :func:`no_pager_option` decorator.
+	.. latex:clearpage::
 	"""
 
 	if isinstance(text, str):

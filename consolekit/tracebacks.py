@@ -100,6 +100,7 @@ class TracebackHandler:
 		.. versionadded:: 1.4.0
 
 		:param msg: The message to write to stderr before raising the exception.
+			If a list of strings the strings are concatenated (i.e. ``''.join(msg)``).
 		"""
 
 		if isinstance(msg, str):

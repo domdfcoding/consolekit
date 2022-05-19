@@ -186,3 +186,18 @@ def test_traceback_option(file_regression: FileRegressionFixture, cli_runner: Cl
 	result = cli_runner.invoke(main, args="-h")
 	result.check_stdout(file_regression)
 	assert result.exit_code == 0
+
+
+def test_traceback_handler_abort(capsys):
+
+	TH = TracebackHandler(ValueError("foo"))
+
+	with pytest.raises(ValueError, match="foo$"):
+		TH.abort("Hello World")
+
+	assert capsys.readouterr().err == "Hello World\n"
+
+	with pytest.raises(ValueError, match="foo$"):
+		TH.abort(["Hello", "Everybody"])
+
+	assert capsys.readouterr().err == "HelloEverybody\n"

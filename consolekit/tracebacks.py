@@ -103,7 +103,7 @@ class TracebackHandler:
 			If a list of strings the strings are concatenated (i.e. ``''.join(msg)``).
 		"""
 
-		if isinstance(msg, str):
+		if not isinstance(msg, str):
 			msg = ''.join(msg)
 
 		if msg:

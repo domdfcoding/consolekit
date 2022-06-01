@@ -36,7 +36,7 @@ def test_described_argument(
 			description="The destination directory.",
 			)
 	@click_command()
-	def main(dest: str):
+	def main(dest: str) -> None:
 		print(dest)
 
 	result = cli_runner.invoke(main, args="--help")
@@ -65,7 +65,7 @@ def test_auto_default_option(
 			show_default=True,
 			)
 	@click_command()
-	def main(width: int = 80):
+	def main(width: int = 80) -> None:
 		print(width)
 
 	argument = main.params[0]
@@ -92,7 +92,7 @@ def test_flag_option(cli_runner: CliRunner):
 
 	@flag_option("--no-colour")
 	@click_command()
-	def main(no_colour: bool):
+	def main(no_colour: bool) -> None:
 		print(no_colour)
 
 	result = cli_runner.invoke(main, catch_exceptions=False)
@@ -108,7 +108,7 @@ def test_no_pager_option(file_regression: FileRegressionFixture, cli_runner: Cli
 
 	@no_pager_option()
 	@click_command()
-	def main(no_pager: bool):
+	def main(no_pager: bool) -> None:
 		print(no_pager)
 
 	result = cli_runner.invoke(main, catch_exceptions=False)
@@ -128,7 +128,7 @@ def test_force_option(file_regression: FileRegressionFixture, cli_runner: CliRun
 
 	@force_option("Force the operation")
 	@click_command()
-	def main(force: bool):
+	def main(force: bool) -> None:
 		print(force)
 
 	result = cli_runner.invoke(main, catch_exceptions=False)
@@ -152,7 +152,7 @@ def test_verbose_option(file_regression: FileRegressionFixture, cli_runner: CliR
 
 	@verbose_option("Show verbose output.")
 	@click_command()
-	def main(verbose: int):
+	def main(verbose: int) -> None:
 		print(verbose)
 
 	result = cli_runner.invoke(main)
@@ -188,7 +188,7 @@ def test_colour_option(file_regression: FileRegressionFixture, cli_runner: CliRu
 
 	@colour_option()
 	@click_command()
-	def main(colour: ColourTrilean):
+	def main(colour: ColourTrilean) -> None:
 		print(colour)
 
 	result = cli_runner.invoke(main, catch_exceptions=False)
@@ -210,7 +210,7 @@ def test_colour_option(file_regression: FileRegressionFixture, cli_runner: CliRu
 
 def test_version_option(file_regression: FileRegressionFixture, cli_runner: CliRunner):
 
-	def version_callback(ctx: click.Context, param: click.Option, value: int):
+	def version_callback(ctx: click.Context, param: click.Option, value: int) -> None:
 		if not value or ctx.resilient_parsing:
 			return
 
@@ -223,7 +223,7 @@ def test_version_option(file_regression: FileRegressionFixture, cli_runner: CliR
 
 	@version_option(version_callback)
 	@click_command()
-	def main():
+	def main() -> None:
 		sys.exit(1)
 
 	result = cli_runner.invoke(main, args="--version")
@@ -245,7 +245,7 @@ def test_multi_value_option(cli_runner: CliRunner):
 			)
 	@colour_option()
 	@click_command()
-	def main(select: Iterable[str], colour: bool):
+	def main(select: Iterable[str], colour: bool) -> None:
 		select = list(select)
 		print(*select)
 		print(", ".join(select))
@@ -274,7 +274,7 @@ def test_auto_default_argument(cli_runner: CliRunner):
 			type=click.STRING,
 			)
 	@click_command()
-	def main(greeting: str = "Hello"):
+	def main(greeting: str = "Hello") -> None:
 		print(f"{greeting} User!")
 
 	argument = main.params[0]

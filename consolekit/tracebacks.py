@@ -154,7 +154,7 @@ class TracebackHandler:
 		self.abort(f"An error occurred: {e}")
 
 	@contextlib.contextmanager
-	def __call__(self):
+	def __call__(self):  # noqa: MAN002
 		"""
 		Use the :class:`~.TracebackHandler` with a :keyword:`with` block, and handle any exceptions raised within.
 		"""
@@ -166,7 +166,7 @@ class TracebackHandler:
 
 
 @contextlib.contextmanager
-def traceback_handler():
+def traceback_handler():  # noqa: MAN002
 	"""
 	Context manager to abort execution with a short error message on the following exception types:
 

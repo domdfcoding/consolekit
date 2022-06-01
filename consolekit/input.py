@@ -89,7 +89,7 @@ if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
 		pass
 
 
-def prompt(
+def prompt(  # noqa: MAN002
 		text: str,
 		default: Optional[str] = None,
 		hide_input: bool = False,
@@ -128,7 +128,7 @@ def prompt(
 
 	result = None  # noqa
 
-	def prompt_func(text):
+	def prompt_func(text: Any) -> Any:
 		try:
 			return _prompt(text, err=err, hide_input=hide_input)
 		except (KeyboardInterrupt, EOFError):
@@ -178,7 +178,7 @@ def prompt(
 		click.echo("Error: the two entered values do not match", err=err)
 
 
-def confirm(
+def confirm(  # noqa: MAN002
 		text: str,
 		default: bool = False,
 		abort: bool = False,

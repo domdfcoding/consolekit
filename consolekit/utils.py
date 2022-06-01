@@ -87,7 +87,7 @@ handle_tracebacks = _deprecator(tracebacks.handle_tracebacks)
 traceback_handler = _deprecator(tracebacks.traceback_handler)
 
 
-def get_env_vars(ctx, args, incomplete):  # noqa: D103
+def get_env_vars(ctx, args, incomplete) -> List[str]:  # noqa: D103,MAN001
 	return [k for k in os.environ.keys() if incomplete in k]
 
 
@@ -332,7 +332,7 @@ def hidden_cursor() -> Iterator:
 
 
 @lru_cache(1)
-def _pycharm_terminal():
+def _pycharm_terminal() -> bool:
 	try:
 		# 3rd party
 		import psutil  # type: ignore  # nodep
@@ -452,7 +452,7 @@ class TerminalRenderer(BaseRenderer):
 			return f" * {self.render_inner(token).lstrip()}"
 
 	@staticmethod
-	def render_line_break(token):
+	def render_line_break(token) -> str:  # noqa: MAN001
 		"""
 		Render a line break in a multiline paragraph.
 
@@ -461,7 +461,7 @@ class TerminalRenderer(BaseRenderer):
 
 		return ' '
 
-	def render(self, token) -> str:
+	def render(self, token) -> str:  # noqa: MAN001
 		"""
 		Render the given token for display in a terminal.
 

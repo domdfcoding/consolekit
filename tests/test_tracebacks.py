@@ -40,21 +40,21 @@ contextmanagers = pytest.mark.parametrize(
 @exceptions
 @contextmanagers
 def test_handle_tracebacks(
-		exception,
+		exception: BaseException,
 		contextmanager: Callable[..., ContextManager],
 		exit_code: int,
-		file_regression,
+		advanced_file_regression: AdvancedFileRegressionFixture,
 		cli_runner: CliRunner,
 		):
 
 	@click.command()
-	def demo():
+	def demo() -> None:
 
 		with contextmanager():
 			raise exception
 
 	result: Result = cli_runner.invoke(demo, catch_exceptions=False)
-	result.check_stdout(file_regression)
+	result.check_stdout(advanced_file_regression)
 	assert result.exit_code == exit_code
 
 
@@ -62,7 +62,7 @@ def test_handle_tracebacks(
 def test_handle_tracebacks_show_traceback(exception: Exception, cli_runner: CliRunner):
 
 	@click.command()
-	def demo():
+	def demo() -> None:
 
 		with handle_tracebacks(show_traceback=True):
 			raise exception
@@ -81,7 +81,7 @@ def test_handle_tracebacks_ignored_exceptions_click(
 		):
 
 	@click.command()
-	def demo():
+	def demo() -> None:
 
 		with contextmanager():
 			raise exception
@@ -150,7 +150,7 @@ def test_handle_tracebacks_ignored_click(
 		):
 
 	@click.command()
-	def demo():
+	def demo() -> None:
 
 		with contextmanager():
 			raise exception
@@ -168,7 +168,7 @@ def test_traceback_option(file_regression: FileRegressionFixture, cli_runner: Cl
 
 	@traceback_option()
 	@click_command()
-	def main(show_traceback: bool):
+	def main(show_traceback: bool) -> None:
 		print(show_traceback)
 
 	result = cli_runner.invoke(main, catch_exceptions=False)

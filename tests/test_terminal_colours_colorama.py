@@ -43,14 +43,14 @@ colorama = pytest.importorskip("colorama")
 AnsiToWin32 = colorama.ansitowin32.AnsiToWin32
 
 
-def setup_module():
+def setup_module() -> None:
 	# sanity check: stdout should be a file or StringIO object.
 	# It will only be AnsiToWin32 if init() has previously wrapped it
 	assert not isinstance(sys.stdout, AnsiToWin32)
 	assert not isinstance(sys.stderr, AnsiToWin32)
 
 
-def teardown_module():
+def teardown_module() -> None:
 	sys.stdout = stdout_orig
 	sys.stderr = stderr_orig
 

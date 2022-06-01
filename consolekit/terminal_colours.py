@@ -240,7 +240,7 @@ class Colour(str):
 			self.stack.pop()
 			print(self.stack[-1], end='')
 
-	def __call__(self, text) -> str:
+	def __call__(self, text) -> str:  # noqa: MAN001
 		"""
 		Returns the given text in this colour.
 		"""
@@ -400,11 +400,11 @@ def print_256_colour_testpattern() -> None:
 	# 3rd party
 	from domdf_python_tools.iterative import chunks
 
-	def print_heading(text: str, block_size: int = 3, n_blocks: int = 36):
+	def print_heading(text: str, block_size: int = 3, n_blocks: int = 36) -> None:
 		click.echo()
 		click.echo(str(text).center(((block_size + 1) * n_blocks) - 1, '-'))
 
-	def print_line(values: Iterable[int], block_size: int = 3):
+	def print_line(values: Iterable[int], block_size: int = 3) -> None:
 		values = list(values)
 		mid = len(values) // 2
 

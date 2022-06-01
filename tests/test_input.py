@@ -21,7 +21,7 @@ def test_choice_letters(
 
 	inputs = iter(['F', 'G', 'D'])
 
-	def fake_input(prompt: str):
+	def fake_input(prompt: str) -> str:
 		value = next(inputs)
 		print(f"{prompt}{value}".rstrip())
 		return value
@@ -65,7 +65,7 @@ def test_choice_numbers(
 
 	inputs = iter(["20", '0', '5'])
 
-	def fake_input(prompt: str):
+	def fake_input(prompt: str) -> str:
 		value = next(inputs)
 		print(f"{prompt}{value}".rstrip())
 		return value
@@ -95,7 +95,7 @@ def test_confirm(
 
 	inputs = iter(['Y', 'N', '', ''])
 
-	def fake_input(prompt: str):
+	def fake_input(prompt: str) -> str:
 		value = next(inputs)
 		print(f"{prompt}{value}".rstrip())
 		return value
@@ -131,7 +131,7 @@ def test_prompt(
 			"badpassword",
 			])
 
-	def fake_input(prompt: str):
+	def fake_input(prompt: str) -> str:
 		value = next(inputs)
 		print(f"{prompt}{value}".rstrip())
 		return value
@@ -159,7 +159,7 @@ def test_prompt_abort(
 		exception: Type[Exception],
 		):
 
-	def fake_input(prompt: str):
+	def fake_input(prompt: str) -> str:
 		print(f"{prompt}", end='')
 		raise exception
 
@@ -179,7 +179,7 @@ def test_confirm_abort(
 		exception: Type[Exception],
 		):
 
-	def fake_input(prompt: str):
+	def fake_input(prompt: str) -> str:
 		print(f"{prompt}", end='')
 		raise exception
 

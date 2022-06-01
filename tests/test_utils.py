@@ -15,6 +15,7 @@ from pytest_regressions.file_regression import FileRegressionFixture
 # this package
 import consolekit
 from consolekit import click_command
+from consolekit.terminal_colours import ColourTrilean
 from consolekit.utils import (
 		coloured_diff,
 		hidden_cursor,
@@ -83,7 +84,7 @@ def test_coloured_diff(file_regression: FileRegressionFixture):
 def test_is_command():
 
 	@click_command()
-	def main(): ...
+	def main() -> None: ...
 
 	assert is_command(main)
 	assert not is_command(int)
@@ -120,10 +121,10 @@ def test_import_commands():
 
 def test_long_echo(monkeypatch):
 
-	def get_terminal_size(fallback: Tuple[int, int] = (80, 24)):
+	def get_terminal_size(fallback: Tuple[int, int] = (80, 24)) -> Tuple[int, int]:
 		return os.terminal_size((80, 5))
 
-	def echo_via_pager(text_or_generator, color=None):
+	def echo_via_pager(text_or_generator, color: ColourTrilean = None) -> None:  # noqa: MAN001
 		click.echo('\n'.join(f"|{line}" for line in text_or_generator.splitlines()))
 
 	monkeypatch.setattr(shutil, "get_terminal_size", get_terminal_size)

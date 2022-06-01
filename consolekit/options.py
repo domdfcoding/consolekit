@@ -100,7 +100,7 @@ class VerboseVersionCountType(click.IntRange):
 		super().__init__(min=0)
 
 	@staticmethod
-	def _describe_range():  # pragma: no cover
+	def _describe_range() -> str:  # pragma: no cover
 		"""
 		Describe the range for use in help text.
 		"""
@@ -167,7 +167,7 @@ def version_option(callback: Callable[[click.Context, click.Option, int], Any]) 
 			)
 
 
-def colour_option(help_text="Whether to use coloured output.") -> Callable[[_C], _C]:
+def colour_option(help_text: str = "Whether to use coloured output.") -> Callable[[_C], _C]:
 	"""
 	Adds an option (via the parameter ``colour``: :class:`bool`) to enable verbose output.
 
@@ -197,7 +197,7 @@ def force_option(help_text: str) -> Callable[[_C], _C]:
 	return flag_option("-f", "--force", help=help_text)
 
 
-def no_pager_option(help_text="Disable the output pager.") -> Callable[[_C], _C]:
+def no_pager_option(help_text: str = "Disable the output pager.") -> Callable[[_C], _C]:
 	"""
 	Decorator to add the ``--no-pager`` option to a click command.
 
@@ -262,7 +262,7 @@ def auto_default_option(*param_decls, **attrs) -> Callable[[_C], _C]:
 	return decorator
 
 
-def _get_default_from_callback_and_set(command: click.Command, param: click.Parameter):
+def _get_default_from_callback_and_set(command: click.Command, param: click.Parameter) -> None:
 	if command.callback is not None:
 		# The callback *can* be None, for a no-op
 
@@ -377,7 +377,7 @@ class MultiValueOption(click.Option):
 		self._previous_parser_process: Optional[Callable] = None
 		self._eat_all_parser: Optional[click.parser.Option] = None
 
-	def add_to_parser(self, parser: click.OptionParser, ctx: click.Context):
+	def add_to_parser(self, parser: click.OptionParser, ctx: click.Context) -> Any:
 		"""
 		Add the :class:`~.MultiValueOption` to the given parser.
 
@@ -385,7 +385,7 @@ class MultiValueOption(click.Option):
 		:param ctx:
 		"""
 
-		def parser_process(value, state):
+		def parser_process(value, state) -> None:  # noqa: MAN001
 			# method to hook to the parser.process
 			done = False
 			value = [value]
@@ -442,7 +442,7 @@ class MultiValueOption(click.Option):
 
 class _Option(click.Option):
 
-	def prompt_for_value(self, ctx: click.Context):
+	def prompt_for_value(self, ctx: click.Context):  # noqa: MAN002
 		"""
 		This is an alternative flow that can be activated in the full value processing if a value does not exist.
 

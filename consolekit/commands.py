@@ -101,7 +101,7 @@ class RawHelpMixin:
 
 	help: Optional[str]  # noqa: A003  # pylint: disable=redefined-builtin
 
-	def format_help_text(self, ctx: click.Context, formatter: click.formatting.HelpFormatter):
+	def format_help_text(self, ctx: click.Context, formatter: click.formatting.HelpFormatter) -> None:
 		"""
 		Writes the help text to the formatter if it exists.
 
@@ -181,7 +181,7 @@ class MarkdownHelpMixin:
 
 			raise NotImplementedError
 
-	def format_help_text(self, ctx: click.Context, formatter: click.formatting.HelpFormatter):
+	def format_help_text(self, ctx: click.Context, formatter: click.formatting.HelpFormatter) -> None:
 		"""
 		Writes the help text to the formatter if it exists.
 

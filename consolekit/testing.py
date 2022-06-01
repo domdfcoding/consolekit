@@ -148,7 +148,7 @@ class Result(click.testing.Result):
 		return super().stderr
 
 	@classmethod
-	def _from_click_result(cls, result: click.testing.Result):
+	def _from_click_result(cls, result: click.testing.Result) -> "Result":
 		return cls(
 				runner=result.runner,
 				stdout_bytes=result.stdout_bytes,

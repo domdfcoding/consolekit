@@ -18,7 +18,7 @@ from consolekit.testing import CliRunner
 
 
 @pytest.fixture()
-def force_not_pycharm(monkeypatch):
+def force_not_pycharm(monkeypatch) -> None:
 	# Pretend we aren't running in PyCharm, even if we are.
 	monkeypatch.setenv("PYCHARM_HOSTED", '0')
 	monkeypatch.setattr(consolekit.utils, "_pycharm_terminal", lambda: False)
@@ -28,7 +28,7 @@ def force_not_pycharm(monkeypatch):
 def markdown_demo_command() -> click.Command:
 
 	@click_command(cls=consolekit.commands.MarkdownHelpCommand)
-	def demo():
+	def demo() -> None:
 		"""
 		This is the summary line.
 
@@ -51,7 +51,7 @@ def markdown_demo_command_numbered() -> click.Command:
 
 	@colour_option()
 	@click_command(cls=consolekit.commands.MarkdownHelpCommand, no_args_is_help=True)
-	def demo(colour: ColourTrilean = None):
+	def demo(colour: ColourTrilean = None) -> None:
 		"""
 		This is the summary line.
 
@@ -69,7 +69,7 @@ def markdown_demo_command_numbered() -> click.Command:
 def markdown_demo_group() -> Tuple[click.Command, click.Command]:
 
 	@click_group(cls=consolekit.commands.MarkdownHelpGroup)
-	def demo():
+	def demo() -> None:
 		"""
 		This is the summary line.
 
@@ -81,7 +81,7 @@ def markdown_demo_group() -> Tuple[click.Command, click.Command]:
 		"""
 
 	@demo.command(cls=consolekit.commands.MarkdownHelpCommand)
-	def foo():
+	def foo() -> None:
 		"""
 		This is the summary line.
 
@@ -101,7 +101,7 @@ def test_raw_help_command(
 		):
 
 	@click_command(cls=consolekit.commands.RawHelpCommand)
-	def demo():
+	def demo() -> None:
 		"""
 		This is the summary line.
 
@@ -126,7 +126,7 @@ def test_raw_help_group(
 		):
 
 	@click_group(cls=consolekit.commands.RawHelpGroup)
-	def demo():
+	def demo() -> None:
 		"""
 		This is the summary line.
 
@@ -138,7 +138,7 @@ def test_raw_help_group(
 		"""
 
 	@demo.command(cls=consolekit.commands.RawHelpCommand)
-	def foo():
+	def foo() -> None:
 		"""
 		This is the summary line.
 
@@ -192,7 +192,7 @@ def test_markdown_help_command_ordered_list(
 		):
 
 	@click_command(cls=consolekit.commands.MarkdownHelpCommand)
-	def demo():
+	def demo() -> None:
 		"""
 		This is the summary line.
 
@@ -272,13 +272,13 @@ def test_suggestion_group(
 		):
 
 	@click_group(context_settings={**CONTEXT_SETTINGS, "token_normalize_func": lambda x: x.lower()})
-	def demo():
+	def demo() -> None:
 		"""
 		A program.
 		"""
 
 	@demo.command()
-	def search():
+	def search() -> None:
 		"""
 		Conduct a search.
 		"""
@@ -302,19 +302,19 @@ def test_context_inheriting_group(
 		):
 
 	@click_group(cls=consolekit.commands.ContextInheritingGroup)
-	def demo():
+	def demo() -> None:
 		"""
 		A program.
 		"""
 
 	@demo.command()
-	def search():
+	def search() -> None:
 		"""
 		Conduct a search.
 		"""
 
 	@demo.group()
-	def foo():
+	def foo() -> None:
 		"""
 		Does bar.
 		"""

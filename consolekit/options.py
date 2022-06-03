@@ -395,7 +395,7 @@ class MultiValueOption(click.Option):
 					if state.rargs[0].startswith(prefix):
 						done = True
 				if not done:
-					value.append(state.rargs.pop(0))
+					value.append(state.rargs.pop(0))  # pylint: disable=loop-invariant-statement
 
 			value = tuple(value)
 
@@ -405,8 +405,10 @@ class MultiValueOption(click.Option):
 		retval = super().add_to_parser(parser, ctx)
 
 		for name in self.opts:
+			# pylint: disable=loop-invariant-statement
 			our_parser: Optional[click.parser.Option] = parser._long_opt.get(name) or parser._short_opt.get(name)
 			if our_parser:
+				# pylint: enable=loop-invariant-statement
 				self._eat_all_parser = our_parser
 				self._previous_parser_process = our_parser.process
 				our_parser.process = parser_process  # type: ignore

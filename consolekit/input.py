@@ -141,23 +141,25 @@ def prompt(  # noqa: MAN002
 
 	prompt = _build_prompt(text, prompt_suffix, show_default, default, show_choices, type)  # type: ignore
 
+	has_default = default is not None
+
 	while True:
 		while True:
 			value = prompt_func(prompt)
 
 			if value:
 				break
-			elif default is not None:
-				if isinstance(value_proc, Path):
+			elif has_default:
+				if isinstance(value_proc, Path):  # pylint: disable=loop-invariant-statement
 					# validate Path default value (exists, dir_okay etc.)
 					value = default
 					break
 				return default
 
-		try:
+		try:  # pylint: disable=loop-try-except-usage
 			result = value_proc(value)
 		except click.UsageError as e:
-			click.echo(f"Error: {e.message}", err=err)
+			click.echo(f"Error: {e.message}", err=err)  # pylint: disable=loop-invariant-statement
 			continue
 
 		if not confirmation_prompt:
@@ -172,7 +174,7 @@ def prompt(  # noqa: MAN002
 			if value2:
 				break
 
-		if value == value2:
+		if value == value2:  # pylint: disable=loop-invariant-statement
 			return result
 
 		click.echo("Error: the two entered values do not match", err=err)
@@ -205,7 +207,7 @@ def confirm(  # noqa: MAN002
 	prompt = _build_prompt(text, prompt_suffix, show_default, "Y/n" if default else "y/N")
 
 	while True:
-		try:
+		try:  # pylint: disable=loop-try-except-usage
 			value = _prompt(prompt, err=err, hide_input=False).lower().strip()
 		except (KeyboardInterrupt, EOFError):
 			raise click.Abort()
@@ -368,6 +370,7 @@ def choice(
 				show_default=False,
 				err=err,
 				)
+		# pylint: disable=loop-invariant-statement
 		if isinstance(options, Mapping):
 			selection = selection.strip().upper()
 			if selection not in options:
@@ -376,3 +379,4 @@ def choice(
 				return selection
 		else:
 			return selection - start_index
+		# pylint: enable=loop-invariant-statement

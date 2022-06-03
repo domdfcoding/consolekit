@@ -430,7 +430,7 @@ def print_256_colour_testpattern() -> None:
 	print_line(range(16), block_size=8)
 
 	print_heading("216 Colours")
-	for row in chunks(range(16, 232), 36):
+	for row in chunks(range(16, 232), 36):  # pylint: disable=loop-invariant-statement
 		print_line(row)
 
 	print_heading("Greyscale Colours", block_size=5, n_blocks=24)

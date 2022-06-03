@@ -139,9 +139,6 @@ class TracebackHandler:
 		:param e:
 		"""
 
-		# this package
-		from consolekit.utils import abort
-
 		exception_name = e.__class__.__name__
 
 		if hasattr(self, f"handle_{exception_name}"):

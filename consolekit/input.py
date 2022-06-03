@@ -70,12 +70,12 @@ from click.types import Path, convert_type
 from consolekit._types import _ConvertibleType
 from consolekit.utils import hidden_cursor, hide_cursor, show_cursor  # noqa
 
-__all__ = [
+__all__ = (
 		"prompt",
 		"confirm",
 		"stderr_input",
 		"choice",
-		]
+		)
 
 if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
 

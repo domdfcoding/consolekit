@@ -66,13 +66,13 @@ if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
 		# Attribute error on PyPy, ImportError on Windows etc.
 		pass
 
-__all__ = [
+__all__ = (
 		"CONTEXT_SETTINGS",
 		"click_command",
 		"click_group",
 		"option",
 		"SuggestionGroup",
-		]
+		)
 
 _C = TypeVar("_C", bound=click.Command)
 _G = TypeVar("_G", bound=click.Group)

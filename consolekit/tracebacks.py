@@ -42,7 +42,7 @@ if sys.version_info >= (3, 7) or TYPE_CHECKING:
 	# stdlib
 	from typing import NoReturn
 
-__all__ = ["TracebackHandler", "handle_tracebacks", "traceback_handler", "traceback_option"]
+__all__ = ("TracebackHandler", "handle_tracebacks", "traceback_handler", "traceback_option")
 
 _C = TypeVar("_C", bound=click.Command)
 

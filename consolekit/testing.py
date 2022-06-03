@@ -68,7 +68,7 @@ from coincidence.regressions import check_file_regression  # nodep
 from pytest_regressions.file_regression import FileRegressionFixture  # nodep
 from typing_extensions import Literal
 
-__all__ = ["CliRunner", "Result", "cli_runner"]
+__all__ = ("CliRunner", "Result", "cli_runner")
 
 _click_major = int(click.__version__.split('.')[0])
 

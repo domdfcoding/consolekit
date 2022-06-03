@@ -77,7 +77,7 @@ from typing import Deque, Iterable, List, Optional, Pattern, Type, TypeVar, Unio
 import click
 from typing_extensions import Final
 
-__all__ = [
+__all__ = (
 		"AnsiFore",
 		"AnsiBack",
 		"AnsiStyle",
@@ -97,7 +97,7 @@ __all__ = [
 		"CSI",
 		"OSC",
 		"BEL",
-		]
+		)
 
 try:
 	# 3rd party

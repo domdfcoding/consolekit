@@ -74,7 +74,7 @@ from mistletoe import block_token  # type: ignore
 from consolekit.terminal_colours import ColourTrilean, resolve_color_default, strip_ansi
 from consolekit.utils import TerminalRenderer
 
-__all__ = [
+__all__ = (
 		"MarkdownHelpCommand",
 		"MarkdownHelpGroup",
 		"MarkdownHelpMixin",
@@ -83,7 +83,7 @@ __all__ = [
 		"RawHelpMixin",
 		"SuggestionGroup",
 		"ContextInheritingGroup",
-		]
+		)
 
 _argument = Plural("argument", "arguments")
 

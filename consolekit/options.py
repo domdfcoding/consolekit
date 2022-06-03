@@ -70,7 +70,7 @@ from click.decorators import _param_memo
 import consolekit.input
 from consolekit._types import Callback, _ConvertibleType
 
-__all__ = [
+__all__ = (
 		"verbose_option",
 		"version_option",
 		"colour_option",
@@ -83,7 +83,7 @@ __all__ = [
 		"DescribedArgument",
 		"_A",
 		"_C",
-		]
+		)
 
 _A = TypeVar("_A", bound=click.Argument)
 _C = TypeVar("_C", bound=click.Command)

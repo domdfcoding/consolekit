@@ -59,7 +59,7 @@ from typing_extensions import TypeGuard
 from consolekit import terminal_colours, tracebacks
 from consolekit.terminal_colours import ColourTrilean, resolve_color_default
 
-__all__ = [
+__all__ = (
 		"get_env_vars",
 		"is_command",
 		"import_commands",
@@ -74,7 +74,7 @@ __all__ = [
 		"TerminalRenderer",
 		"hidden_cursor",
 		"long_echo",
-		]
+		)
 
 _deprecator = deprecation_alias.deprecated(
 		deprecated_in="1.0.0",

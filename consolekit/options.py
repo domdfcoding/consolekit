@@ -391,7 +391,7 @@ class MultiValueOption(click.Option):
 			value = [value]
 			# grab everything up to the next option
 
-			assert self._eat_all_parser is not None
+			assert self._eat_all_parser is not None  # skipcq
 			while state.rargs and not done:
 				for prefix in self._eat_all_parser.prefixes:
 					if state.rargs[0].startswith(prefix):
@@ -402,7 +402,7 @@ class MultiValueOption(click.Option):
 			value = tuple(value)
 
 			# call the actual process
-			assert self._previous_parser_process is not None
+			assert self._previous_parser_process is not None  # skipcq
 			self._previous_parser_process(value, state)
 
 		retval = super().add_to_parser(parser, ctx)

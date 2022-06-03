@@ -93,9 +93,9 @@ def test_fore_attributes(obj: Colour, expects: str, capsys):
 	captured = capsys.readouterr()
 	stdout = captured.out.split('\n')
 	assert stdout[0] == f"{obj}Hello World!"
-	assert stdout[1] == f"\033[39mReset!"
+	assert stdout[1] == "\033[39mReset!"
 	assert stdout[2] == f"{obj}Coloured Again!"
-	assert stdout[3] == f"\033[39mReset Again!"
+	assert stdout[3] == "\033[39mReset Again!"
 	assert stdout[4] == ''
 
 
@@ -137,9 +137,9 @@ def test_back_attributes(obj: Colour, expects: str, capsys):
 	captured = capsys.readouterr()
 	stdout = captured.out.split('\n')
 	assert stdout[0] == f"{obj}Hello World!"
-	assert stdout[1] == f"\033[49mReset!"
+	assert stdout[1] == "\033[49mReset!"
 	assert stdout[2] == f"{obj}Coloured Again!"
-	assert stdout[3] == f"\033[49mReset Again!"
+	assert stdout[3] == "\033[49mReset Again!"
 	assert stdout[4] == ''
 
 
@@ -165,7 +165,7 @@ def test_style_attributes(obj: Colour, expects: str, capsys):
 	captured = capsys.readouterr()
 	stdout = captured.out.split('\n')
 	assert stdout[0] == f"{obj}Hello World!"
-	assert stdout[1] == f"\033[22mReset!"
+	assert stdout[1] == "\033[22mReset!"
 	assert stdout[2] == f"{obj}Coloured Again!"
-	assert stdout[3] == f"\033[22mReset Again!"
+	assert stdout[3] == "\033[22mReset Again!"
 	assert stdout[4] == ''

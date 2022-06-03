@@ -277,7 +277,7 @@ def test_suggestion_group(
 		A program.
 		"""
 
-	@demo.command()
+	@demo.command()  # skipcq
 	def search() -> None:
 		"""
 		Conduct a search.

@@ -68,7 +68,6 @@ from click.types import Path, convert_type
 
 # this package
 from consolekit._types import _ConvertibleType
-from consolekit.utils import hidden_cursor, hide_cursor, show_cursor  # noqa
 
 __all__ = (
 		"prompt",
@@ -381,7 +380,7 @@ def choice(
 		if isinstance(options, Mapping):
 			selection = selection.strip().upper()
 			if selection not in options:
-				click.echo(f"Please enter a valid option.")
+				click.echo("Please enter a valid option.")
 			else:
 				return selection
 		else:

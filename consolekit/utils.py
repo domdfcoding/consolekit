@@ -51,8 +51,8 @@ import click
 import deprecation_alias
 from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.words import SANS_SERIF_ITALIC_LETTERS
-from mistletoe import block_token, span_token  # type: ignore
-from mistletoe.base_renderer import BaseRenderer  # type: ignore
+from mistletoe import block_token, span_token  # type: ignore[import]
+from mistletoe.base_renderer import BaseRenderer  # type: ignore[import]
 from typing_extensions import TypeGuard
 
 # this package
@@ -335,7 +335,7 @@ def hidden_cursor() -> Iterator:
 def _pycharm_terminal() -> bool:
 	try:
 		# 3rd party
-		import psutil  # type: ignore  # nodep
+		import psutil  # type: ignore[import]  # nodep
 
 		parent_process = psutil.Process(os.getppid())
 		grandparent_process = psutil.Process(parent_process.ppid())

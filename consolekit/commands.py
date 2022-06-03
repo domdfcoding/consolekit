@@ -68,7 +68,7 @@ from click.parser import split_opt
 from click.utils import make_str
 from domdf_python_tools.stringlist import DelimitedList
 from domdf_python_tools.words import Plural
-from mistletoe import block_token  # type: ignore
+from mistletoe import block_token  # type: ignore[import]
 
 # this package
 from consolekit.terminal_colours import ColourTrilean, resolve_color_default, strip_ansi
@@ -411,4 +411,4 @@ class SuggestionGroup(ContextInheritingGroup):
 		# TODO: cmd here is Optional[click.Command], typeshed says it should be just click.Command
 		#  I think typeshed is wrong.
 		#  https://github.com/python/typeshed/blob/484c014665cdf071b292dd9630f207c03e111895/third_party/2and3/click/core.pyi#L171
-		return cmd_name, cmd, args[1:]  # type: ignore
+		return cmd_name, cmd, args[1:]  # type: ignore[return-value]

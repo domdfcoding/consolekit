@@ -390,8 +390,10 @@ class MultiValueOption(click.Option):
 			done = False
 			value = [value]
 			# grab everything up to the next option
+
+			assert self._eat_all_parser is not None
 			while state.rargs and not done:
-				for prefix in self._eat_all_parser.prefixes:  # type: ignore
+				for prefix in self._eat_all_parser.prefixes:
 					if state.rargs[0].startswith(prefix):
 						done = True
 				if not done:
@@ -400,18 +402,19 @@ class MultiValueOption(click.Option):
 			value = tuple(value)
 
 			# call the actual process
-			self._previous_parser_process(value, state)  # type: ignore
+			assert self._previous_parser_process is not None
+			self._previous_parser_process(value, state)
 
 		retval = super().add_to_parser(parser, ctx)
 
 		for name in self.opts:
 			# pylint: disable=loop-invariant-statement
 			our_parser: Optional[click.parser.Option] = parser._long_opt.get(name) or parser._short_opt.get(name)
-			if our_parser:
+			if our_parser is not None:
 				# pylint: enable=loop-invariant-statement
 				self._eat_all_parser = our_parser
 				self._previous_parser_process = our_parser.process
-				our_parser.process = parser_process  # type: ignore
+				our_parser.process = parser_process  # type: ignore[assignment]
 				break
 
 		return retval
@@ -435,7 +438,7 @@ class MultiValueOption(click.Option):
 			if isinstance(value, Iterable) and not isinstance(value, str):
 				return tuple(self.type_cast_value(ctx, v) for v in value)
 			elif value in ("()", str(self.default)) or not value:
-				return self.default  # type: ignore
+				return self.default  # type: ignore[return-value]
 			else:
 				return self.type_cast_value(ctx, value)
 		else:
@@ -460,7 +463,7 @@ class _Option(click.Option):
 		if self.is_bool_flag:
 			return consolekit.input.confirm(
 					prompt_string,
-					default,  # type: ignore
+					default,  # type: ignore[arg-type]
 					)
 
 		return consolekit.input.prompt(

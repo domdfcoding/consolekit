@@ -139,7 +139,14 @@ def prompt(  # noqa: MAN002
 	if value_proc is None:
 		value_proc = convert_type(type, default)
 
-	prompt = _build_prompt(text, prompt_suffix, show_default, default, show_choices, type)  # type: ignore
+	prompt = _build_prompt(
+			text,
+			prompt_suffix,
+			show_default,
+			default,
+			show_choices,
+			type,  # type: ignore[arg-type]
+			)
 
 	has_default = default is not None
 
@@ -273,7 +280,7 @@ def stderr_input(prompt: str = '', file: IO = sys.stdout) -> str:  # pragma: no 
 	return line
 
 
-def _prompt(text, err: bool, hide_input: bool):
+def _prompt(text: Any, err: bool, hide_input: bool):  # noqa: MAN002
 	if sys.platform != "linux":
 		# Write the prompt separately so that we get nice
 		# coloring through colorama on Windows

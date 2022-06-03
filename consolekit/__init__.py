@@ -38,6 +38,8 @@ Additional utilities for `click <https://click.palletsprojects.com/en/7.x/>`_.
 #  OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+# pylint: disable=redefined-builtin
+
 # stdlib
 import sys
 from typing import Any, Callable, Dict, Optional, Type, TypeVar, cast
@@ -46,9 +48,11 @@ from typing import Any, Callable, Dict, Optional, Type, TypeVar, cast
 import click
 
 # this package
-from consolekit import commands, input, terminal_colours, tracebacks, utils  # pylint: disable=redefined-builtin
+from consolekit import commands, input, terminal_colours, tracebacks, utils  # noqa: F401
 from consolekit.commands import SuggestionGroup
 from consolekit.options import _Option
+
+# pylint: enable=redefined-builtin
 
 __author__: str = "Dominic Davis-Foster"
 __copyright__: str = "2020 Dominic Davis-Foster"
@@ -121,10 +125,10 @@ def click_group(
 	"""
 
 	if cls is None:
-		cls = SuggestionGroup  # type: ignore
+		cls = SuggestionGroup
 
 	attrs.setdefault("context_settings", CONTEXT_SETTINGS)
-	return click_command(name, cls=cls, **attrs)  # type: ignore
+	return click_command(name, cls=cls, **attrs)
 
 
 def option(

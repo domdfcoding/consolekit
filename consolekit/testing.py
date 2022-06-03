@@ -114,7 +114,7 @@ class Result(click.testing.Result):
 					return_value=None,
 					)
 		else:
-			super().__init__(  # type: ignore
+			super().__init__(  # type: ignore[call-arg]
 				runner=runner,
 				stdout_bytes=stdout_bytes,
 				stderr_bytes=stderr_bytes,
@@ -208,7 +208,7 @@ class CliRunner(click.testing.CliRunner):
 			) -> None:
 		super().__init__(charset, env, echo_stdin, mix_stderr)
 
-	def invoke(  # type: ignore  # noqa: D101
+	def invoke(  # type: ignore[override]  # noqa: D101
 		self,
 		cli: click.BaseCommand,
 		args: Optional[Union[str, Iterable[str]]] = None,

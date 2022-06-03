@@ -131,7 +131,7 @@ def test_long_echo(monkeypatch):
 	monkeypatch.setattr(click, "echo_via_pager", echo_via_pager)
 
 	with redirect_output() as (stdout, stderr):
-		stdout.isatty = lambda *args: True  # type: ignore
+		stdout.isatty = lambda *args: True  # type: ignore[assignment]
 		assert stdout.isatty()
 		assert sys.stdout.isatty()
 
@@ -147,7 +147,7 @@ def test_long_echo(monkeypatch):
 	assert stdout.getvalue() == "|Line 1\n|Line 2\n|Line 3\n|Line 4\n|Line 5\n|Line 6\n"
 
 	with redirect_output() as (stdout, stderr):
-		stdout.isatty = lambda *args: True  # type: ignore
+		stdout.isatty = lambda *args: True  # type: ignore[assignment]
 		assert stdout.isatty()
 		assert sys.stdout.isatty()
 

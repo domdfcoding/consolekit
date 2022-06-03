@@ -48,7 +48,6 @@ from typing import IO, Any, Iterable, Iterator, List, Optional, Sequence, Union
 
 # 3rd party
 import click
-import deprecation_alias
 from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.words import SANS_SERIF_ITALIC_LETTERS
 from mistletoe import block_token, span_token  # type: ignore[import]
@@ -56,7 +55,7 @@ from mistletoe.base_renderer import BaseRenderer  # type: ignore[import]
 from typing_extensions import TypeGuard
 
 # this package
-from consolekit import terminal_colours, tracebacks
+from consolekit import terminal_colours
 from consolekit.terminal_colours import ColourTrilean, resolve_color_default
 
 __all__ = (
@@ -75,16 +74,6 @@ __all__ = (
 		"hidden_cursor",
 		"long_echo",
 		)
-
-_deprecator = deprecation_alias.deprecated(
-		deprecated_in="1.0.0",
-		removed_in="2.0.0",
-		current_version="1.4.1",
-		details="Import from consolekit.tracebacks instead."
-		)
-
-handle_tracebacks = _deprecator(tracebacks.handle_tracebacks)
-traceback_handler = _deprecator(tracebacks.traceback_handler)
 
 
 def get_env_vars(ctx, args, incomplete) -> List[str]:  # noqa: D103,MAN001

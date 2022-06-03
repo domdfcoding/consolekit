@@ -171,9 +171,8 @@ def prompt(  # noqa: MAN002
 		if not confirmation_prompt:
 			return result
 
-		if confirmation_prompt:
-			if confirmation_prompt is True:
-				confirmation_prompt = "Repeat for confirmation: "
+		if confirmation_prompt is True:
+			confirmation_prompt = "Repeat for confirmation: "
 
 		while True:
 			value2 = prompt_func(confirmation_prompt)

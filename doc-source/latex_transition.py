@@ -38,7 +38,7 @@ class TransitionTransform(Transitions):
 			node.parent.insert(index, error)
 			index += 1
 
-		assert index < len(node.parent)
+		assert index < len(node.parent)  # skipcq
 
 		if index != len(node.parent) - 1:
 			# No need to move the node.

@@ -100,7 +100,7 @@ def test_handle_tracebacks_ignored_exceptions(
 		exit_code: int,
 		):
 
-	with pytest.raises(exception):  # noqa: PT012
+	with pytest.raises(exception):  # noqa: PT012  # skipcq
 		with contextmanager():
 			raise exception
 

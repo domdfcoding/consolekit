@@ -101,7 +101,7 @@ __all__ = (
 
 try:
 	# 3rd party
-	import colorama  # type: ignore
+	import colorama  # type: ignore[import]
 	colorama.init()
 
 except ImportError:
@@ -224,7 +224,7 @@ class Colour(str):
 	stack: Union[Deque[str], List[str]]
 
 	def __new__(cls, style: str, stack: Union[Deque[str], List[str]], reset: str) -> "Colour":  # noqa: D102
-		self = super().__new__(cls, style)  # type: ignore
+		self = super().__new__(cls, style)  # type: ignore[import]
 		self.style = style
 		self.stack = stack
 		self.reset = reset

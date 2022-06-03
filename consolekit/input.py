@@ -264,7 +264,7 @@ def stderr_input(prompt: str = '', file: IO = sys.stdout) -> str:  # pragma: no 
 		flush()
 
 	try:
-		file.softspace = 0  # type: ignore
+		file.softspace = 0  # type: ignore[attr-defined]
 	except (AttributeError, TypeError):
 		pass
 

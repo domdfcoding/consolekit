@@ -28,6 +28,7 @@ python_versions:
   - pypy36
   - pypy37
   - pypy38
+  - pypy39
 
 classifiers:
  - 'Development Status :: 5 - Production/Stable'

@@ -57,8 +57,8 @@ consolekit
 	:target: https://github.com/domdfcoding/consolekit/actions?query=workflow%3A%22mypy%22
 	:alt: mypy status
 
-.. |requires| image:: https://dependency-dash.herokuapp.com/github/domdfcoding/consolekit/badge.svg
-	:target: https://dependency-dash.herokuapp.com/github/domdfcoding/consolekit/
+.. |requires| image:: https://dependency-dash.repo-helper.uk/github/domdfcoding/consolekit/badge.svg
+	:target: https://dependency-dash.repo-helper.uk/github/domdfcoding/consolekit/
 	:alt: Requirements Status
 
 .. |coveralls| image:: https://img.shields.io/coveralls/github/domdfcoding/consolekit/master?logo=coveralls

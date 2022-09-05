@@ -60,8 +60,8 @@ consolekit
 		:workflow: mypy
 		:alt: mypy status
 
-	.. |requires| image:: https://dependency-dash.herokuapp.com/github/domdfcoding/consolekit/badge.svg
-		:target: https://dependency-dash.herokuapp.com/github/domdfcoding/consolekit/
+	.. |requires| image:: https://dependency-dash.repo-helper.uk/github/domdfcoding/consolekit/badge.svg
+		:target: https://dependency-dash.repo-helper.uk/github/domdfcoding/consolekit/
 		:alt: Requirements Status
 
 	.. |coveralls| coveralls-shield::

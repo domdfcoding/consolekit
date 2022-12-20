@@ -17,6 +17,7 @@ import consolekit
 from consolekit import click_command
 from consolekit.terminal_colours import ColourTrilean
 from consolekit.utils import (
+		abort,
 		coloured_diff,
 		hidden_cursor,
 		hide_cursor,
@@ -160,3 +161,11 @@ def test_long_echo(monkeypatch):
 				]))
 
 	assert stdout.getvalue() == "Line 1\nLine 2\nLine 3\nLine 4\nLine 5\n"
+
+
+def test_abort(capsys):
+	abort("The program will now abort.", colour=True)
+	assert capsys.readouterr().err == "\x1b[31mThe program will now abort.\x1b[39m\n"
+
+	abort("The program will now abort.", colour=False)
+	assert capsys.readouterr().err == "The program will now abort.\n"

@@ -93,7 +93,7 @@ def test_confirm(
 		advanced_data_regression: AdvancedDataRegressionFixture,
 		):
 
-	inputs = iter(['Y', 'N', '', ''])
+	inputs = iter(['Y', 'N', '', '', "yEs", "No", "gkjhkhjv", ''])
 
 	def fake_input(prompt: str) -> str:
 		value = next(inputs)
@@ -105,6 +105,9 @@ def test_confirm(
 	assert confirm(text="Do you wish to delete all files in '/' ?", default=False) is True
 	assert confirm(text="Do you wish to delete all files in '/' ?", default=False) is False
 	assert confirm(text="Do you wish to delete all files in '/' ?", default=False) is False
+	assert confirm(text="Do you wish to delete all files in '/' ?", default=True) is True
+	assert confirm(text="Do you wish to delete all files in '/' ?", default=False) is True
+	assert confirm(text="Do you wish to delete all files in '/' ?", default=True) is False
 	assert confirm(text="Do you wish to delete all files in '/' ?", default=True) is True
 
 	advanced_data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))

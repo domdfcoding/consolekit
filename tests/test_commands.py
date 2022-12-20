@@ -112,12 +112,22 @@ def test_raw_help_command(
 		* ~~The other~~ (deprecated)
 		"""
 
+	@click_command(cls=consolekit.commands.RawHelpCommand)
+	def helpless_demo() -> None:
+		pass
+
 	result = cli_runner.invoke(demo, args=["--help"])
 	result.check_stdout(advanced_file_regression, extension=".md")
 
 	assert demo.callback.__doc__ is not None
 	expected = inspect.cleandoc(demo.callback.__doc__)
 	assert dedent('\n'.join(result.stdout.splitlines()[2:-3])) == expected
+
+	result = cli_runner.invoke(helpless_demo, args=["--help"])
+	result.check_stdout(advanced_file_regression, extension=".helpless.md")
+
+	assert helpless_demo.callback.__doc__ is None
+	assert dedent('\n'.join(result.stdout.splitlines()[2:-3])) == ''
 
 
 def test_raw_help_group(
@@ -164,6 +174,20 @@ def test_markdown_help_command(
 		cli_runner: CliRunner,
 		):
 	result = cli_runner.invoke(markdown_demo_command, args=["--help"], color=True)
+	result.check_stdout(advanced_file_regression, extension=".md")
+
+
+@pytest.mark.usefixtures("force_not_pycharm")
+def test_markdown_help_command_no_help(
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		cli_runner: CliRunner,
+		):
+
+	@click_command(cls=consolekit.commands.MarkdownHelpCommand)
+	def helpless_demo() -> None:
+		pass
+
+	result = cli_runner.invoke(helpless_demo, args=["--help"], color=True)
 	result.check_stdout(advanced_file_regression, extension=".md")
 
 

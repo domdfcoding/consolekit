@@ -2,3 +2,8 @@
 - 'Do you wish to delete all files in ''/'' ? [y/N]: N'
 - 'Do you wish to delete all files in ''/'' ? [y/N]:'
 - 'Do you wish to delete all files in ''/'' ? [Y/n]:'
+- 'Do you wish to delete all files in ''/'' ? [y/N]: yEs'
+- 'Do you wish to delete all files in ''/'' ? [Y/n]: No'
+- 'Do you wish to delete all files in ''/'' ? [Y/n]: gkjhkhjv'
+- 'Error: invalid input'
+- 'Do you wish to delete all files in ''/'' ? [Y/n]:'

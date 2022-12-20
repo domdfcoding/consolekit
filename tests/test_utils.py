@@ -8,6 +8,7 @@ from typing import Tuple
 # 3rd party
 import click
 from coincidence.regressions import AdvancedDataRegressionFixture, check_file_regression
+from coincidence.selectors import not_windows
 from domdf_python_tools.paths import PathPlus
 from domdf_python_tools.utils import redirect_output
 from pytest_regressions.file_regression import FileRegressionFixture
@@ -163,9 +164,12 @@ def test_long_echo(monkeypatch):
 	assert stdout.getvalue() == "Line 1\nLine 2\nLine 3\nLine 4\nLine 5\n"
 
 
+@not_windows(reason="Output differs on Windows")
 def test_abort(capsys):
 	abort("The program will now abort.", colour=True)
 	assert capsys.readouterr().err == "\x1b[31mThe program will now abort.\x1b[39m\n"
 
+
+def test_abort_no_colour(capsys):
 	abort("The program will now abort.", colour=False)
 	assert capsys.readouterr().err == "The program will now abort.\n"

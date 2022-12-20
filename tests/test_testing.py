@@ -11,9 +11,7 @@ from consolekit.options import DescribedArgument
 from consolekit.testing import CliRunner
 
 
-def test_result(
-		cli_runner: CliRunner
-		):
+def test_result(cli_runner: CliRunner):
 
 	@click.argument(
 			"dest",
@@ -47,6 +45,6 @@ def test_result_no_mix_stderr():
 
 	result = cli_runner.invoke(main, catch_exceptions=False, args="./staging")
 	assert result.stdout.rstrip() == "./staging"
-	assert result.stderr == ""
+	assert result.stderr == ''
 	assert result.output.rstrip() == "./staging"
 	assert result.exit_code == 0

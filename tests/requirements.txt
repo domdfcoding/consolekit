@@ -6,7 +6,7 @@ coverage-pyver-pragma>=0.2.1
 domdf-python-tools[testing]>=2.0.1
 importlib-metadata>=3.6.0
 iniconfig!=1.1.0,>=1.0.1
-mypy==0.931; platform_python_implementation == "CPython"
+mypy==1.1.1; platform_python_implementation == "CPython"
 pytest>=6.0.0
 pytest-cov>=2.8.1
 pytest-mypy-plugins>=1.9.1; platform_python_implementation == "CPython"

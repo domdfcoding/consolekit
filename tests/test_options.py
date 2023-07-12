@@ -267,6 +267,23 @@ def test_multi_value_option(cli_runner: CliRunner):
 	assert result.exit_code == 0
 
 
+def test_multi_value_option_int(cli_runner: CliRunner):
+
+	@click.option("--value", help="Some values", cls=MultiValueOption, type=int, default=(1, 2, 3))
+	@colour_option()
+	@click_command()
+	def main(value: Iterable[int], colour: bool) -> None:
+		print(value)
+
+	result: Result = cli_runner.invoke(main, catch_exceptions=False)
+	assert result.stdout.rstrip() == "(1, 2, 3)"
+	assert result.exit_code == 0
+
+	result = cli_runner.invoke(main, args=["--value", '4', '5', '6'])
+	assert result.stdout.rstrip() == "(4, 5, 6)"
+	assert result.exit_code == 0
+
+
 def test_auto_default_argument(cli_runner: CliRunner):
 
 	@auto_default_argument(

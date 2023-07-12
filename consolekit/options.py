@@ -444,6 +444,17 @@ class MultiValueOption(click.Option):
 		else:
 			return None
 
+	if int(click.__version__.split('.')[0]) == 7:  # pragma: nocover
+
+		def get_default(self, ctx):
+			if callable(self.default):
+				rv = self.default()
+			else:
+				rv = self.default
+
+			ret = tuple(self.type(x or (), self, ctx) for x in rv or ())
+			return ret
+
 
 class _Option(click.Option):
 

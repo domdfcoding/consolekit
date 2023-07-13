@@ -446,7 +446,7 @@ class MultiValueOption(click.Option):
 
 	if int(click.__version__.split('.')[0]) == 7:  # pragma: nocover
 
-		def get_default(self, ctx):
+		def get_default(self, ctx):  # noqa: MAN001,MAN002,D102
 			if callable(self.default):
 				rv = self.default()
 			else:

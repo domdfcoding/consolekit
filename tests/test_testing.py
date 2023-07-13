@@ -1,7 +1,3 @@
-# stdlib
-import sys
-from typing import Iterable
-
 # 3rd party
 import click
 

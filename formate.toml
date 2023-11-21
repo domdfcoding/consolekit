@@ -44,6 +44,7 @@ known_third_party = [
     "importlib_metadata",
     "mistletoe",
     "mypy",
+    "psutil",
     "pytest",
     "pytest_cov",
     "pytest_mypy_plugins",

@@ -7,6 +7,9 @@ domdf-python-tools[testing]>=2.0.1
 importlib-metadata>=3.6.0
 iniconfig!=1.1.0,>=1.0.1
 mypy==0.971; platform_python_implementation == "CPython"
+psutil>=5.9.6; platform_python_implementation == "PyPy" and platform_system != "Windows"
+psutil>=5.9.6; platform_python_implementation != "PyPy" and platform_system == "Windows"
+psutil>=5.9.6; platform_python_implementation != "PyPy" and platform_system != "Windows"
 pytest>=6.0.0
 pytest-cov>=2.8.1
 pytest-mypy-plugins>=1.9.1; platform_python_implementation == "CPython"

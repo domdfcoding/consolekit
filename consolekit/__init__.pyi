@@ -8,7 +8,7 @@ import click
 
 # this package
 from consolekit import commands as commands  # noqa: F401
-from consolekit import input as input  # noqa: A001,F401  # pylint: disable=redefined-builtin
+from consolekit import input as input  # noqa: F401
 from consolekit import terminal_colours as terminal_colours  # noqa: F401
 from consolekit import tracebacks as tracebacks  # noqa: F401
 from consolekit import utils as utils  # noqa: F401

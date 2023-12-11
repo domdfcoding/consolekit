@@ -35,7 +35,7 @@ def configure(app: Sphinx, config: Config):
 	latex_extrapackages.append(r"\usepackage{needspace}")
 	latex_elements["extrapackages"] = str(latex_extrapackages)
 
-	config.latex_elements = latex_elements  # type: ignore
+	config.latex_elements = latex_elements
 
 
 def setup(app: Sphinx):

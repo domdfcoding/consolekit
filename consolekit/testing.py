@@ -208,7 +208,7 @@ class CliRunner(click.testing.CliRunner):
 			) -> None:
 		super().__init__(charset, env, echo_stdin, mix_stderr)
 
-	def invoke(  # type: ignore[override]  # noqa: D101
+	def invoke(  # type: ignore[override]
 		self,
 		cli: click.BaseCommand,
 		args: Optional[Union[str, Iterable[str]]] = None,

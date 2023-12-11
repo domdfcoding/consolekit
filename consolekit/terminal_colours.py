@@ -180,7 +180,7 @@ def set_title(title: str) -> str:  # noqa: D103
 	return OSC + "2;" + title + BEL
 
 
-# def clear_screen(mode: int = 2) -> str:  # noqa: D103
+# def clear_screen(mode: int = 2) -> str:
 # 	return CSI + str(mode) + 'J'
 
 

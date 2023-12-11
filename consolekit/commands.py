@@ -325,7 +325,7 @@ class ContextInheritingGroup(click.Group):
 	.. autosummary-widths:: 5/16
 	"""
 
-	def command(self, *args, **kwargs) -> Callable[[Callable[..., Any]], click.Command]:
+	def command(self, *args, **kwargs) -> Callable[[Callable[..., Any]], click.Command]:  # type: ignore[override]
 		"""
 		A shortcut decorator for declaring and attaching a command to the group.
 
@@ -337,7 +337,7 @@ class ContextInheritingGroup(click.Group):
 		kwargs.setdefault("context_settings", self.context_settings)
 		return super().command(*args, **kwargs)
 
-	def group(self, *args, **kwargs) -> Callable[[Callable[..., Any]], click.Group]:
+	def group(self, *args, **kwargs) -> Callable[[Callable[..., Any]], click.Group]:  # type: ignore[override]
 		"""
 		A shortcut decorator for declaring and attaching a group to the group.
 

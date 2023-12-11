@@ -38,7 +38,7 @@ from domdf_python_tools.compat import importlib_metadata
 from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.words import LF
 
-__all__ = ("get_formatted_versions", "version_callback")
+__all__ = ("get_formatted_versions", "get_version_callback")
 
 
 def get_formatted_versions(

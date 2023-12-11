@@ -3,6 +3,8 @@
 #  versions.py
 """
 Tool to get software versions.
+
+.. versionadded:: 1.6.0
 """
 #
 #  Copyright © 2023 Dominic Davis-Foster <dominic@davis-foster.co.uk>

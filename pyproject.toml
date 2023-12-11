@@ -33,7 +33,7 @@ dependencies = [
     "click>=7.1.2",
     'colorama>=0.4.3; python_version < "3.10" and platform_system == "Windows"',
     "deprecation-alias>=0.1.1",
-    "domdf-python-tools>=2.6.0",
+    "domdf-python-tools>=3.8.0",
     "mistletoe>=0.7.2",
     "typing-extensions!=3.10.0.1,>=3.10.0.0",
 ]

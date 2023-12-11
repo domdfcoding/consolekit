@@ -41,14 +41,13 @@ Additional utilities for `click <https://click.palletsprojects.com/en/7.x/>`_.
 # pylint: disable=redefined-builtin
 
 # stdlib
-import sys
 from typing import Any, Callable, Dict, Optional, Type, TypeVar, cast
 
 # 3rd party
 import click
 
 # this package
-from consolekit import commands, input, terminal_colours, tracebacks, utils  # noqa: F401
+from consolekit import _readline, commands, input, terminal_colours, tracebacks, utils  # noqa: F401
 from consolekit.commands import SuggestionGroup
 from consolekit.options import _Option
 
@@ -59,16 +58,6 @@ __copyright__: str = "2020 Dominic Davis-Foster"
 __license__: str = "MIT License"
 __version__: str = "1.5.2"
 __email__: str = "dominic@davis-foster.co.uk"
-
-if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
-	try:
-		# stdlib
-		import readline
-		readline.set_history_length(0)
-		readline.set_auto_history(False)
-	except (ImportError, AttributeError):
-		# Attribute error on PyPy, ImportError on Windows etc.
-		pass
 
 __all__ = (
 		"CONTEXT_SETTINGS",

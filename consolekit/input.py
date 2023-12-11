@@ -67,6 +67,7 @@ from click.termui import _build_prompt, hidden_prompt_func
 from click.types import Path, convert_type
 
 # this package
+from consolekit import _readline  # noqa: F401
 from consolekit._types import _ConvertibleType
 
 __all__ = (
@@ -75,17 +76,6 @@ __all__ = (
 		"stderr_input",
 		"choice",
 		)
-
-if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
-
-	try:
-		# stdlib
-		import readline
-		readline.set_history_length(0)
-		readline.set_auto_history(False)
-	except (ImportError, AttributeError):
-		# Attribute error on PyPy, ImportError on Windows etc.
-		pass
 
 
 def prompt(  # noqa: MAN002

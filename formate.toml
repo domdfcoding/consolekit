@@ -55,4 +55,4 @@ known_third_party = [
     "requests",
     "typing_extensions",
 ]
-known_first_party = "consolekit"
+known_first_party = [ "consolekit",]

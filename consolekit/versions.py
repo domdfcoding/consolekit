@@ -32,7 +32,7 @@ Tool to get software versions.
 import platform
 import sys
 import textwrap
-from typing import Any, Callable, List, Mapping, Union
+from typing import Any, Callable, Iterable, Mapping, Union
 
 # 3rd party
 import click
@@ -44,7 +44,7 @@ __all__ = ("get_formatted_versions", "get_version_callback")
 
 
 def get_formatted_versions(
-		dependencies: Union[List[str], Mapping[str, str]],
+		dependencies: Union[Iterable[str], Mapping[str, str]] = (),
 		show_python: bool = True,
 		show_platform: bool = True,
 		) -> StringList:
@@ -79,7 +79,7 @@ def get_formatted_versions(
 def get_version_callback(
 		tool_version: str,
 		tool_name: str,
-		dependencies: Union[List[str], Mapping[str, str]],
+		dependencies: Union[Iterable[str], Mapping[str, str]] = (),
 		) -> Callable[[click.Context, click.Option, int], Any]:
 	"""
 	Creates a callback for :class:`~.version_option`.

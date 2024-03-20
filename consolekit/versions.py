@@ -109,7 +109,7 @@ def get_version_callback(
 					)
 			click.echo(tool_name)
 			click.echo(f"  Version: {tool_version}")
-			click.echo(versions)
+			click.echo(versions.rstrip())
 		elif value > 1:
 			python_version = sys.version.replace('\n', ' ')
 			click.echo(f"{tool_name} version {tool_version}, Python {python_version}")

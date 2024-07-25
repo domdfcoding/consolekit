@@ -100,7 +100,7 @@ consolekit
 .. |language| image:: https://img.shields.io/github/languages/top/domdfcoding/consolekit
 	:alt: GitHub top language
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/domdfcoding/consolekit/v1.7.0
+.. |commits-since| image:: https://img.shields.io/github/commits-since/domdfcoding/consolekit/v1.7.1
 	:target: https://github.com/domdfcoding/consolekit/pulse
 	:alt: GitHub commits since tagged version
 

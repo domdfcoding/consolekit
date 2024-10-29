@@ -6,7 +6,7 @@ coverage-pyver-pragma>=0.2.1
 domdf-python-tools[testing]>=2.0.1
 importlib-metadata>=3.6.0
 iniconfig!=1.1.0,>=1.0.1
-mypy==0.971; platform_python_implementation == "CPython"
+mypy==1.13.0; platform_python_implementation == "CPython"
 psutil>=5.9.6; platform_python_implementation == "PyPy" and platform_system != "Windows"
 psutil>=5.9.6; platform_python_implementation != "PyPy" and platform_system == "Windows"
 psutil>=5.9.6; platform_python_implementation != "PyPy" and platform_system != "Windows"

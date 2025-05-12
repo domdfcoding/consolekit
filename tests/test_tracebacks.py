@@ -10,7 +10,7 @@ from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
 from consolekit import click_command
-from consolekit.testing import CliRunner, Result, _click_major
+from consolekit.testing import CliRunner, Result, _click_version
 from consolekit.tracebacks import TracebackHandler, handle_tracebacks, traceback_handler, traceback_option
 
 exceptions = pytest.mark.parametrize(
@@ -88,7 +88,7 @@ def test_handle_tracebacks_ignored_exceptions_click(
 
 	result: Result = cli_runner.invoke(demo, catch_exceptions=False)
 
-	assert result.stdout.strip() == "Aborted!"
+	assert result.output.strip() == "Aborted!"
 	assert result.exit_code == 1
 
 
@@ -114,13 +114,13 @@ def test_handle_tracebacks_ignored_exceptions(
 						click.FileError("Message"),
 						1,
 						id="click.FileError",
-						marks=pytest.mark.skipif(_click_major == 8, reason="Output differs on Click 8")
+						marks=pytest.mark.skipif(_click_version[0] == 8, reason="Output differs on Click 8")
 						),
 				pytest.param(
 						click.FileError("Message"),
 						1,
 						id="click.FileError_8",
-						marks=pytest.mark.skipif(_click_major != 8, reason="Output differs on Click 8")
+						marks=pytest.mark.skipif(_click_version[0] != 8, reason="Output differs on Click 8")
 						),
 				pytest.param(click.ClickException("Message"), 1, id="click.ClickException"),
 				]
@@ -131,11 +131,11 @@ def test_handle_tracebacks_ignored_exceptions(
 		[
 				pytest.param(
 						'7',
-						marks=pytest.mark.skipif(_click_major == 8, reason="Output differs on click 8"),
+						marks=pytest.mark.skipif(_click_version[0] == 8, reason="Output differs on click 8"),
 						),
 				pytest.param(
 						'8',
-						marks=pytest.mark.skipif(_click_major != 8, reason="Output differs on click 8"),
+						marks=pytest.mark.skipif(_click_version[0] != 8, reason="Output differs on click 8"),
 						),
 				]
 		)

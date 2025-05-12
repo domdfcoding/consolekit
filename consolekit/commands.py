@@ -64,7 +64,6 @@ from typing import TYPE_CHECKING, Any, Callable, List, Optional, Tuple
 # 3rd party
 import click
 from click.core import iter_params_for_processing
-from click.parser import split_opt
 from click.utils import make_str
 from domdf_python_tools.stringlist import DelimitedList
 from domdf_python_tools.words import Plural
@@ -86,6 +85,18 @@ __all__ = (
 		)
 
 _argument = Plural("argument", "arguments")
+
+
+def _split_opt(opt: str) -> Tuple[str, str]:
+	first = opt[:1]
+
+	if first.isalnum():
+		return '', opt
+
+	if opt[1:2] == first:
+		return opt[:2], opt[2:]
+
+	return first, opt[1:]
 
 
 class RawHelpMixin:
@@ -172,7 +183,7 @@ class MarkdownHelpMixin:
 
 			raise NotImplementedError
 
-		def make_parser(self, ctx: click.Context) -> click.OptionParser:
+		def make_parser(self, ctx: click.Context) -> "click.OptionParser":
 			"""
 			Creates the underlying option parser for this command.
 
@@ -399,7 +410,7 @@ class SuggestionGroup(ContextInheritingGroup):
 		# if the first argument looks like an option we want to kick off parsing again
 		# for arguments to resolve things like --help which now should go to the main place.
 		if cmd is None and not ctx.resilient_parsing:
-			if split_opt(cmd_name)[0]:
+			if _split_opt(cmd_name)[0]:
 				self.parse_args(ctx, ctx.args)
 
 			closest = difflib.get_close_matches(original_cmd_name, self.commands, n=1)

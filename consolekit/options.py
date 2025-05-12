@@ -65,6 +65,7 @@ from typing import Any, Callable, Iterable, List, Optional, Tuple, TypeVar, cast
 # 3rd party
 import click
 from click.decorators import _param_memo
+from domdf_python_tools.compat import importlib_metadata
 
 # this package
 import consolekit.input
@@ -377,7 +378,7 @@ class MultiValueOption(click.Option):
 		self._previous_parser_process: Optional[Callable] = None
 		self._eat_all_parser: Optional[click.parser.Option] = None
 
-	def add_to_parser(self, parser: click.OptionParser, ctx: click.Context) -> Any:
+	def add_to_parser(self, parser: "click.OptionParser", ctx: click.Context) -> Any:
 		"""
 		Add the :class:`~.MultiValueOption` to the given parser.
 
@@ -444,7 +445,7 @@ class MultiValueOption(click.Option):
 		else:
 			return None
 
-	if int(click.__version__.split('.')[0]) == 7:  # pragma: nocover
+	if int(importlib_metadata.version("click").split('.')[0]) == 7:  # pragma: nocover
 
 		def get_default(self, ctx):  # noqa: MAN001,MAN002,D102
 			if callable(self.default):

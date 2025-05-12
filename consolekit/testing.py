@@ -65,12 +65,13 @@ from typing import IO, Any, Iterable, Mapping, Optional, Tuple, Type, Union
 import click.testing
 import pytest  # nodep
 from coincidence.regressions import check_file_regression  # nodep
+from domdf_python_tools.compat import importlib_metadata
 from pytest_regressions.file_regression import FileRegressionFixture  # nodep
 from typing_extensions import Literal
 
 __all__ = ("CliRunner", "Result", "cli_runner")
 
-_click_major = int(click.__version__.split('.')[0])
+_click_version = tuple(map(int, importlib_metadata.version("click").split('.')))
 
 
 class Result(click.testing.Result):
@@ -101,9 +102,21 @@ class Result(click.testing.Result):
 			exit_code: int,
 			exception: Optional[BaseException],
 			exc_info: Optional[Tuple[Type[BaseException], BaseException, TracebackType]] = None,
+			output_bytes: Optional[bytes] = None,
 			) -> None:
 
-		if _click_major >= 8:
+		if _click_version >= (8, 2):
+			super().__init__(
+					runner=runner,
+					stdout_bytes=stdout_bytes,
+					stderr_bytes=stderr_bytes,
+					output_bytes=output_bytes,  # type: ignore[call-arg]
+					exit_code=exit_code,
+					exception=exception,
+					exc_info=exc_info,
+					return_value=None,
+					)
+		elif _click_version[0] >= 8:
 			super().__init__(
 					runner=runner,
 					stdout_bytes=stdout_bytes,
@@ -129,6 +142,10 @@ class Result(click.testing.Result):
 		The (standard) output as a string.
 		"""
 
+		if _click_version >= (8, 2):
+			ob = self.output_bytes  # type: ignore[attr-defined]
+			return ob.decode(self.runner.charset, "replace").replace("\r\n", '\n')
+
 		return super().output
 
 	@property
@@ -149,6 +166,11 @@ class Result(click.testing.Result):
 
 	@classmethod
 	def _from_click_result(cls, result: click.testing.Result) -> "Result":
+		if _click_version >= (8, 2):
+			output_bytes = result.output_bytes  # type: ignore[attr-defined]
+		else:
+			output_bytes = None
+
 		return cls(
 				runner=result.runner,
 				stdout_bytes=result.stdout_bytes,
@@ -156,6 +178,7 @@ class Result(click.testing.Result):
 				exit_code=result.exit_code,
 				exception=result.exception,
 				exc_info=result.exc_info,
+				output_bytes=output_bytes,
 				)
 
 	def check_stdout(
@@ -174,7 +197,10 @@ class Result(click.testing.Result):
 
 		__tracebackhide__ = True
 
-		check_file_regression(self.stdout.rstrip(), file_regression, extension=extension, **kwargs)
+		if _click_version >= (8, 2) and self.runner.mix_stderr:
+			check_file_regression(self.output.rstrip(), file_regression, extension=extension, **kwargs)
+		else:
+			check_file_regression(self.stdout.rstrip(), file_regression, extension=extension, **kwargs)
 
 		return True
 
@@ -206,11 +232,15 @@ class CliRunner(click.testing.CliRunner):
 			echo_stdin: bool = False,
 			mix_stderr: bool = True,
 			) -> None:
-		super().__init__(charset, env, echo_stdin, mix_stderr)
+		if _click_version >= (8, 2):
+			super().__init__(charset, env, echo_stdin)
+			self.mix_stderr = mix_stderr
+		else:
+			super().__init__(charset, env, echo_stdin, mix_stderr)
 
 	def invoke(  # type: ignore[override]
 		self,
-		cli: click.BaseCommand,
+		cli: click.Command,
 		args: Optional[Union[str, Iterable[str]]] = None,
 		input: Optional[Union[bytes, str, IO]] = None,  # noqa: A002  # pylint: disable=redefined-builtin
 		env: Optional[Mapping[str, str]] = None,

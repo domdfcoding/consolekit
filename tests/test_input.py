@@ -10,7 +10,7 @@ from domdf_python_tools.stringlist import StringList
 
 # this package
 from consolekit.input import choice, confirm, prompt
-from consolekit.testing import _click_major
+from consolekit.testing import _click_version
 
 
 def test_choice_letters(
@@ -48,11 +48,11 @@ def test_choice_letters(
 		[
 				pytest.param(
 						'7',
-						marks=pytest.mark.skipif(_click_major == 8, reason="Output differs on click 8"),
+						marks=pytest.mark.skipif(_click_version[0] == 8, reason="Output differs on click 8"),
 						),
 				pytest.param(
 						'8',
-						marks=pytest.mark.skipif(_click_major != 8, reason="Output differs on click 8"),
+						marks=pytest.mark.skipif(_click_version[0] != 8, reason="Output differs on click 8"),
 						),
 				]
 		)

@@ -154,7 +154,10 @@ class Result(click.testing.Result):
 		The standard output as a string.
 		"""
 
-		return super().stdout
+		if _click_version >= (8, 2) and self.runner.mix_stderr:
+			return self.output
+		else:
+			return super().stdout
 
 	@property
 	def stderr(self) -> str:
@@ -197,10 +200,7 @@ class Result(click.testing.Result):
 
 		__tracebackhide__ = True
 
-		if _click_version >= (8, 2) and self.runner.mix_stderr:
-			check_file_regression(self.output.rstrip(), file_regression, extension=extension, **kwargs)
-		else:
-			check_file_regression(self.stdout.rstrip(), file_regression, extension=extension, **kwargs)
+		check_file_regression(self.stdout.rstrip(), file_regression, extension=extension, **kwargs)
 
 		return True
 

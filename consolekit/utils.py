@@ -79,7 +79,7 @@ __all__ = (
 _deprecator = deprecation_alias.deprecated(
 		deprecated_in="1.0.0",
 		removed_in="2.0.0",
-		current_version="1.8.1",
+		current_version="1.9.0",
 		details="Import from consolekit.tracebacks instead."
 		)
 

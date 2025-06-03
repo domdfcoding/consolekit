@@ -69,9 +69,24 @@ from domdf_python_tools.compat import importlib_metadata
 from pytest_regressions.file_regression import FileRegressionFixture  # nodep
 from typing_extensions import Literal
 
-__all__ = ("CliRunner", "Result", "cli_runner")
+__all__ = ("CliRunner", "Result", "cli_runner", "click_version", "click_major")
 
 _click_version = tuple(map(int, importlib_metadata.version("click").split('.')))
+_click_major = _click_version[0]
+
+click_version: Tuple[int, ...] = _click_version
+"""
+The version number of the currently installed click package.
+
+.. versionadded:: 1.9.0
+"""
+
+click_major: int = _click_major
+"""
+The first part of the version number of the currently installed click package.
+
+.. versionadded:: 1.9.0
+"""
 
 
 class Result(click.testing.Result):

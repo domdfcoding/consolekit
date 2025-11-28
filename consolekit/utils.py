@@ -51,8 +51,8 @@ import click
 import deprecation_alias
 from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.words import SANS_SERIF_ITALIC_LETTERS
-from mistletoe import block_token, span_token  # type: ignore[import]
-from mistletoe.base_renderer import BaseRenderer  # type: ignore[import]
+from mistletoe import block_token, span_token
+from mistletoe.base_renderer import BaseRenderer
 from typing_extensions import TypeGuard
 
 # this package

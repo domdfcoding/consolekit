@@ -67,7 +67,7 @@ from click.core import iter_params_for_processing
 from click.utils import make_str
 from domdf_python_tools.stringlist import DelimitedList
 from domdf_python_tools.words import Plural
-from mistletoe import block_token  # type: ignore[import]
+from mistletoe import block_token
 
 # this package
 from consolekit.terminal_colours import ColourTrilean, resolve_color_default, strip_ansi

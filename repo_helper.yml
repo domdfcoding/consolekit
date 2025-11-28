@@ -35,14 +35,22 @@ python_versions:
   "3.12":
   "3.13":
   pypy37:
+   platforms:
+    - Windows
+    - Linux
    matrix_exclude:
     click:
     - 8.2
   pypy38:
+   platforms:
+    - Linux
    matrix_exclude:
     click:
     - 8.2
   pypy39:
+   platforms:
+    - macOS
+    - Linux
    matrix_exclude:
     click:
     - 8.2

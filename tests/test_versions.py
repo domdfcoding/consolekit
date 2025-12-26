@@ -5,7 +5,7 @@ import sys
 from consolekit import click_command
 from consolekit.options import version_option
 from consolekit.testing import CliRunner
-from consolekit.versions import get_formatted_versions, get_version_callback
+from consolekit.versions import get_formatted_versions, get_version_callback, version_callback_option
 
 
 def test_get_formatted_versions():
@@ -47,6 +47,31 @@ def test_version_callback(cli_runner: CliRunner):
 					"my-tool",
 					["click", "deprecation-alias", "domdf-python-tools", "mistletoe", "typing-extensions"]
 					)
+			)
+	@click_command()
+	def main() -> None:
+		sys.exit(1)
+
+	result = cli_runner.invoke(main, args="--version")
+	assert result.stdout.rstrip() == "my-tool version 1.2.3"
+	assert result.exit_code == 0
+
+	result = cli_runner.invoke(main, args=["--version", "--version"])
+	assert result.stdout.startswith("my-tool version 1.2.3, Python 3.")
+	assert result.exit_code == 0
+
+	result = cli_runner.invoke(main, args=["--version", "--version", "--version"])
+	print(result.stdout)
+	assert result.stdout.startswith("my-tool\n  Version: 1.2.3\n  click: ")
+	assert result.exit_code == 0
+
+
+def test_version_callback_option(cli_runner: CliRunner):
+
+	@version_callback_option(
+			"1.2.3",
+			"my-tool",
+			["click", "deprecation-alias", "domdf-python-tools", "mistletoe", "typing-extensions"],
 			)
 	@click_command()
 	def main() -> None:

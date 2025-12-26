@@ -32,7 +32,7 @@ Tool to get software versions.
 import platform
 import sys
 import textwrap
-from typing import Any, Callable, Iterable, Mapping, Union
+from typing import Any, Callable, Iterable, Mapping, TypeVar, Union
 
 # 3rd party
 import click
@@ -118,3 +118,28 @@ def get_version_callback(
 		ctx.exit()
 
 	return version_callback
+
+
+_C = TypeVar("_C", bound=click.Command)
+
+
+def version_callback_option(
+		tool_version: str,
+		tool_name: str,
+		dependencies: Union[Iterable[str], Mapping[str, str]] = (),
+		) -> Callable[[_C], _C]:
+	"""
+	Helper that calls :deco:`~.version_option` with :func:`~.get_version_callback` as the callback.
+
+	.. versionadded:: 1.10.0
+
+	:param tool_version: The version of the tool to show the version of.
+	:param tool_name: The name of the tool to show the version of.
+	:param dependencies: Either a list of dependency names,
+	    or a mapping of dependency name to a more human-readable form.
+	"""
+
+	# this package
+	from consolekit.options import version_option
+
+	return version_option(get_version_callback(tool_version, tool_name, dependencies))

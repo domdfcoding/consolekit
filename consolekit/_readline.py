@@ -13,6 +13,6 @@ if not bool(getattr(sys, "ps1", sys.flags.interactive)):
 		# In reality the whole module is unavailable.
 		readline.set_history_length(0)
 		readline.set_auto_history(False)
-	except (ImportError, AttributeError):
+	except (ImportError, AttributeError):  # pragma: no cover
 		# Attribute error on PyPy, ImportError on Windows etc.
 		pass

@@ -99,7 +99,7 @@ __all__ = (
 		"BEL",
 		)
 
-try:
+try:  # pragma: no cover
 	# 3rd party
 	import colorama  # type: ignore[import]
 	colorama.init()

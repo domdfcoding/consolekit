@@ -38,7 +38,7 @@ jobs:
           - {python-version: "3.13", testenvs: "py313-click{7.1,8.0,8.1,8.2},build", experimental: False}
           - {python-version: "pypy-3.7", testenvs: "pypy37-click{7.1,8.0,8.1}", experimental: False}
           - {python-version: "pypy-3.8", testenvs: "pypy38-click{7.1,8.0,8.1},build", experimental: False}
-          - {python-version: "pypy-3.9", testenvs: "pypy39-click{7.1,8.0,8.1},build", experimental: True}
+          - {python-version: "pypy-3.9", testenvs: "pypy39-click{7.1,8.0,8.1}", experimental: True}
 
     steps:
       - name: Checkout 🛎️
@@ -165,7 +165,7 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.PYPI_TOKEN }}
-          skip_existing: true
+          skip-existing: true
 
       - name: Close milestone 🚪
         if: startsWith(github.ref, 'refs/tags/')

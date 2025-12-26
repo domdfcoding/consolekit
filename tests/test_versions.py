@@ -32,7 +32,7 @@ def test_get_formatted_versions():
 			"deprecation-alias": "pkg2",
 			"domdf-python-tools": "pkg3",
 			"mistletoe": "pkg4",
-			"typing-extensions": "pkg5"
+			"typing-extensions": "pkg5",
 			})
 	for line, name in zip(sl, ["pkg1", "pkg2", "pkg3", "pkg4", "pkg5"]):
 		assert line.startswith(f"{name}:")
@@ -45,7 +45,7 @@ def test_version_callback(cli_runner: CliRunner):
 			get_version_callback(
 					"1.2.3",
 					"my-tool",
-					["click", "deprecation-alias", "domdf-python-tools", "mistletoe", "typing-extensions"]
+					["click", "deprecation-alias", "domdf-python-tools", "mistletoe", "typing-extensions"],
 					)
 			)
 	@click_command()

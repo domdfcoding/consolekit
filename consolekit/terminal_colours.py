@@ -319,7 +319,7 @@ class Colour(str):
 			r: Union[str, int],
 			g: Union[str, int],
 			b: Union[str, int],
-			background: bool = False
+			background: bool = False,
 			) -> _C:
 		"""
 		Returns a :class:`~.Colour` to create 24-bit coloured text.
@@ -420,13 +420,13 @@ def print_256_colour_testpattern() -> None:
 				echo(Colour.from_256_code(code, background=True)(str(code).center(block_size)) + ' ')
 			click.echo(
 					Colour.from_256_code(values[-1], background=True)(str(values[-1]).center(block_size).rstrip()),
-					color=colour
+					color=colour,
 					)
 
 	print_heading(
 			"Standard Colours".center((9 * 8) - 1, '-') + ' ' + "High-Intensity Colours".center((9 * 8) - 1, '-'),
 			block_size=8,
-			n_blocks=16
+			n_blocks=16,
 			)
 
 	print_line(range(16), block_size=8)

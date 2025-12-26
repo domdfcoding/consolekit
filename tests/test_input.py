@@ -36,7 +36,7 @@ def test_choice_letters(
 			'Y': "install the package maintainer's version",
 			'N': "keep your currently-installed version",
 			'D': "show the differences between the versions",
-			'Z': "start a shell to examine the situation"
+			'Z': "start a shell to examine the situation",
 			}
 	assert choice(text="*** sudoers", options=options, default='N') == 'D'
 

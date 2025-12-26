@@ -80,7 +80,7 @@ _deprecator = deprecation_alias.deprecated(
 		deprecated_in="1.0.0",
 		removed_in="2.0.0",
 		current_version="1.9.0",
-		details="Import from consolekit.tracebacks instead."
+		details="Import from consolekit.tracebacks instead.",
 		)
 
 handle_tracebacks = _deprecator(tracebacks.handle_tracebacks)
@@ -474,7 +474,7 @@ class TerminalRenderer(BaseRenderer):
 def long_echo(
 		text: Union[str, StringList, Iterable[str]],
 		use_pager: Optional[bool] = None,
-		colour: ColourTrilean = None
+		colour: ColourTrilean = None,
 		) -> None:
 	"""
 	Echo ``text`` to the terminal, optionally via a pager.

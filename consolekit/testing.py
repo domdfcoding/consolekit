@@ -307,3 +307,8 @@ def cli_runner() -> CliRunner:
 	"""
 
 	return CliRunner()
+
+
+# Helpers for tests whose output depends on Click major version.
+click_8_only = pytest.mark.skipif(_click_version[0] == 8, reason="Output differs on click 8")
+not_click_8 = pytest.mark.skipif(_click_version[0] != 8, reason="Output differs on click 8")

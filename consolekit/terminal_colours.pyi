@@ -96,6 +96,7 @@ class Colour(str):
 	style: str
 	reset: str
 	stack: Union[Deque[str], List[str]]
+	name: str
 
 	def __new__(cls, style: str, stack: Union[Deque[str], List[str]], reset: str) -> "Colour": ...
 	def __enter__(self) -> None: ...
@@ -114,7 +115,7 @@ class Colour(str):
 			r: Union[str, int],
 			g: Union[str, int],
 			b: Union[str, int],
-			background: bool = ...
+			background: bool = ...,
 			) -> _C: ...
 
 	@classmethod

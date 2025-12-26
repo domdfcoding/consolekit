@@ -233,7 +233,8 @@ def stderr_input(prompt: str = '', file: IO = sys.stdout) -> str:  # pragma: no 
 
 	On Unix, GNU readline is used if enabled.
 
-	The ``prompt`` string, if given, is printed to stderr without a trailing newline before reading.
+	:param prompt: If given, is printed to stderr without a trailing newline before reading.
+	:param file:
 	"""
 
 	if file is sys.stdout:

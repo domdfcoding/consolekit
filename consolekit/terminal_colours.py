@@ -243,6 +243,8 @@ class Colour(str):
 	def __call__(self, text) -> str:  # noqa: MAN001
 		"""
 		Returns the given text in this colour.
+
+		:param text: Any object that can be converted to string (but typically a :class:`str` or perhaps :class:`int` or :class:`float`).
 		"""
 
 		return f"{self}{text}{self.reset}"
@@ -447,7 +449,7 @@ class AnsiCodes(ABC):
 	_stack: Union[Deque[str], List[str]]
 	_reset: str
 
-	def __init_subclass__(cls, **kwargs) -> None:
+	def __init_subclass__(cls, **kwargs) -> None:  # noqa: PRM002
 		"""
 		The subclasses declare class attributes which are numbers.
 

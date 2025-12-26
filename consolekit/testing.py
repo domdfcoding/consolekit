@@ -99,6 +99,7 @@ class Result(click.testing.Result):
 	:param exit_code: The command's exit code.
 	:param exception: The exception that occurred, if any.
 	:param exc_info: The traceback, if an exception occurred.
+	:param output_bytes:
 	"""
 
 	runner: click.testing.CliRunner

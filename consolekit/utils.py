@@ -164,7 +164,7 @@ def overtype(
 
 	.. TODO:: This does not currently work in the PyCharm console, at least on Windows
 
-	:param objects: A list of strings or string-like objects to write to the terminal.
+	:param \*objects: A list of strings or string-like objects to write to the terminal.
 	:param sep: String to separate the objects with.
 	:param end: String to end with.
 	:param file: An object with a ``write(string)`` method.

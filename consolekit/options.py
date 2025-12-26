@@ -231,7 +231,7 @@ def flag_option(*args, default: Optional[bool] = False, **kwargs) -> Callable[[_
 			)
 
 
-def auto_default_option(*param_decls, **attrs) -> Callable[[_C], _C]:
+def auto_default_option(*param_decls, **attrs) -> Callable[[_C], _C]:  # noqa: PRM002
 	"""
 	Attaches an option to the command, with a default value determined from the decorated function's signature.
 
@@ -279,7 +279,7 @@ def _get_default_from_callback_and_set(command: click.Command, param: click.Para
 			param.required = False
 
 
-def auto_default_argument(*param_decls, **attrs) -> Callable[[_C], _C]:
+def auto_default_argument(*param_decls, **attrs) -> Callable[[_C], _C]:  # noqa: PRM002
 	"""
 	Attaches an argument to the command, with a default value determined from the decorated function's signature.
 
@@ -459,7 +459,7 @@ class MultiValueOption(click.Option):
 
 class _Option(click.Option):
 
-	def prompt_for_value(self, ctx: click.Context):  # noqa: MAN002
+	def prompt_for_value(self, ctx: click.Context):  # noqa: MAN002,PRM002
 		"""
 		This is an alternative flow that can be activated in the full value processing if a value does not exist.
 
@@ -489,7 +489,7 @@ class _Option(click.Option):
 				)
 
 
-class DescribedArgument(click.Argument):
+class DescribedArgument(click.Argument):  # noqa: PRM002
 	r"""
 	:class:`click.Argument` with an additional keyword argument and attribute giving a short description.
 

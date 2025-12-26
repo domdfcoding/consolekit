@@ -87,14 +87,13 @@ def get_version_callback(
 	With each ``--version`` argument the callback displays the package version,
 	then adds the python version, and finally adds dependency versions.
 
-
 	:param tool_version: The version of the tool to show the version of.
 	:param tool_name: The name of the tool to show the version of.
 	:param dependencies: Either a list of dependency names,
 	    or a mapping of dependency name to a more human-readable form.
 	"""
 
-	def version_callback(ctx: click.Context, param: click.Option, value: int) -> None:
+	def version_callback(ctx: click.Context, param: click.Option, value: int) -> None:  # noqa: PRM002
 		"""
 		Callback for displaying the package version (and optionally the Python runtime).
 		"""

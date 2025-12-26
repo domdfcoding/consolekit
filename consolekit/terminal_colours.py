@@ -213,21 +213,39 @@ class Colour(str):
 	:type stack: :class:`~typing.List`\[:class:`str`\]
 	:param reset: The escape sequence to reset the style.
 	:type reset: :class:`str`
+	:param name: A friendly name for the style.
+	:type name: :class:`str`
 
+	.. versionchanged:: 1.10.0  Added ``name`` parameter.
 	.. autosummary-widths:: 7/16
 	"""
 
-	__slots__ = ("style", "reset", "stack")
+	__slots__ = ("style", "reset", "stack", "name")
 
 	style: str
 	reset: str
 	stack: Union[Deque[str], List[str]]
+	name: str
 
-	def __new__(cls, style: str, stack: Union[Deque[str], List[str]], reset: str) -> "Colour":  # noqa: D102
+	def __repr__(self) -> str:
+		if self.name:
+			return f"<Colour({super().__repr__()}, name={self.name!r})>"
+		else:
+			return f"<Colour({super().__repr__()})>"
+
+	def __new__(  # noqa: D102
+		cls,
+		style: str,
+		stack: Union[Deque[str], List[str]],
+		reset: str,
+		*,
+		name: Optional[str] = None,
+		) -> "Colour":
 		self = super().__new__(cls, style)  # type: ignore[import]
 		self.style = style
 		self.stack = stack
 		self.reset = reset
+		self.name = name  # Friendly name
 
 		return self
 
@@ -460,7 +478,7 @@ class AnsiCodes(ABC):
 		for name in dir(cls):
 			if not name.startswith('_'):
 				value = getattr(cls, name)
-				setattr(cls, name, Colour(code_to_chars(value), cls._stack, cls._reset))
+				setattr(cls, name, Colour(code_to_chars(value), cls._stack, cls._reset, name=name))
 
 	def __new__(cls: Type[_AC], *args, **kwargs) -> Type[_AC]:  # noqa: D102
 		return cls

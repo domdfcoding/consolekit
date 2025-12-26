@@ -97,6 +97,14 @@ class TestColour:
 		assert yellow == "\u001b[48;2;252;186;3m"
 		assert yellow("Hello") == "\u001b[48;2;252;186;3mHello\u001b[49m"
 
+	def test_repr(self):
+		black = Colour.from_code(30)
+		assert repr(black) == "<Colour('\\x1b[30m')>"
+
+		yellow = Colour.from_hex("#fcba03", background=True)
+		yellow.name = "yellow"
+		assert repr(yellow) == "<Colour('\\x1b[48;2;252;186;3m', name='yellow')>"
+
 
 def test_print_256_colour_testpattern(
 		monkeypatch,

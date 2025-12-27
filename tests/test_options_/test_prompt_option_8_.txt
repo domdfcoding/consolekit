@@ -1,0 +1,4 @@
+Select a station (Radio 1, Radio 2, Radio 3): Radio 4
+Error: 'Radio 4' is not one of 'Radio 1', 'Radio 2', 'Radio 3'.
+Select a station (Radio 1, Radio 2, Radio 3): Radio 2
+Tuning to station: Radio 2

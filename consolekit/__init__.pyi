@@ -13,7 +13,6 @@ from consolekit import terminal_colours as terminal_colours  # noqa: F401
 from consolekit import tracebacks as tracebacks  # noqa: F401
 from consolekit import utils as utils  # noqa: F401
 from consolekit.commands import SuggestionGroup as SuggestionGroup  # noqa: F401
-from consolekit.options import _Option  # noqa: F401
 
 __author__: str
 __copyright__: str

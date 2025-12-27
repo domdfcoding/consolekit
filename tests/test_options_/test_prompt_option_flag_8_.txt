@@ -1,0 +1,4 @@
+Show colour: [y/N]: Z
+Error: invalid input
+Show colour: [y/N]: Y
+Show colour? True

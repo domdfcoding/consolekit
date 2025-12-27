@@ -4,13 +4,17 @@ from typing import Iterable
 
 # 3rd party
 import click
+import pytest
+from coincidence.regressions import AdvancedFileRegressionFixture
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
 from consolekit import click_command
 from consolekit.options import (
+		ChoiceOption,
 		DescribedArgument,
 		MultiValueOption,
+		PromptOption,
 		auto_default_argument,
 		auto_default_option,
 		colour_option,
@@ -21,7 +25,7 @@ from consolekit.options import (
 		version_option
 		)
 from consolekit.terminal_colours import ColourTrilean
-from consolekit.testing import CliRunner, Result
+from consolekit.testing import CliRunner, Result, _click_major, _click_version, click_8_only, not_click_8
 
 
 def test_described_argument(
@@ -305,3 +309,107 @@ def test_auto_default_argument(cli_runner: CliRunner):
 	result = cli_runner.invoke(main, args=["Good Morning"])
 	assert result.stdout.rstrip() == "Good Morning User!"
 	assert result.exit_code == 0
+
+
+@pytest.mark.parametrize(
+		"click_version",
+		[pytest.param('7', marks=click_8_only), pytest.param('8', marks=not_click_8)],
+		)
+def test_choice_option(
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		click_version: str,
+		cli_runner: CliRunner,
+		):
+
+	@click.option(
+			"-s",
+			"--station",
+			help="The station to play.",
+			type=click.Choice(["Radio 1", "Radio 2", "Radio 3"], case_sensitive=False),
+			cls=ChoiceOption,
+			prompt="Select a station",
+			)
+	@click_command()
+	def main(station: str) -> None:
+		print(f"Tuning to station: {station}")
+
+	result = cli_runner.invoke(main, input="5\n0\n2\n")
+	assert result.exit_code == 0
+	advanced_file_regression.check(result.stdout.rstrip())
+
+	result = cli_runner.invoke(main, args=["--station", "Radio 1"])
+	assert result.exit_code == 0
+	assert result.stdout.rstrip() == "Tuning to station: Radio 1"
+
+
+not_click_8_or_above_82 = pytest.mark.skipif(
+		_click_major != 8 or (_click_major == 8 and _click_version[1] >= 2), reason="Output differs on click 8"
+		)
+not_click_8_or_below_82 = pytest.mark.skipif(
+		_click_major != 8 or (_click_major == 8 and _click_version[1] < 2), reason="Output differs on click 8.2"
+		)
+
+
+@pytest.mark.parametrize(
+		"click_version",
+		[
+				pytest.param('7', marks=click_8_only),
+				pytest.param('8', marks=not_click_8_or_above_82),
+				pytest.param("8.2", marks=not_click_8_or_below_82),
+				],
+		)
+def test_prompt_option(
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		click_version: str,
+		cli_runner: CliRunner,
+		):
+
+	@click.option(
+			"-s",
+			"--station",
+			help="The station to play.",
+			type=click.Choice(["Radio 1", "Radio 2", "Radio 3"], case_sensitive=False),
+			cls=PromptOption,
+			prompt="Select a station",
+			)
+	@click_command()
+	def main(station: str) -> None:
+		print(f"Tuning to station: {station}")
+
+	result = cli_runner.invoke(main, input="Radio 4\nRadio 2\n")
+	assert result.exit_code == 0
+	advanced_file_regression.check(result.stdout.rstrip())
+
+	result = cli_runner.invoke(main, args=["--station", "Radio 1"])
+	assert result.exit_code == 0
+	assert result.stdout.rstrip() == "Tuning to station: Radio 1"
+
+
+@pytest.mark.parametrize(
+		"click_version",
+		[pytest.param('7', marks=click_8_only), pytest.param('8', marks=not_click_8)],
+		)
+def test_prompt_option_flag(
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		click_version: str,
+		cli_runner: CliRunner,
+		):
+
+	@flag_option(
+			"--colour/--no-colour",
+			help="Show colour in output.",
+			cls=PromptOption,
+			default=None,
+			prompt="Show colour:",
+			)
+	@click_command()
+	def main(colour: bool) -> None:
+		print(f"Show colour? {colour}")
+
+	result = cli_runner.invoke(main, input="Z\nY\n")
+	assert result.exit_code == 0
+	advanced_file_regression.check(result.stdout.rstrip())
+
+	result = cli_runner.invoke(main, args=["--no-colour"])
+	assert result.exit_code == 0
+	assert result.stdout.rstrip() == "Show colour? False"

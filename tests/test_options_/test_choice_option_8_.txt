@@ -1,0 +1,9 @@
+ [1] Radio 1
+ [2] Radio 2
+ [3] Radio 3
+Select a station: 5
+Error: 5 is not in the range 1<=x<=3.
+Select a station: 0
+Error: 0 is not in the range 1<=x<=3.
+Select a station: 2
+Tuning to station: Radio 2

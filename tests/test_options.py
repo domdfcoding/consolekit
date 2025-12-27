@@ -13,6 +13,7 @@ from consolekit import click_command
 from consolekit.options import (
 		ChoiceOption,
 		DescribedArgument,
+		LazyChoice,
 		MultiValueOption,
 		PromptOption,
 		auto_default_argument,
@@ -326,6 +327,41 @@ def test_choice_option(
 			"--station",
 			help="The station to play.",
 			type=click.Choice(["Radio 1", "Radio 2", "Radio 3"], case_sensitive=False),
+			cls=ChoiceOption,
+			prompt="Select a station",
+			)
+	@click_command()
+	def main(station: str) -> None:
+		print(f"Tuning to station: {station}")
+
+	result = cli_runner.invoke(main, input="5\n0\n2\n")
+	assert result.exit_code == 0
+	advanced_file_regression.check(result.stdout.rstrip())
+
+	result = cli_runner.invoke(main, args=["--station", "Radio 1"])
+	assert result.exit_code == 0
+	assert result.stdout.rstrip() == "Tuning to station: Radio 1"
+
+
+@pytest.mark.parametrize(
+		"click_version",
+		[pytest.param('7', marks=click_8_only), pytest.param('8', marks=not_click_8)],
+		)
+def test_lazy_choice(
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		click_version: str,
+		cli_runner: CliRunner,
+		):
+
+	def expensive_operation():
+		print("Performing expensive operation to get choices.")
+		return ["Radio 1", "Radio 2", "Radio 3"]
+
+	@click.option(
+			"-s",
+			"--station",
+			help="The station to play.",
+			type=LazyChoice(expensive_operation, case_sensitive=False),
 			cls=ChoiceOption,
 			prompt="Select a station",
 			)

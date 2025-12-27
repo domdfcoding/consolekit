@@ -79,6 +79,7 @@ __all__ = (
 		"no_pager_option",
 		"PromptOption",
 		"ChoiceOption",
+		"LazyChoice",
 		"MultiValueOption",
 		"flag_option",
 		"auto_default_option",
@@ -590,3 +591,40 @@ class DescribedArgument(click.Argument):  # noqa: PRM002
 		super().__init__(*args, **kwargs)
 
 		self.description: Optional[str] = description
+
+
+# class LazyChoice(click.Choice[str]):
+class LazyChoice(click.Choice):
+	"""
+	Modified choice type that lazily loads the data.
+
+	Useful for expensive operations that need not happen if the option is not provided or the help text is not being displayed.
+
+	:param getter: Function that returns the actual choices.
+	:param case_sensitive: Set to :py:obj:`False` to make choices case insensitive.
+
+	.. versionadded:: 1.11.0
+	"""
+
+	_choices: Optional[Sequence[str]] = None
+
+	def __init__(
+			self,
+			getter: Callable[[], Iterable[str]],
+			case_sensitive: bool = True,
+			) -> None:
+		self._getter = getter
+
+		self.case_sensitive = case_sensitive
+
+	@property
+	def choices(self) -> Sequence[str]:  # type: ignore[override]
+		"""
+		The choices, obtained from the getter function and cached.
+		"""
+
+		if self._choices is None:
+			choices = tuple(self._getter())
+			self._choices = choices
+
+		return self._choices

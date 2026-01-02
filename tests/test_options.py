@@ -379,10 +379,12 @@ def test_lazy_choice(
 
 
 not_click_8_or_above_82 = pytest.mark.skipif(
-		_click_major != 8 or (_click_major == 8 and _click_version[1] >= 2), reason="Output differs on click 8"
+		_click_major != 8 or (_click_major == 8 and _click_version[1] >= 2),
+		reason="Output differs on click 8",
 		)
 not_click_8_or_below_82 = pytest.mark.skipif(
-		_click_major != 8 or (_click_major == 8 and _click_version[1] < 2), reason="Output differs on click 8.2"
+		_click_major != 8 or (_click_major == 8 and _click_version[1] < 2),
+		reason="Output differs on click 8.2",
 		)
 
 

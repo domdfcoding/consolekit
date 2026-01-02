@@ -9,8 +9,8 @@ from coincidence.regressions import AdvancedFileRegressionFixture
 from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
-from consolekit import click_command
 import consolekit
+from consolekit import click_command
 from consolekit.options import (
 		ChoiceOption,
 		DescribedArgument,

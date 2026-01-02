@@ -1,9 +1,7 @@
-# pragma: no cover
-
 # stdlib
 import sys
 
-if not bool(getattr(sys, "ps1", sys.flags.interactive)):
+if not bool(getattr(sys, "ps1", sys.flags.interactive)):  # pragma: no cover
 
 	try:
 		# stdlib

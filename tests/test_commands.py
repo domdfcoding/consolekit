@@ -80,6 +80,7 @@ def markdown_demo_group() -> Tuple[click.Command, click.Command]:
 		* ~~The other~~ (deprecated)
 		"""
 
+	@colour_option()
 	@demo.command(cls=consolekit.commands.MarkdownHelpCommand)
 	def foo() -> None:
 		"""
@@ -206,6 +207,9 @@ def test_markdown_help_group(
 
 	result = cli_runner.invoke(demo_command, args=["--help"], color=True)
 	result.check_stdout(advanced_file_regression, extension="_command.md")
+
+	result = cli_runner.invoke(demo_command, args=["--no-colour", "--help"], color=True)
+	result.check_stdout(advanced_file_regression, extension="_command_no_colour.md")
 
 
 @pytest.mark.usefixtures("force_not_pycharm")

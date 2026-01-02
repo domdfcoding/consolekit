@@ -1,4 +1,5 @@
 # stdlib
+import sys
 from typing import Type
 
 # 3rd party
@@ -143,6 +144,49 @@ def test_prompt(
 			) == "badpassword"
 
 	advanced_data_regression.check(list(StringList(capsys.readouterr().out.splitlines())))
+
+
+def test_prompt_err(
+		capsys,
+		monkeypatch,
+		advanced_data_regression: AdvancedDataRegressionFixture,
+		):
+
+	inputs = iter([
+			'',
+			'',
+			'',
+			'',
+			"24",
+			"Bond007",
+			"badpassword",
+			"baspassword",
+			"badpassword",
+			"badpassword",
+			"badpassword",
+			"badpassword",
+			])
+
+	class FakeInput:
+
+		def readline(self) -> str:
+			value = next(inputs)
+			return value + '\n'
+
+	monkeypatch.setattr(sys, "stdin", FakeInput())
+
+	assert prompt(text="What is your age", prompt_suffix="? ", type=click.INT, err=True) == 24
+
+	assert prompt(text="Username", type=click.STRING, err=True) == "Bond007"
+	assert prompt(text="Password", type=click.STRING, confirmation_prompt=True, err=True) == "badpassword"
+	assert prompt(
+			text="Password",
+			type=click.STRING,
+			confirmation_prompt="Are you sure about that? ",
+			err=True,
+			) == "badpassword"
+
+	advanced_data_regression.check(list(StringList(capsys.readouterr().err.splitlines())))
 
 
 @pytest.mark.parametrize("exception", [KeyboardInterrupt, EOFError])

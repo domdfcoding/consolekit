@@ -1,6 +1,6 @@
 # stdlib
 import sys
-from typing import Iterable
+from typing import Iterable, List
 
 # 3rd party
 import click
@@ -10,6 +10,7 @@ from pytest_regressions.file_regression import FileRegressionFixture
 
 # this package
 from consolekit import click_command
+import consolekit
 from consolekit.options import (
 		ChoiceOption,
 		DescribedArgument,
@@ -353,7 +354,7 @@ def test_lazy_choice(
 		cli_runner: CliRunner,
 		):
 
-	def expensive_operation():
+	def expensive_operation() -> List[str]:
 		print("Performing expensive operation to get choices.")
 		return ["Radio 1", "Radio 2", "Radio 3"]
 
@@ -419,6 +420,26 @@ def test_prompt_option(
 	advanced_file_regression.check(result.stdout.rstrip())
 
 	result = cli_runner.invoke(main, args=["--station", "Radio 1"])
+	assert result.exit_code == 0
+	assert result.stdout.rstrip() == "Tuning to station: Radio 1"
+
+	@consolekit.option(
+			"-s",
+			"--station",
+			help="The station to play.",
+			type=click.Choice(["Radio 1", "Radio 2", "Radio 3"], case_sensitive=False),
+			cls=PromptOption,
+			prompt="Select a station",
+			)
+	@click_command()
+	def main2(station: str) -> None:
+		print(f"Tuning to station: {station}")
+
+	result = cli_runner.invoke(main2, input="Radio 4\nRadio 2\n")
+	assert result.exit_code == 0
+	advanced_file_regression.check(result.stdout.rstrip())
+
+	result = cli_runner.invoke(main2, args=["--station", "Radio 1"])
 	assert result.exit_code == 0
 	assert result.stdout.rstrip() == "Tuning to station: Radio 1"
 

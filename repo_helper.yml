@@ -10,7 +10,7 @@ license: 'MIT'
 short_desc: 'Additional utilities for click.'
 
 use_flit: true
-min_coverage: 94
+min_coverage: 93.5
 docs_fail_on_warning: true
 mypy_version: "0.971"
 

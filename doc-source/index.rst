@@ -107,7 +107,7 @@ consolekit
 		:alt: GitHub top language
 
 	.. |commits-since| github-shield::
-		:commits-since: v1.11.0
+		:commits-since: v1.12.0
 		:alt: GitHub commits since tagged version
 
 	.. |commits-latest| github-shield::

@@ -153,13 +153,14 @@ def test_long_echo(monkeypatch):
 		assert stdout.isatty()
 		assert sys.stdout.isatty()
 
-		long_echo('\n'.join([
+		lines = [
 				"Line 1",
 				"Line 2",
 				"Line 3",
 				"Line 4",
 				"Line 5",
-				]))
+				]
+		long_echo('\n'.join(lines))
 
 	assert stdout.getvalue() == "Line 1\nLine 2\nLine 3\nLine 4\nLine 5\n"
 

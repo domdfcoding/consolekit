@@ -23,7 +23,7 @@ exceptions = pytest.mark.parametrize(
 				pytest.param(TypeError("Expected type int, got type str"), id="TypeError"),
 				pytest.param(NameError("name 'hello' is not defined"), id="NameError"),
 				pytest.param(SyntaxError("invalid syntax"), id="SyntaxError"),
-				]
+				],
 		)
 contextmanagers = pytest.mark.parametrize(
 		"contextmanager, exit_code",
@@ -33,7 +33,7 @@ contextmanagers = pytest.mark.parametrize(
 				pytest.param(TracebackHandler(), 1, id="TracebackHandler"),
 				pytest.param(TracebackHandler(SystemExit(1)), 1, id="TracebackHandler_SystemExit"),
 				pytest.param(TracebackHandler(SystemExit(2)), 2, id="TracebackHandler_SystemExit_2"),
-				]
+				],
 		)
 
 
@@ -113,7 +113,7 @@ def test_handle_tracebacks_ignored_exceptions(
 				pytest.param(click.FileError("Message"), 1, id="click.FileError", marks=click_8_only),
 				pytest.param(click.FileError("Message"), 1, id="click.FileError_8", marks=not_click_8),
 				pytest.param(click.ClickException("Message"), 1, id="click.ClickException"),
-				]
+				],
 		)
 @contextmanagers
 @pytest.mark.parametrize(

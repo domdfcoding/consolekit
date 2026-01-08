@@ -150,7 +150,7 @@ class Result(click.testing.Result):
 				exit_code=exit_code,
 				exception=exception,
 				exc_info=exc_info,
-				)
+			)
 
 	@property
 	def output(self) -> str:
@@ -264,7 +264,7 @@ class CliRunner(click.testing.CliRunner):
 		catch_exceptions: bool = False,
 		color: bool = False,
 		**extra,
-		) -> Result:
+	) -> Result:
 		r"""
 		Invokes a command in an isolated environment.
 

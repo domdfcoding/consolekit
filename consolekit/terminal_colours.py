@@ -240,7 +240,7 @@ class Colour(str):
 		reset: str,
 		*,
 		name: Optional[str] = None,
-		) -> "Colour":
+	) -> "Colour":
 		self = super().__new__(cls, style)  # type: ignore[import]
 		self.style = style
 		self.stack = stack

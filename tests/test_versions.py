@@ -46,7 +46,7 @@ def test_version_callback(cli_runner: CliRunner):
 					"1.2.3",
 					"my-tool",
 					["click", "deprecation-alias", "domdf-python-tools", "mistletoe", "typing-extensions"],
-					)
+					),
 			)
 	@click_command()
 	def main() -> None:

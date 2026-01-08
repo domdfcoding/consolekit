@@ -30,7 +30,7 @@ class TransitionTransform(Transitions):
 					'At least one body element must separate transitions; '
 					'adjacent transitions are not allowed.',
 					source=node.source,
-					line=node.line
+					line=node.line,
 					)
 
 		if error:
@@ -107,6 +107,6 @@ def setup(app: Sphinx):
 	app.add_node(
 			addnodes.desc_annotation,
 			latex=(LaTeXTranslator.visit_desc_annotation, depart_desc_annotation),
-			override=True
+			override=True,
 			)
 	app.add_role("inline-code", InlineRole())

@@ -74,6 +74,7 @@ __all__ = (
 		"TerminalRenderer",
 		"hidden_cursor",
 		"long_echo",
+		"echo",
 		)
 
 _deprecator = deprecation_alias.deprecated(
@@ -511,3 +512,38 @@ def long_echo(
 		return click.echo_via_pager(str(text), color=colour)
 	else:
 		return click.echo(str(text), color=colour)
+
+
+def echo(
+		message: Union[str, Sequence[str]],
+		*lines: str,
+		file: Optional[IO] = None,
+		err: bool = False,
+		color: Optional[bool] = None,
+		) -> None:
+	r"""
+	Print the given line(s), separated by newlines, to stdout or a file.
+
+	:param message: The message to print.
+	:param \*lines: Additional lines to print.
+	:param file: The file to write to. Defaults to ``stdout``.
+	:param err: Write to ``stderr`` instead of ``stdout``.
+	:param color: Force showing or hiding colors and other styles.
+		By default Click will remove color if the output does not look like an interactive terminal.
+
+	.. versionadded:: 1.12.0
+	"""
+
+	lines_to_print: List[str]
+
+	if isinstance(message, str):
+		lines_to_print = [message, *lines]
+	else:
+		lines_to_print = [*message, *lines]
+
+	click.echo(
+			'\n'.join(lines_to_print),
+			file=file,
+			err=err,
+			color=color,
+			)

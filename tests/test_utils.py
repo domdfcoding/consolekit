@@ -10,6 +10,7 @@ import click
 from coincidence.regressions import AdvancedDataRegressionFixture, check_file_regression
 from coincidence.selectors import not_windows
 from domdf_python_tools.paths import PathPlus
+from domdf_python_tools.stringlist import StringList
 from domdf_python_tools.utils import redirect_output
 from pytest_regressions.file_regression import FileRegressionFixture
 
@@ -20,6 +21,7 @@ from consolekit.terminal_colours import ColourTrilean
 from consolekit.utils import (
 		abort,
 		coloured_diff,
+		echo,
 		hidden_cursor,
 		hide_cursor,
 		import_commands,
@@ -174,3 +176,20 @@ def test_abort(capsys):
 def test_abort_no_colour(capsys):
 	abort("The program will now abort.", colour=False)
 	assert capsys.readouterr().err == "The program will now abort.\n"
+
+
+def test_echo(capsys, advanced_data_regression: AdvancedDataRegressionFixture):
+	echo("abcdefg")
+	echo("abc\ndefg")
+	echo("abc", "defg")
+	echo(["abc", "defg"])
+	echo(*["abc", "defg"])
+	sl = StringList(["abc"])
+	sl.blankline()
+	sl.append("defg")
+	echo(sl)
+	echo('', "2nd line", "3rd line", "4th line")
+	echo("going", "to", "stderr", err=True)
+	echo("going", "to", "stderr", file=sys.stderr)
+
+	advanced_data_regression.check(tuple(capsys.readouterr()))

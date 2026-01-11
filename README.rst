@@ -112,7 +112,7 @@ consolekit
 	:alt: Maintenance
 
 .. |pypi-downloads| image:: https://img.shields.io/pypi/dm/consolekit
-	:target: https://pypi.org/project/consolekit/
+	:target: https://pypistats.org/packages/consolekit
 	:alt: PyPI - Downloads
 
 .. end shields

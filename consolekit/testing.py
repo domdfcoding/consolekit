@@ -71,7 +71,7 @@ from typing_extensions import Literal
 
 __all__ = ("CliRunner", "Result", "cli_runner", "click_version", "click_major")
 
-_click_version = tuple(map(int, importlib_metadata.version("click").split('.')))
+_click_version = tuple(map(int, importlib_metadata.version("click").split('.')[:3]))
 _click_major = _click_version[0]
 
 click_version: Tuple[int, ...] = _click_version

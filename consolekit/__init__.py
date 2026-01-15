@@ -146,5 +146,5 @@ click.Parameter.__module__ = "click"
 click.Context.__module__ = "click"
 click.HelpFormatter.__module__ = "click"
 click.Group.__module__ = "click"
-if tuple(map(int, (importlib_metadata.version("click").split('.')))) < (8, 2):
+if tuple(map(int, (importlib_metadata.version("click").split('.')[:2]))) < (8, 2):
 	click.OptionParser.__module__ = "click"

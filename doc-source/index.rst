@@ -90,12 +90,12 @@ consolekit
 		:wheel:
 		:alt: PyPI - Wheel
 
-	.. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/consolekit?logo=anaconda
-		:target: https://anaconda.org/domdfcoding/consolekit
+	.. |conda-version| image:: https://img.shields.io/conda/v/conda-forge/consolekit?logo=anaconda
+		:target: https://anaconda.org/conda-forge/consolekit
 		:alt: Conda - Package Version
 
-	.. |conda-platform| image:: https://img.shields.io/conda/pn/domdfcoding/consolekit?label=conda%7Cplatform
-		:target: https://anaconda.org/domdfcoding/consolekit
+	.. |conda-platform| image:: https://img.shields.io/conda/pn/conda-forge/consolekit?label=conda%7Cplatform
+		:target: https://anaconda.org/conda-forge/consolekit
 		:alt: Conda - Platform
 
 	.. |license| github-shield::
@@ -133,7 +133,7 @@ Installation
 	:pypi:
 	:github:
 	:anaconda:
-	:conda-channels: conda-forge, domdfcoding
+	:conda-channels: conda-forge
 
 .. end installation
 

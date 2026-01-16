@@ -85,12 +85,12 @@ consolekit
 	:target: https://pypi.org/project/consolekit/
 	:alt: PyPI - Wheel
 
-.. |conda-version| image:: https://img.shields.io/conda/v/domdfcoding/consolekit?logo=anaconda
-	:target: https://anaconda.org/domdfcoding/consolekit
+.. |conda-version| image:: https://img.shields.io/conda/v/conda-forge/consolekit?logo=anaconda
+	:target: https://anaconda.org/conda-forge/consolekit
 	:alt: Conda - Package Version
 
-.. |conda-platform| image:: https://img.shields.io/conda/pn/domdfcoding/consolekit?label=conda%7Cplatform
-	:target: https://anaconda.org/domdfcoding/consolekit
+.. |conda-platform| image:: https://img.shields.io/conda/pn/conda-forge/consolekit?label=conda%7Cplatform
+	:target: https://anaconda.org/conda-forge/consolekit
 	:alt: Conda - Platform
 
 .. |license| image:: https://img.shields.io/github/license/domdfcoding/consolekit
@@ -132,18 +132,9 @@ To install with ``pip``:
 
 To install with ``conda``:
 
-	* First add the required channels
+.. code-block:: bash
 
-	.. code-block:: bash
-
-		$ conda config --add channels https://conda.anaconda.org/conda-forge
-		$ conda config --add channels https://conda.anaconda.org/domdfcoding
-
-	* Then install
-
-	.. code-block:: bash
-
-		$ conda install consolekit
+	$ conda install -c conda-forge consolekit
 
 .. end installation
 

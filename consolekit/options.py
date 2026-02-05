@@ -71,6 +71,12 @@ from domdf_python_tools.compat import importlib_metadata
 import consolekit.input
 from consolekit._types import Callback, _ConvertibleType
 
+try:
+	# 3rd party
+	from click.core import UNSET  # type: ignore[attr-defined]
+except ImportError:
+	UNSET = object()
+
 __all__ = (
 		"verbose_option",
 		"version_option",
@@ -497,6 +503,7 @@ class PromptOption(click.Option):
 				show_choices=self.show_choices,
 				confirmation_prompt=self.confirmation_prompt,
 				value_proc=lambda x: self.process_value(ctx, x),
+				show_default=default is not UNSET,
 				)
 
 

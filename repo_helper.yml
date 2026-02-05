@@ -21,14 +21,17 @@ python_versions:
    matrix_exclude:
     click:
     - 8.2
+    - 8.3
   3.8:
    matrix_exclude:
     click:
     - 8.2
+    - 8.3
   3.9:
    matrix_exclude:
     click:
     - 8.2
+    - 8.3
   "3.10":
   "3.11":
   "3.12":
@@ -40,12 +43,14 @@ python_versions:
    matrix_exclude:
     click:
     - 8.2
+    - 8.3
   pypy38:
    platforms:
     - Linux
    matrix_exclude:
     click:
     - 8.2
+    - 8.3
   pypy39:
    platforms:
     - macOS
@@ -53,6 +58,7 @@ python_versions:
    matrix_exclude:
     click:
     - 8.2
+    - 8.3
 
 classifiers:
  - 'Development Status :: 5 - Production/Stable'
@@ -81,6 +87,7 @@ third_party_version_matrix:
   - 8.0
   - 8.1
   - 8.2
+  - 8.3
 
 extra_sphinx_extensions:
  - sphinx_autofixture

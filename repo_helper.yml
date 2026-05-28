@@ -22,16 +22,22 @@ python_versions:
     click:
     - 8.2
     - 8.3
+    - 8.4
+    - latest
   3.8:
    matrix_exclude:
     click:
     - 8.2
     - 8.3
+    - 8.4
+    - latest
   3.9:
    matrix_exclude:
     click:
     - 8.2
     - 8.3
+    - 8.4
+    - latest
   "3.10":
   "3.11":
   "3.12":
@@ -44,6 +50,8 @@ python_versions:
     click:
     - 8.2
     - 8.3
+    - 8.4
+    - latest
   pypy38:
    platforms:
     - Linux
@@ -51,6 +59,8 @@ python_versions:
     click:
     - 8.2
     - 8.3
+    - 8.4
+    - latest
   pypy39:
    platforms:
     - macOS
@@ -59,6 +69,8 @@ python_versions:
     click:
     - 8.2
     - 8.3
+    - 8.4
+    - latest
 
 classifiers:
  - 'Development Status :: 5 - Production/Stable'
@@ -83,11 +95,14 @@ extras_require:
 
 third_party_version_matrix:
  click:
+  # Remember to update [testenv] in tox.ini
   - 7.1
   - 8.0
   - 8.1
   - 8.2
   - 8.3
+  - 8.4
+  - latest
 
 extra_sphinx_extensions:
  - sphinx_autofixture

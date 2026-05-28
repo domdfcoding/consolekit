@@ -14,7 +14,7 @@ import consolekit.commands
 from consolekit import CONTEXT_SETTINGS, click_command, click_group
 from consolekit.options import colour_option
 from consolekit.terminal_colours import ColourTrilean
-from consolekit.testing import CliRunner
+from consolekit.testing import CliRunner, click_version
 
 
 @pytest.fixture()
@@ -294,9 +294,23 @@ def test_markdown_help_group_no_args_is_help(
 	assert result.exit_code == 0
 
 
+@pytest.mark.parametrize(
+		"click_version",
+		[
+				pytest.param(
+						"pre_84",
+						marks=pytest.mark.skipif(click_version >= (8, 4), reason="Output differs on click 8.4"),
+						),
+				pytest.param(
+						"84",
+						marks=pytest.mark.skipif(click_version < (8, 4), reason="Output differs on click 8.4"),
+						),
+				],
+		)
 def test_suggestion_group(
 		advanced_file_regression: AdvancedFileRegressionFixture,
 		cli_runner: CliRunner,
+		click_version: str,
 		):
 
 	@click_group(context_settings={**CONTEXT_SETTINGS, "token_normalize_func": lambda x: x.lower()})

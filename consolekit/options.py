@@ -164,7 +164,6 @@ def version_option(callback: Callable[[click.Context, click.Option, int], Any]) 
 				click.echo(f"consolekit version {__version__}")
 
 			ctx.exit()
-
 	"""
 
 	return click.option(
@@ -354,7 +353,6 @@ class MultiValueOption(click.Option):
 		@click_command()
 		def main(select: Iterable[str]):
 			select = list(select)
-
 	"""
 
 	def __init__(

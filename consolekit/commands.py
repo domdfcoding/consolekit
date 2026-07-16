@@ -74,6 +74,7 @@ from consolekit.terminal_colours import ColourTrilean, resolve_color_default, st
 from consolekit.utils import TerminalRenderer
 
 __all__ = (
+		"ContextInheritingGroup",
 		"MarkdownHelpCommand",
 		"MarkdownHelpGroup",
 		"MarkdownHelpMixin",
@@ -81,7 +82,7 @@ __all__ = (
 		"RawHelpGroup",
 		"RawHelpMixin",
 		"SuggestionGroup",
-		"ContextInheritingGroup",
+		"UnderscoreCommandGroup",
 		)
 
 _argument = Plural("argument", "arguments")
@@ -431,3 +432,14 @@ class SuggestionGroup(ContextInheritingGroup):
 		#  I think typeshed is wrong.
 		#  https://github.com/python/typeshed/blob/484c014665cdf071b292dd9630f207c03e111895/third_party/2and3/click/core.pyi#L171
 		return cmd_name, cmd, args[1:]  # type: ignore[return-value]
+
+
+class UnderscoreCommandGroup(SuggestionGroup):
+	"""
+	Modified :class:`~.SuggestionGroup` that allows command names to be given with underscores (matching the Python function names) as well as with hyphens.
+
+	.. versionadded:: 1.14.0
+	"""
+
+	def get_command(self, ctx: click.Context, cmd_name: str) -> Optional[click.Command]:  # noqa: D102
+		return self.commands.get(cmd_name.replace('_', '-'))

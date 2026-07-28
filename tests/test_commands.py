@@ -325,6 +325,12 @@ def test_suggestion_group(
 		Conduct a search.
 		"""
 
+	@demo.command()  # skipcq
+	def some_thing() -> None:
+		"""
+		A command whose function has an underscore
+		"""
+
 	result = cli_runner.invoke(demo, args=["searh"])
 	result.check_stdout(advanced_file_regression, extension="_success.md")
 	assert result.exit_code == 2
@@ -334,6 +340,75 @@ def test_suggestion_group(
 	assert result.exit_code == 2
 
 	result = cli_runner.invoke(demo, args=["SEARCH"])
+	assert not result.stdout.rstrip()
+	assert result.exit_code == 0
+
+	result = cli_runner.invoke(demo, args=["some_thing"])
+	result.check_stdout(advanced_file_regression, extension="_underscore.md")
+	assert result.exit_code == 2
+
+	result = cli_runner.invoke(demo, args=["some-thing"])
+	assert not result.stdout.rstrip()
+	assert result.exit_code == 0
+
+
+@pytest.mark.parametrize(
+		"click_version",
+		[
+				pytest.param(
+						"pre_84",
+						marks=pytest.mark.skipif(click_version >= (8, 4), reason="Output differs on click 8.4"),
+						),
+				pytest.param(
+						"84",
+						marks=pytest.mark.skipif(click_version < (8, 4), reason="Output differs on click 8.4"),
+						),
+				],
+		)
+def test_underscore_group(
+		advanced_file_regression: AdvancedFileRegressionFixture,
+		cli_runner: CliRunner,
+		click_version: str,
+		):
+
+	@click_group(
+			context_settings={**CONTEXT_SETTINGS, "token_normalize_func": lambda x: x.lower()},
+			cls=consolekit.commands.UnderscoreCommandGroup,
+			)
+	def demo() -> None:
+		"""
+		A program.
+		"""
+
+	@demo.command()  # skipcq
+	def search() -> None:
+		"""
+		Conduct a search.
+		"""
+
+	@demo.command()  # skipcq
+	def some_thing() -> None:
+		"""
+		A command whose function has an underscore
+		"""
+
+	result = cli_runner.invoke(demo, args=["searh"])
+	result.check_stdout(advanced_file_regression, extension="_success.md")
+	assert result.exit_code == 2
+
+	result = cli_runner.invoke(demo, args=["list"])
+	result.check_stdout(advanced_file_regression, extension="_failure.md")
+	assert result.exit_code == 2
+
+	result = cli_runner.invoke(demo, args=["SEARCH"])
+	assert not result.stdout.rstrip()
+	assert result.exit_code == 0
+
+	result = cli_runner.invoke(demo, args=["some_thing"])
+	assert not result.stdout.rstrip()
+	assert result.exit_code == 0
+
+	result = cli_runner.invoke(demo, args=["some-thing"])
 	assert not result.stdout.rstrip()
 	assert result.exit_code == 0
 

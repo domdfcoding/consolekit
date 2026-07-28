@@ -438,7 +438,7 @@ class UnderscoreCommandGroup(SuggestionGroup):
 	"""
 	Modified :class:`~.SuggestionGroup` that allows command names to be given with underscores (matching the Python function names) as well as with hyphens.
 
-	.. versionadded:: 1.14.0
+	.. versionadded:: 2.0.0
 	"""
 
 	def get_command(self, ctx: click.Context, cmd_name: str) -> Optional[click.Command]:  # noqa: D102
